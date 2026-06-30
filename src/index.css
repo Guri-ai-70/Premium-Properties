@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+.rtl :where(input, textarea) {
+  text-align: right;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+[dir="rtl"] .font-sans,
+.rtl {
+  font-family: "Heebo", "Inter", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
