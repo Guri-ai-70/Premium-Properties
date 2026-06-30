@@ -213,8 +213,8 @@ export default function Layout({ children, currentPageName }) {
                   {language === 'he' ? 'צור קשר' : 'Contact'}
                 </h4>
                 <div className="text-sm text-slate-300 space-y-2">
-                  <p>{companyDetails.contact_email}</p>
-                  <p>{companyDetails.contact_phone}</p>
+                  <p><span dir="ltr">{companyDetails.contact_email}</span></p>
+                  <p><span dir="ltr">{companyDetails.contact_phone}</span></p>
                   <p>{language === 'he' ? companyDetails.address_he : companyDetails.address}</p>
                 </div>
               </div>

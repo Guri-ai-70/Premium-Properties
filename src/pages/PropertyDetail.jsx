@@ -174,7 +174,7 @@ export default function PropertyDetail() {
                 <a href={`tel:${company.contact_phone}`}>
                   <Button variant="outline" className="w-full">
                     <Phone className="mr-2 h-4 w-4" />
-                    {company.contact_phone}
+                    <span dir="ltr">{company.contact_phone}</span>
                   </Button>
                 </a>
               </div>
