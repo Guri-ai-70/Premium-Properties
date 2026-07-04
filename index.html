@@ -1,19 +1,467 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Premium Properties</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Heebo:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Global — find what fits you</title>
+<style>
+  /* ---- Design tokens ----
+     Concept: a calm "concierge desk" feel, not a loud marketplace.
+     Palette: deep ink navy + warm sand + a single coral accent for action.
+  */
+  :root{
+    --ink:#13243b;        /* deep navy text/headers */
+    --ink-soft:#41506a;   /* secondary text */
+    --sand:#f3ede1;       /* warm page base */
+    --card:#ffffff;
+    --line:#e2d8c6;       /* hairline on sand */
+    --coral:#2E75B6;      /* Blue, Accent 5, Darker 25% */
+    --coral-dk:#255e92;   /* darker hover shade */
+    --gold:#b98a2e;
+    --ok:#2e7d59;
+    --radius:14px;
+    --shadow:0 1px 0 rgba(19,36,59,.04), 0 12px 30px -18px rgba(19,36,59,.35);
+    --display:"Fraunces", Georgia, "Times New Roman", serif;
+    --body:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:var(--body);
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #fbf6ec 0%, transparent 60%),
+      var(--sand);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600&display=swap');
+
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+  /* ---- Header ---- */
+  header.top{padding:30px 0 8px}
+  .brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .brand .mark{
+    font-family:var(--display);font-weight:900;font-size:clamp(24px,4.5vw,40px);
+    letter-spacing:-.02em;color:var(--ink)
+  }
+  .brand .mark em{color:var(--coral);font-style:normal}
+  .brand .tag{color:var(--ink-soft);font-size:14px;font-weight:500}
+
+  /* ---- Hero ---- */
+  .hero{padding:18px 0 6px}
+  .hero h1{
+    font-family:var(--display);font-weight:600;font-size:clamp(22px,4.2vw,36px);
+    line-height:1.08;letter-spacing:-.02em;margin:.2em 0 .35em;max-width:18ch
+  }
+  .hero h1 .u{background:linear-gradient(transparent 62%, #f6d2c5 62%)}
+  .hero p.sub{color:var(--ink-soft);max-width:60ch;margin:0;font-size:16px}
+
+  /* ---- Sale of the week ---- */
+  .sale{margin:22px 0 6px}
+  .sale-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .sale-head h2{font-family:var(--display);font-weight:600;font-size:22px;margin:0}
+  .sale-note{color:var(--ink-soft);font-size:13px}
+  .deals{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+  .deal{
+    position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)
+  }
+  .deal .badge{
+    position:absolute;top:10px;left:10px;background:var(--coral);color:#fff;font-weight:600;
+    font-size:12px;padding:4px 9px;border-radius:20px;letter-spacing:.02em
+  }
+  .deal .thumb{height:120px;display:flex;align-items:center;justify-content:center;font-size:40px;
+    background:linear-gradient(135deg,#fdeee6,#f6e3d4)}
+  .deal .body{padding:13px 13px 15px;display:flex;flex-direction:column;gap:7px;flex:1}
+  .deal .name{font-weight:600;font-size:14.5px;line-height:1.3}
+  .deal .prices{display:flex;align-items:baseline;gap:8px}
+  .deal .now{font-weight:600;font-size:17px;color:var(--coral-dk)}
+  .deal .was{font-size:13px;color:var(--ink-soft);text-decoration:line-through}
+  .deal .src{font-size:11.5px;color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+  .deal .grab{margin-top:auto;text-align:center;text-decoration:none;font-weight:600;font-size:13.5px;
+    background:var(--coral);color:#fff;padding:9px;border-radius:9px}
+  .deal .grab:hover{background:var(--coral-dk)}
+
+  /* ---- Finder panel ---- */
+  .panel{
+    margin:22px 0 10px;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 20px 22px
+  }
+  .panel h2{font-family:var(--display);font-weight:600;font-size:19px;margin:0 0 14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);
+    text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px}
+  .field input,.field select{
+    width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;
+    background:#fffdf8;font:inherit;color:var(--ink)
+  }
+  .field input:focus,.field select:focus{outline:2px solid var(--coral);outline-offset:1px;border-color:transparent}
+
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;align-items:center}
+  .btn{
+    border:none;cursor:pointer;font:inherit;font-weight:600;border-radius:10px;
+    padding:12px 20px;transition:transform .05s ease, background .15s ease
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:var(--coral);color:#fff}
+  .btn.primary:hover{background:var(--coral-dk)}
+  .btn.ghost{background:transparent;color:var(--ink-soft);padding:12px 8px}
+  .btn.ghost:hover{color:var(--ink)}
+
+  /* ---- Results ---- */
+  .results{margin:26px 0 60px}
+  .results .lead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .results .lead h2{font-family:var(--display);font-weight:600;font-size:22px;margin:0}
+  .results .lead .count{color:var(--ink-soft);font-size:14px}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)
+  }
+  .card .thumb{height:140px;display:flex;align-items:center;justify-content:center;
+    font-size:46px;background:linear-gradient(135deg,#fbf4e8,#f1e7d4)}
+  .card .body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .card .name{font-weight:600;font-size:15.5px;line-height:1.3}
+  .card .why{font-size:13px;color:var(--ink-soft);flex:1}
+  .card .meta{display:flex;justify-content:space-between;align-items:center;font-size:13px}
+  .card .price{font-weight:600;color:var(--ink)}
+  .card .src{color:var(--gold);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  .card .pick{
+    margin-top:4px;text-align:center;text-decoration:none;font-weight:600;font-size:14px;
+    background:var(--ink);color:#fff;padding:10px;border-radius:9px;display:block
+  }
+  .card .pick:hover{background:#0c1828}
+
+  /* ---- Platform handoff ---- */
+  .handoff{margin-top:30px;background:#fffdf8;border:1px dashed var(--line);border-radius:var(--radius);padding:20px}
+  .handoff h3{font-family:var(--display);font-weight:600;margin:0 0 4px;font-size:18px}
+  .handoff p{margin:0 0 14px;color:var(--ink-soft);font-size:14px}
+  .platforms{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .plat{
+    border:1px solid var(--line);border-radius:10px;padding:11px 18px;
+    font-weight:700;color:#0a1626;background:var(--card);
+    font-size:14px;cursor:pointer;user-select:none;transition:border-color .15s ease, background .15s ease, color .15s ease
+  }
+  .plat:hover{border-color:var(--coral)}
+  .plat.checked{border-color:#4a6076;background:#4a6076;color:#fff}
+  .plat.checked::before{content:"✓ ";font-weight:700}
+  .open-sel{
+    border:none;cursor:pointer;font:inherit;font-weight:600;border-radius:10px;
+    padding:11px 20px;background:#3a4d61;color:#fff;transition:background .15s ease
+  }
+  .open-sel:hover{background:#2c3a49}
+
+  .empty{color:var(--ink-soft);padding:30px;text-align:center;border:1px dashed var(--line);border-radius:var(--radius)}
+
+  footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--ink-soft);font-size:12.5px}
+  footer .disc{max-width:70ch}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <span class="mark">Marketing<em>·</em>Global</span>
+      <span class="tag">your cross-platform shopping concierge</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Tell us the need.<br>We find the right thing, across every store.</h1>
+    <p class="sub">Describe who it's for and what matters to you. We suggest picks and send you straight to the best matches on Amazon, eBay, AliExpress and Temu — one search, every shelf.</p>
+  </section>
+
+  <!-- SALE OF THE WEEK -->
+  <section class="sale" aria-label="Sale of the week">
+    <div class="sale-head">
+      <h2>Sale of the week</h2>
+      <span class="sale-note">Hand-picked deals — refreshed weekly</span>
+    </div>
+    <div class="deals" id="deals"></div>
+  </section>
+
+  <!-- FINDER -->
+  <section class="panel" aria-label="Product finder">
+    <h2>What are you looking for?</h2>
+    <div class="grid">
+      <div class="field">
+        <label for="q">Describe it</label>
+        <input id="q" type="text" placeholder="e.g. quiet gift for a 10-year-old who likes chess" />
+      </div>
+      <div class="field">
+        <label for="cat">Category</label>
+        <select id="cat">
+          <option value="">Any category</option>
+          <option>Gifts</option>
+          <option>Home &amp; Kitchen</option>
+          <option>Electronics</option>
+          <option>Computers</option>
+          <option>Mobile</option>
+          <option>Fashion</option>
+          <option>Toys &amp; Games</option>
+          <option>Hobby &amp; Crafts</option>
+          <option>Health &amp; Beauty</option>
+          <option>Outdoors</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="budget">Price range (USD)</label>
+        <select id="budget">
+          <option value="0-100000">Any price</option>
+          <option value="0-10">$0 – $10</option>
+          <option value="10-25">$10 – $25</option>
+          <option value="25-50">$25 – $50</option>
+          <option value="50-75">$50 – $75</option>
+          <option value="75-100">$75 – $100</option>
+          <option value="100-150">$100 – $150</option>
+          <option value="150-250">$150 – $250</option>
+          <option value="250-500">$250 – $500</option>
+          <option value="500-100000">$500+</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="ship">Shipping priority</label>
+        <select id="ship">
+          <option value="">No preference</option>
+          <option value="fast">Fast (days)</option>
+          <option value="cheap">Cheapest (slower OK)</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="findBtn">Find matches</button>
+      <button class="btn ghost" id="resetBtn">Reset</button>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="results" id="results" hidden>
+    <div class="lead">
+      <h2>Curated picks for you</h2>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="cards" id="cards"></div>
+
+    <div class="handoff">
+      <h3>Want more options?</h3>
+      <p>Click the stores you want (they highlight when selected), then open them all at once for <strong id="handoffTerm">your search</strong>. Your affiliate tag attaches automatically once programs are approved.</p>
+      <div class="platforms" id="platforms"></div>
+      <p id="popupNote" hidden style="margin:12px 0 0;font-size:12.5px;color:var(--ink-soft)">Opening several stores? If some tabs don't appear, click the pop-up icon in your browser's address bar and allow pop-ups for this site.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p class="disc"><strong>Demo notice.</strong> Curated picks below are sample data for layout. The "see more" buttons deep-link into each store's own search (legitimate and policy-safe). As an affiliate, Marketing Global may earn a commission on qualifying purchases — at no extra cost to you. Prices and availability are set by each store.</p>
+  </footer>
+
+</div>
+
+<script>
+  // ---- Sample curated catalog (you replace these with real picks + your affiliate links) ----
+  const CATALOG = [
+    {name:"Wooden Travel Chess Set", emoji:"♟️", price:24, cat:"Toys & Games", src:"Amazon", ship:"fast",
+     why:"Folding magnetic board — great quiet gift for a young chess fan.", url:"#"},
+    {name:"Glass Chess Board, Deluxe", emoji:"♛", price:39, cat:"Toys & Games", src:"eBay", ship:"cheap",
+     why:"Elegant gift-grade set for older players and collectors.", url:"#"},
+    {name:"3-in-1 Wood Game Box", emoji:"🎲", price:18, cat:"Toys & Games", src:"AliExpress", ship:"cheap",
+     why:"Chess, checkers, backgammon — best value for casual play.", url:"#"},
+    {name:"Mini LED Desk Lamp", emoji:"💡", price:14, cat:"Home & Kitchen", src:"AliExpress", ship:"cheap",
+     why:"Warm dimmable light, popular budget desk upgrade.", url:"#"},
+    {name:"Bluetooth Earbuds (ANC)", emoji:"🎧", price:46, cat:"Electronics", src:"Amazon", ship:"fast",
+     why:"Active noise cancelling for the price of basic buds.", url:"#"},
+    {name:"Pour-Over Coffee Kit", emoji:"☕", price:28, cat:"Home & Kitchen", src:"eBay", ship:"fast",
+     why:"Glass carafe + reusable filter — a tidy gift bundle.", url:"#"},
+    {name:"Acrylic Paint Set, 24 colors", emoji:"🎨", price:21, cat:"Hobby & Crafts", src:"AliExpress", ship:"cheap",
+     why:"Beginner-friendly starter set with brushes included.", url:"#"},
+    {name:"Compact Camping Lantern", emoji:"🏕️", price:17, cat:"Outdoors", src:"eBay", ship:"cheap",
+     why:"USB-rechargeable, collapsible — light and cheap.", url:"#"},
+    {name:"Stainless Insulated Bottle", emoji:"🍶", price:22, cat:"Outdoors", src:"Amazon", ship:"fast",
+     why:"Keeps drinks cold 24h — reliable everyday gift.", url:"#"},
+    {name:"Skincare Gift Trio", emoji:"🧴", price:33, cat:"Health & Beauty", src:"eBay", ship:"fast",
+     why:"Cleanser, serum, moisturizer in a giftable box.", url:"#"}
+  ];
+
+  // ============================================================
+  //  SALE OF THE WEEK  — EDIT THIS LIST EACH WEEK
+  //  Put in REAL deals you've verified on the store. Fields:
+  //    name = product name
+  //    was  = original price (number)
+  //    now  = sale price (number)        --> % off is calculated for you
+  //    src  = "Amazon" | "eBay" | "AliExpress"
+  //    emoji= a relevant icon
+  //    url  = the real product/affiliate link (paste between the quotes)
+  //  To remove a deal, delete its { ... } block. Keep commas between blocks.
+  // ============================================================
+  const DEALS = [
+    {name:"Wireless Earbuds, ANC", was:79, now:46, src:"Amazon",     emoji:"🎧", url:"#"},
+    {name:"Robot Vacuum Cleaner",  was:199, now:129, src:"eBay",     emoji:"🤖", url:"#"},
+    {name:"14-pc Knife Block Set",  was:60, now:34, src:"Amazon",     emoji:"🔪", url:"#"},
+    {name:"LED Strip Lights 10m",   was:25, now:12, src:"AliExpress", emoji:"💡", url:"#"}
+  ];
+
+  function renderDeals(){
+    const wrap = document.getElementById("deals");
+    if(!DEALS.length){ wrap.innerHTML = ""; return; }
+    wrap.innerHTML = DEALS.map(d => {
+      const off = d.was > 0 ? Math.round((1 - d.now / d.was) * 100) : 0;
+      return `
+      <article class="deal">
+        ${off>0?`<span class="badge">-${off}%</span>`:""}
+        <div class="thumb">${d.emoji}</div>
+        <div class="body">
+          <div class="name">${d.name}</div>
+          <div class="prices"><span class="now">$${d.now}</span><span class="was">$${d.was}</span></div>
+          <div class="src">${d.src}</div>
+          <a class="grab" href="${d.url}" target="_blank" rel="noopener">Grab deal</a>
+        </div>
+      </article>`;
+    }).join("");
+  }
+  renderDeals();
+
+  // ---- Platform deep-link builders. AFF tags go here later. ----
+  // Replace the empty tag values with your real affiliate IDs when approved.
+  const AFF = { amazon:"", ebay:"", aliexpress:"", temu:"" };
+  function linkFor(platform, term, minP, maxP){
+    const q = encodeURIComponent(term || "gift");
+    const hasMin = minP > 0;
+    const hasMax = maxP < 100000;
+    switch(platform){
+      case "Amazon": {
+        // Amazon price params are in cents-free dollars via low-price/high-price
+        let u = `https://www.amazon.com/s?k=${q}`;
+        if(hasMin) u += `&low-price=${minP}`;
+        if(hasMax) u += `&high-price=${maxP}`;
+        if(AFF.amazon) u += `&tag=${AFF.amazon}`;
+        return u;
+      }
+      case "eBay": {
+        let u = `https://www.ebay.com/sch/i.html?_nkw=${q}`;
+        if(hasMin) u += `&_udlo=${minP}`;
+        if(hasMax) u += `&_udhi=${maxP}`;
+        if(AFF.ebay) u += `&campid=${AFF.ebay}`;
+        return u;
+      }
+      case "AliExpress": {
+        let u = `https://www.aliexpress.com/wholesale?SearchText=${q}`;
+        if(hasMin) u += `&minPrice=${minP}`;
+        if(hasMax) u += `&maxPrice=${maxP}`;
+        if(AFF.aliexpress) u += `&aff=${AFF.aliexpress}`;
+        return u;
+      }
+      case "Temu": {
+        let u = `https://www.temu.com/search_result.html?search_key=${q}`;
+        if(AFF.temu) u += `&_x_aff=${AFF.temu}`;
+        return u;
+      }
+      default: return "#";
+    }
+  }
+
+  const $ = id => document.getElementById(id);
+
+  function search(){
+    const q = $("q").value.trim();
+    const cat = $("cat").value;
+    const [minP, maxP] = $("budget").value.split("-").map(Number);
+    const ship = $("ship").value;
+    const term = q || cat || "popular gifts";
+
+    let picks = CATALOG.filter(p =>
+      (!cat || p.cat === cat) &&
+      (p.price >= minP && p.price <= maxP) &&
+      (!ship || p.ship === ship)
+    );
+    // soft keyword match on the free-text field
+    if(q){
+      const words = q.toLowerCase().split(/\s+/).filter(w=>w.length>2);
+      const scored = picks.map(p=>{
+        const hay = (p.name+" "+p.why+" "+p.cat).toLowerCase();
+        const score = words.reduce((s,w)=> s + (hay.includes(w)?1:0), 0);
+        return {p, score};
+      });
+      const anyHit = scored.some(s=>s.score>0);
+      picks = (anyHit ? scored.filter(s=>s.score>0).sort((a,b)=>b.score-a.score) : scored).map(s=>s.p);
+    }
+
+    renderCards(picks);
+    renderPlatforms(term, minP, maxP, cat);
+    $("handoffTerm").textContent = `"${term}"`;
+    $("count").textContent = picks.length ? `${picks.length} curated match${picks.length>1?"es":""}` : "no curated matches yet";
+    $("results").hidden = false;
+    $("results").scrollIntoView({behavior:"smooth", block:"start"});
+  }
+
+  function renderCards(picks){
+    const wrap = $("cards");
+    if(!picks.length){
+      wrap.innerHTML = `<div class="empty">No curated picks fit those filters yet — try the store buttons below for live results.</div>`;
+      return;
+    }
+    wrap.innerHTML = picks.map(p => `
+      <article class="card">
+        <div class="thumb">${p.emoji}</div>
+        <div class="body">
+          <div class="name">${p.name}</div>
+          <div class="why">${p.why}</div>
+          <div class="meta">
+            <span class="price">$${p.price}</span>
+            <span class="src">${p.src}</span>
+          </div>
+          <a class="pick" href="${p.url}" target="_blank" rel="noopener">View pick</a>
+        </div>
+      </article>`).join("");
+  }
+
+  function renderPlatforms(term, minP, maxP, cat){
+    let stores = ["Amazon","eBay","AliExpress","Temu"];
+    // AliExpress is mostly parts/accessories — unsuitable for full computers or phones
+    if(cat === "Computers" || cat === "Mobile"){
+      stores = stores.filter(s => s !== "AliExpress" && s !== "Temu");
+    }
+    // Plain toggle buttons — NO checkbox elements, so nothing can auto-select them.
+    // Each starts OFF (not selected). Clicking toggles selection.
+    const btns = stores.map(s => {
+      const url = linkFor(s, term, minP, maxP);
+      return `<button type="button" class="plat" data-url="${url}" data-on="0">${s}</button>`;
+    }).join("");
+    $("platforms").innerHTML = btns +
+      `<button type="button" class="open-sel" id="openSel">Open selected ↗</button>`;
+
+    const box = $("platforms");
+    // toggle a store on/off when its button is clicked
+    box.querySelectorAll(".plat").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const on = btn.dataset.on === "1";
+        btn.dataset.on = on ? "0" : "1";
+        btn.classList.toggle("checked", !on);
+      });
+    });
+    // open every selected store
+    $("openSel").addEventListener("click", () => {
+      const urls = [...box.querySelectorAll('.plat[data-on="1"]')].map(b => b.dataset.url);
+      if(!urls.length){ alert("Click at least one store first."); return; }
+      urls.forEach(u => {
+        const a = document.createElement("a");
+        a.href = u; a.target = "_blank"; a.rel = "noopener";
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      });
+      if(urls.length > 1){ $("popupNote").hidden = false; }
+    });
+  }
+
+  $("findBtn").addEventListener("click", search);
+  $("q").addEventListener("keydown", e => { if(e.key==="Enter") search(); });
+  $("resetBtn").addEventListener("click", ()=>{
+    $("q").value=""; $("cat").value=""; $("budget").value="0-100000"; $("ship").value="";
+    $("results").hidden = true;
+  });
+</script>
+</body>
 </html>
