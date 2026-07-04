@@ -167,14 +167,14 @@ export default function PropertyDetail() {
                 </h3>
                 <a href={`mailto:${company.contact_email}`}>
                   <Button className="mb-2 w-full">
-                    <Mail className="mr-2 h-4 w-4" />
+                    <Mail className="me-2 h-4 w-4" />
                     {t("Email Agent", "שלחו אימייל")}
                   </Button>
                 </a>
                 <a href={`tel:${company.contact_phone}`}>
-                  <Button variant="outline" className="w-full">
-                    <Phone className="mr-2 h-4 w-4" />
-                    <span dir="ltr">{company.contact_phone}</span>
+                  <Button variant="outline" className="w-full" dir="ltr">
+                    <Phone className="me-2 h-4 w-4" />
+                    <span>{company.contact_phone}</span>
                   </Button>
                 </a>
               </div>
