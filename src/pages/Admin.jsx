@@ -52,6 +52,21 @@ export default function Admin() {
   const { language } = useLanguage();
   const t = (en, he) => (language === "he" ? he : en);
 
+  const typeLabel = (v) =>
+    ({
+      apartment: t("Apartment", "דירה"),
+      house: t("House", "בית"),
+      villa: t("Villa", "וילה"),
+      commercial: t("Commercial", "מסחרי"),
+      land: t("Land", "קרקע"),
+    }[v] || v);
+  const statusLabel = (v) =>
+    ({
+      available: t("Available", "זמין"),
+      sold: t("Sold", "נמכר"),
+      rented: t("Rented", "הושכר"),
+    }[v] || v);
+
   const [authChecked, setAuthChecked] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [properties, setProperties] = useState([]);
@@ -497,20 +512,24 @@ export default function Admin() {
                       />
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-medium text-slate-900">{p.title}</span>
+                          <span className="font-medium text-slate-900">
+                            {language === "he" ? p.title_he || p.title : p.title}
+                          </span>
                           {p.exclusive && <Badge variant="exclusive">{t("Exclusive", "בבלעדיות")}</Badge>}
                         </div>
-                        <div className="text-xs text-slate-500">{p.city}</div>
+                        <div className="text-xs text-slate-500">
+                          {language === "he" ? p.city_he || p.city : p.city}
+                        </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 capitalize text-slate-600">{p.property_type}</td>
+                  <td className="px-4 py-3 capitalize text-slate-600">{typeLabel(p.property_type)}</td>
                   <td className="px-4 py-3 font-medium text-slate-900">
                     {formatPrice(p.price, p.currency, p.listing_type, language)}
                   </td>
                   <td className="px-4 py-3">
                     <Badge variant={p.status === "available" ? "success" : "secondary"}>
-                      {p.status}
+                      {statusLabel(p.status)}
                     </Badge>
                   </td>
                   <td className="px-4 py-3">
