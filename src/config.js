@@ -10,6 +10,6 @@
 // browser. Real, server-saved admin would require a backend.
 // ---------------------------------------------------------------------------
 export const ADMIN_CREDENTIALS = {
-  username: "guri2108",
-  password: "sinai2020",
+  username: "demo",
+  password: "demo1234",
 };
