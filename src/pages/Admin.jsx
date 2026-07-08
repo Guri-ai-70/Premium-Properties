@@ -55,10 +55,14 @@ export default function Admin() {
   const typeLabel = (v) =>
     ({
       apartment: t("Apartment", "דירה"),
+      garden_apartment: t("Garden Apartment", "דירת גן"),
+      duplex: t("Duplex", "דופלקס"),
+      penthouse: t("Penthouse", "פנטהאוז"),
+      mini_penthouse: t("Mini Penthouse", "מיני פנטהאוז"),
       house: t("House", "בית"),
       villa: t("Villa", "וילה"),
       commercial: t("Commercial", "מסחרי"),
-      land: t("Land", "קרקע"),
+      plot: t("Plot", "מגרש"),
     }[v] || v);
   const statusLabel = (v) =>
     ({
@@ -315,10 +319,14 @@ export default function Admin() {
                 onChange={(e) => set("property_type", e.target.value)}
                 options={[
                   { value: "apartment", label: t("Apartment", "דירה") },
+                  { value: "garden_apartment", label: t("Garden Apartment", "דירת גן") },
+                  { value: "duplex", label: t("Duplex", "דופלקס") },
+                  { value: "penthouse", label: t("Penthouse", "פנטהאוז") },
+                  { value: "mini_penthouse", label: t("Mini Penthouse", "מיני פנטהאוז") },
                   { value: "house", label: t("House", "בית") },
                   { value: "villa", label: t("Villa", "וילה") },
                   { value: "commercial", label: t("Commercial", "מסחרי") },
-                  { value: "land", label: t("Land", "קרקע") },
+                  { value: "plot", label: t("Plot", "מגרש") },
                 ]}
               />
             </Field>
@@ -432,30 +440,17 @@ export default function Admin() {
             </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label={t("Status", "סטטוס")}>
-              <Select
-                value={form.status}
-                onChange={(e) => set("status", e.target.value)}
-                options={[
-                  { value: "available", label: t("Available", "זמין") },
-                  { value: "sold", label: t("Sold", "נמכר") },
-                  { value: "rented", label: t("Rented", "הושכר") },
-                ]}
-              />
-            </Field>
-            <label className="flex items-end gap-2 pb-2">
-              <input
-                type="checkbox"
-                checked={!!form.featured}
-                onChange={(e) => set("featured", e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300"
-              />
-              <span className="text-sm font-medium text-slate-700">
-                {t("Featured property", "נכס מומלץ")}
-              </span>
-            </label>
-          </div>
+          <Field label={t("Status", "סטטוס")}>
+            <Select
+              value={form.status}
+              onChange={(e) => set("status", e.target.value)}
+              options={[
+                { value: "available", label: t("Available", "זמין") },
+                { value: "sold", label: t("Sold", "נמכר") },
+                { value: "rented", label: t("Rented", "הושכר") },
+              ]}
+            />
+          </Field>
 
           <div className="flex gap-3 pt-2">
             <Button type="submit" disabled={saving}>

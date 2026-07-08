@@ -77,7 +77,7 @@ export default function PropertyDetail() {
 
   const facts = [
     property.property_type !== "commercial" &&
-      property.property_type !== "land" && {
+      property.property_type !== "plot" && {
         icon: Bed,
         label: t("Bedrooms", "חדרי שינה"),
         value: property.bedrooms,

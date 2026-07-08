@@ -2,9 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Property } from "@/entities/Property";
 import { useLanguage } from "@/components/LanguageContext";
 import PropertyCard from "@/components/PropertyCard";
-import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { Search, Building2 } from "lucide-react";
+import { Building2 } from "lucide-react";
 
 export default function Properties() {
   const { language } = useLanguage();
@@ -12,7 +11,7 @@ export default function Properties() {
 
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [city, setCity] = useState("all");
   const [listingType, setListingType] = useState("all");
   const [propertyType, setPropertyType] = useState("all");
 
@@ -24,28 +23,27 @@ export default function Properties() {
     })();
   }, []);
 
+  // Cities dropdown is built from the cities that actually have published
+  // listings — add a property in a new city and it appears here; remove the
+  // last property in a city and it disappears automatically.
+  const cityOptions = useMemo(() => {
+    const map = new Map();
+    properties.forEach((p) => {
+      if (p.city && !map.has(p.city)) {
+        map.set(p.city, { en: p.city, he: p.city_he || p.city });
+      }
+    });
+    return Array.from(map.values()).sort((a, b) => a.en.localeCompare(b.en));
+  }, [properties]);
+
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
     return properties.filter((p) => {
+      if (city !== "all" && p.city !== city) return false;
       if (listingType !== "all" && p.listing_type !== listingType) return false;
       if (propertyType !== "all" && p.property_type !== propertyType) return false;
-      if (!q) return true;
-      const haystack = [
-        p.title,
-        p.title_he,
-        p.city,
-        p.city_he,
-        p.address,
-        p.address_he,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-      return haystack.includes(q);
+      return true;
     });
-  }, [properties, search, listingType, propertyType]);
-
-  const featured = filtered.filter((p) => p.featured);
+  }, [properties, city, listingType, propertyType]);
 
   const stats = [
     { value: properties.length, label: t("Listings", "נכסים") },
@@ -93,15 +91,18 @@ export default function Properties() {
 
           {/* Filters */}
           <div className="mt-8 grid gap-3 rounded-2xl bg-white/10 p-4 shadow-xl ring-1 ring-white/15 backdrop-blur-md sm:grid-cols-2 lg:grid-cols-3">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-              <Input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder={t("Search city or address...", "חיפוש עיר או כתובת...")}
-                className="pl-9 text-slate-900"
-              />
-            </div>
+            <Select
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="text-slate-900"
+              options={[
+                { value: "all", label: t("All cities", "כל הערים") },
+                ...cityOptions.map((c) => ({
+                  value: c.en,
+                  label: language === "he" ? c.he : c.en,
+                })),
+              ]}
+            />
             <Select
               value={listingType}
               onChange={(e) => setListingType(e.target.value)}
@@ -119,10 +120,14 @@ export default function Properties() {
               options={[
                 { value: "all", label: t("All types", "כל הסוגים") },
                 { value: "apartment", label: t("Apartment", "דירה") },
+                { value: "garden_apartment", label: t("Garden Apartment", "דירת גן") },
+                { value: "duplex", label: t("Duplex", "דופלקס") },
+                { value: "penthouse", label: t("Penthouse", "פנטהאוז") },
+                { value: "mini_penthouse", label: t("Mini Penthouse", "מיני פנטהאוז") },
                 { value: "house", label: t("House", "בית") },
                 { value: "villa", label: t("Villa", "וילה") },
                 { value: "commercial", label: t("Commercial", "מסחרי") },
-                { value: "land", label: t("Land", "קרקע") },
+                { value: "plot", label: t("Plot", "מגרש") },
               ]}
             />
           </div>
@@ -143,46 +148,29 @@ export default function Properties() {
         {loading ? (
           <p className="text-center text-slate-500">{t("Loading...", "טוען...")}</p>
         ) : (
-          <>
-            {/* Featured */}
-            {featured.length > 0 && (
-              <section className="mb-12">
-                <h2 className="mb-5 text-2xl font-bold text-slate-900">
-                  {t("Featured Properties", "נכסים מומלצים")}
-                </h2>
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {featured.map((p) => (
-                    <PropertyCard key={p.id} property={p} />
-                  ))}
-                </div>
-              </section>
-            )}
+          <section>
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-900">
+                {t("All Properties", "כל הנכסים")}
+              </h2>
+              <span className="text-sm text-slate-500">
+                {filtered.length} {t("results", "תוצאות")}
+              </span>
+            </div>
 
-            {/* All results */}
-            <section>
-              <div className="mb-5 flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-slate-900">
-                  {t("All Properties", "כל הנכסים")}
-                </h2>
-                <span className="text-sm text-slate-500">
-                  {filtered.length} {t("results", "תוצאות")}
-                </span>
+            {filtered.length === 0 ? (
+              <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 py-20 text-slate-400">
+                <Building2 className="mb-3 h-10 w-10" />
+                <p>{t("No properties match your filters.", "אין נכסים התואמים לסינון.")}</p>
               </div>
-
-              {filtered.length === 0 ? (
-                <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 py-20 text-slate-400">
-                  <Building2 className="mb-3 h-10 w-10" />
-                  <p>{t("No properties match your search.", "אין נכסים התואמים לחיפוש.")}</p>
-                </div>
-              ) : (
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {filtered.map((p) => (
-                    <PropertyCard key={p.id} property={p} />
-                  ))}
-                </div>
-              )}
-            </section>
-          </>
+            ) : (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {filtered.map((p) => (
+                  <PropertyCard key={p.id} property={p} />
+                ))}
+              </div>
+            )}
+          </section>
         )}
       </div>
     </div>

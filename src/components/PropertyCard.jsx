@@ -12,10 +12,14 @@ const PLACEHOLDER =
 
 const typeLabels = {
   apartment: { en: "Apartment", he: "דירה" },
+  garden_apartment: { en: "Garden Apartment", he: "דירת גן" },
+  duplex: { en: "Duplex", he: "דופלקס" },
+  penthouse: { en: "Penthouse", he: "פנטהאוז" },
+  mini_penthouse: { en: "Mini Penthouse", he: "מיני פנטהאוז" },
   house: { en: "House", he: "בית" },
   villa: { en: "Villa", he: "וילה" },
   commercial: { en: "Commercial", he: "מסחרי" },
-  land: { en: "Land", he: "קרקע" },
+  plot: { en: "Plot", he: "מגרש" },
 };
 
 export default function PropertyCard({ property }) {
@@ -45,9 +49,6 @@ export default function PropertyCard({ property }) {
             {property.exclusive && (
               <Badge variant="exclusive">{t("Exclusive", "בבלעדיות")}</Badge>
             )}
-            {property.featured && (
-              <Badge variant="success">{t("Featured", "מומלץ")}</Badge>
-            )}
           </div>
         </div>
         <div className="p-5">
@@ -64,7 +65,7 @@ export default function PropertyCard({ property }) {
             {formatPrice(property.price, property.currency, property.listing_type, language)}
           </p>
           <div className="flex items-center gap-4 border-t border-slate-100 pt-3 text-sm text-slate-600">
-            {property.property_type !== "commercial" && property.property_type !== "land" && (
+            {property.property_type !== "commercial" && property.property_type !== "plot" && (
               <span className="flex items-center gap-1.5">
                 <Bed className="h-4 w-4 text-slate-400" />
                 {property.bedrooms}
