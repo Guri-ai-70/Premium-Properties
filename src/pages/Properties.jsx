@@ -3,6 +3,7 @@ import { Property } from "@/entities/Property";
 import { useLanguage } from "@/components/LanguageContext";
 import PropertyCard from "@/components/PropertyCard";
 import { Select } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Building2 } from "lucide-react";
 
 export default function Properties() {
@@ -65,24 +66,15 @@ export default function Properties() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden text-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-800 via-blue-900 to-slate-900" />
-        <div
-          className="absolute inset-0 opacity-20 mix-blend-luminosity"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary-dark" />
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-100 ring-1 ring-white/20">
+          <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-100 ring-1 ring-white/20">
             {t("Premium Real Estate", "נדל\"ן יוקרתי")}
           </span>
-          <h1 className="mt-4 text-4xl font-extrabold leading-tight sm:text-5xl">
+          <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
             {t("Find Your Next Home", "מצאו את הבית הבא שלכם")}
           </h1>
-          <p className="mt-4 max-w-2xl text-lg text-blue-100">
+          <p className="mt-4 max-w-2xl text-lg text-primary-100">
             {t(
               "Browse a curated selection of premium properties for sale and rent across Israel.",
               "עיינו במבחר נכסי יוקרה למכירה ולהשכרה ברחבי ישראל."
@@ -90,11 +82,11 @@ export default function Properties() {
           </p>
 
           {/* Filters */}
-          <div className="mt-8 grid gap-3 rounded-2xl bg-white/10 p-4 shadow-xl ring-1 ring-white/15 backdrop-blur-md sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 flex flex-col gap-1.5 rounded-3xl bg-white p-1.5 shadow-card sm:flex-row sm:divide-x sm:divide-slate-200">
             <Select
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              className="text-slate-900"
+              className="rounded-full border-0 bg-transparent text-ink sm:flex-1"
               options={[
                 { value: "all", label: t("All cities", "כל הערים") },
                 ...cityOptions.map((c) => ({
@@ -106,7 +98,7 @@ export default function Properties() {
             <Select
               value={listingType}
               onChange={(e) => setListingType(e.target.value)}
-              className="text-slate-900"
+              className="rounded-full border-0 bg-transparent text-ink sm:flex-1"
               options={[
                 { value: "all", label: t("All listings", "כל הנכסים") },
                 { value: "sale", label: t("For Sale", "למכירה") },
@@ -116,7 +108,7 @@ export default function Properties() {
             <Select
               value={propertyType}
               onChange={(e) => setPropertyType(e.target.value)}
-              className="text-slate-900"
+              className="rounded-full border-0 bg-transparent text-ink sm:flex-1"
               options={[
                 { value: "all", label: t("All types", "כל הסוגים") },
                 { value: "apartment", label: t("Apartment", "דירה") },
@@ -133,11 +125,14 @@ export default function Properties() {
           </div>
 
           {/* Live stats */}
-          <div className="mt-8 grid max-w-2xl grid-cols-4 gap-4">
+          <div className="mt-8 grid max-w-2xl grid-cols-4 gap-3">
             {stats.map((s) => (
-              <div key={s.label}>
+              <div
+                key={s.label}
+                className="rounded-2xl bg-white/10 px-3 py-2 text-center ring-1 ring-white/15"
+              >
                 <div className="text-2xl font-extrabold sm:text-3xl">{s.value}</div>
-                <div className="text-xs text-blue-200 sm:text-sm">{s.label}</div>
+                <div className="text-xs text-primary-200 sm:text-sm">{s.label}</div>
               </div>
             ))}
           </div>
@@ -146,14 +141,25 @@ export default function Properties() {
 
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {loading ? (
-          <p className="text-center text-slate-500">{t("Loading...", "טוען...")}</p>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+                <Skeleton className="h-52 w-full rounded-none" />
+                <div className="space-y-3 p-5">
+                  <Skeleton className="h-4 w-1/3" />
+                  <Skeleton className="h-5 w-2/3" />
+                  <Skeleton className="h-6 w-1/2" />
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <section>
             <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900">
+              <h2 className="text-2xl font-bold text-ink">
                 {t("All Properties", "כל הנכסים")}
               </h2>
-              <span className="text-sm text-slate-500">
+              <span className="text-sm text-muted">
                 {filtered.length} {t("results", "תוצאות")}
               </span>
             </div>
