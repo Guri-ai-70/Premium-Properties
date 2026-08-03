@@ -7,6 +7,7 @@ import { useLanguage } from "@/components/LanguageContext";
 import { formatPrice } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Bed,
   Bath,
@@ -42,8 +43,21 @@ export default function PropertyDetail() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-7xl px-4 py-20 text-center text-slate-500">
-        {t("Loading...", "טוען...")}
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <Skeleton className="mb-4 h-9 w-40" />
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <Skeleton className="h-[420px] w-full" />
+            <div className="mt-8 space-y-3">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+          </div>
+          <div className="lg:col-span-1">
+            <Skeleton className="h-96 w-full" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -51,7 +65,7 @@ export default function PropertyDetail() {
   if (!property) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-20 text-center">
-        <h1 className="text-2xl font-bold text-slate-900">
+        <h1 className="text-2xl font-bold text-ink">
           {t("Property not found", "הנכס לא נמצא")}
         </h1>
         <Link to={createPageUrl("Properties")} className="mt-4 inline-block">
@@ -112,7 +126,7 @@ export default function PropertyDetail() {
                   key={i}
                   onClick={() => setActiveImage(i)}
                   className={`h-20 w-28 overflow-hidden rounded-lg border-2 ${
-                    i === activeImage ? "border-blue-600" : "border-transparent"
+                    i === activeImage ? "border-primary" : "border-transparent"
                   }`}
                 >
                   <img src={img} alt="" className="h-full w-full object-cover" />
@@ -122,7 +136,7 @@ export default function PropertyDetail() {
           )}
 
           <div className="mt-8">
-            <h2 className="mb-3 text-xl font-bold text-slate-900">
+            <h2 className="mb-3 text-xl font-bold text-ink">
               {t("Description", "תיאור")}
             </h2>
             <p className="leading-relaxed text-slate-600">{description}</p>
@@ -140,21 +154,21 @@ export default function PropertyDetail() {
               {property.featured && <Badge variant="success">{t("Featured", "מומלץ")}</Badge>}
             </div>
 
-            <h1 className="text-2xl font-extrabold text-slate-900">{title}</h1>
-            <p className="mt-1 flex items-center gap-1.5 text-sm text-slate-500">
+            <h1 className="text-2xl font-extrabold text-ink">{title}</h1>
+            <p className="mt-1 flex items-center gap-1.5 text-sm text-muted">
               <MapPin className="h-4 w-4" />
               {address}, {city}
             </p>
 
-            <p className="mt-4 text-3xl font-extrabold text-blue-700">
+            <p className="mt-4 text-3xl font-extrabold text-primary-700">
               {formatPrice(property.price, property.currency, property.listing_type, language)}
             </p>
 
             <div className="mt-6 grid grid-cols-3 gap-3">
               {facts.map((f, i) => (
-                <div key={i} className="rounded-xl bg-slate-50 p-3 text-center">
-                  <f.icon className="mx-auto mb-1 h-5 w-5 text-blue-600" />
-                  <div className="text-sm font-bold text-slate-900">{f.value}</div>
+                <div key={i} className="rounded-xl bg-surface-alt p-3 text-center">
+                  <f.icon className="mx-auto mb-1 h-5 w-5 text-primary" />
+                  <div className="text-sm font-bold text-ink">{f.value}</div>
                   <div className="text-xs text-slate-500">{f.label}</div>
                 </div>
               ))}
@@ -162,7 +176,7 @@ export default function PropertyDetail() {
 
             {company && (
               <div className="mt-6 border-t border-slate-100 pt-6">
-                <h3 className="mb-3 font-semibold text-slate-900">
+                <h3 className="mb-3 font-semibold text-ink">
                   {t("Interested? Get in touch", "מעוניינים? צרו קשר")}
                 </h3>
                 <a href={`mailto:${company.contact_email}`}>
