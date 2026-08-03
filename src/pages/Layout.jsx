@@ -87,7 +87,7 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <LanguageContext.Provider value={languageValue}>
-      <div className={`min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 ${language === 'he' ? 'rtl' : 'ltr'}`}>
+      <div className={`min-h-screen bg-gradient-to-br from-slate-50 to-primary-50 ${language === 'he' ? 'rtl' : 'ltr'}`}>
         <style>
           {`
             .rtl {
@@ -105,11 +105,11 @@ export default function Layout({ children, currentPageName }) {
             <div className="flex justify-between items-center h-16">
               {/* Logo */}
               <Link to={createPageUrl("Properties")} className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg">
                   <Home className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-slate-900">
+                  <h1 className="text-xl font-bold text-ink">
                     {language === 'he' ? companyDetails.company_name_he : companyDetails.company_name}
                   </h1>
                   <p className="text-xs text-slate-500">
@@ -126,8 +126,8 @@ export default function Layout({ children, currentPageName }) {
                     to={item.url}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
                       location.pathname === item.url
-                        ? 'bg-blue-50 text-blue-700'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                        ? 'bg-primary-50 text-primary-700'
+                        : 'text-slate-600 hover:text-ink hover:bg-slate-50'
                     }`}
                   >
                     <item.icon className="w-4 h-4" />
@@ -178,12 +178,12 @@ export default function Layout({ children, currentPageName }) {
         </main>
 
         {/* Footer */}
-        <footer className="bg-slate-900 text-white py-12">
+        <footer className="bg-ink text-white py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-3 gap-8">
               <div>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-primary to-primary-dark rounded-lg flex items-center justify-center">
                     <Home className="w-5 h-5 text-white" />
                   </div>
                   <h3 className="text-lg font-bold">
