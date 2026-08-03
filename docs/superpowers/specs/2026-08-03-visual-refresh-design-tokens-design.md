@@ -63,11 +63,15 @@ Also add to `theme.extend`:
 Keep Inter (Latin) / Heebo (Hebrew) — already loaded via Google Fonts in
 `index.html`, no change needed there. Apply a real hierarchy instead of the
 current flat bold/extrabold usage:
-- H1/H2: heavier weight (`font-extrabold`), `tracking-tight`.
+- H1/H2 (page-level headings, e.g. the Properties hero title): heavier weight
+  (`font-extrabold`), `tracking-tight`.
 - Body copy: `font-normal`, relaxed line-height (already used in the
   description block — extend this to other body text).
 - Meta/label text (city, type, badges): consistent `text-sm`/`text-xs` with
   `text-muted`.
+- Card title and price (`PropertyCard`, `PropertyDetail` summary card): **keep
+  the current bold/extrabold weight as-is** — confirmed via mockup review, do
+  not lighten these to match the hero's heading weight.
 
 ### 3. Hero section (`Properties.jsx`)
 
@@ -87,6 +91,8 @@ Unify `PropertyCard`, `Card`, `Badge`, `Button`, `Select` on the new tokens:
 consistent radius (`rounded-2xl`), consistent shadow scale (`shadow-card` →
 `shadow-card-hover` on hover, replacing today's `hover:shadow-xl`), and the
 `primary`/`ink`/`muted` color tokens instead of raw `blue-*`/`slate-*` classes.
+Font weight on card title/price text is unchanged (see Typography above) —
+only radius, shadow, and color tokens are refined here.
 
 Add lightweight skeleton placeholders (pulsing gray blocks matching card
 dimensions) for:
