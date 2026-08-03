@@ -125,7 +125,7 @@ export default function Admin() {
   if (!isAdmin) {
     return (
       <div className="mx-auto flex max-w-md flex-col px-4 py-16 sm:px-6">
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-8 shadow-card">
           <div className="mb-6 text-center">
             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-white shadow-lg">
               <Lock className="h-6 w-6" />

@@ -145,7 +145,7 @@ export default function PropertyDetail() {
 
         {/* Summary card */}
         <div className="lg:col-span-1">
-          <div className="sticky top-24 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="sticky top-24 rounded-2xl border border-slate-200 bg-surface p-6 shadow-card">
             <div className="mb-3 flex flex-wrap gap-2">
               <Badge variant={property.listing_type === "rent" ? "warning" : "default"}>
                 {property.listing_type === "rent" ? t("For Rent", "להשכרה") : t("For Sale", "למכירה")}

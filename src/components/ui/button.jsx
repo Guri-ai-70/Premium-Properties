@@ -12,7 +12,7 @@ const buttonVariants = cva(
           "border border-slate-200 bg-white text-slate-800 hover:bg-slate-50",
         ghost: "text-slate-700 hover:bg-slate-100",
         destructive: "bg-red-600 text-white hover:bg-red-700",
-        secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200",
+        secondary: "bg-slate-100 text-ink hover:bg-slate-200",
       },
       size: {
         default: "h-10 px-4 py-2",

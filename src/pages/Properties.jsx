@@ -68,13 +68,13 @@ export default function Properties() {
       <section className="relative overflow-hidden text-white">
         <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary-dark" />
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-100 ring-1 ring-white/20">
+          <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/85 ring-1 ring-white/20">
             {t("Premium Real Estate", "נדל\"ן יוקרתי")}
           </span>
           <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
             {t("Find Your Next Home", "מצאו את הבית הבא שלכם")}
           </h1>
-          <p className="mt-4 max-w-2xl text-lg text-primary-100">
+          <p className="mt-4 max-w-2xl text-lg text-white/85">
             {t(
               "Browse a curated selection of premium properties for sale and rent across Israel.",
               "עיינו במבחר נכסי יוקרה למכירה ולהשכרה ברחבי ישראל."
@@ -82,7 +82,7 @@ export default function Properties() {
           </p>
 
           {/* Filters */}
-          <div className="mt-8 flex flex-col gap-1.5 rounded-3xl bg-white p-1.5 shadow-card sm:flex-row sm:divide-x sm:divide-slate-200">
+          <div className="mt-8 flex flex-col gap-1.5 rounded-3xl bg-white p-1.5 shadow-card sm:flex-row sm:[&>*+*]:border-s sm:[&>*+*]:border-slate-200">
             <Select
               value={city}
               onChange={(e) => setCity(e.target.value)}
@@ -132,7 +132,7 @@ export default function Properties() {
                 className="rounded-2xl bg-white/10 px-3 py-2 text-center ring-1 ring-white/15"
               >
                 <div className="text-2xl font-extrabold sm:text-3xl">{s.value}</div>
-                <div className="text-xs text-primary-200 sm:text-sm">{s.label}</div>
+                <div className="text-xs text-white/80 sm:text-sm">{s.label}</div>
               </div>
             ))}
           </div>
