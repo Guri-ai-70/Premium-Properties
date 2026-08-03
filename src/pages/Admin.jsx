@@ -127,10 +127,10 @@ export default function Admin() {
       <div className="mx-auto flex max-w-md flex-col px-4 py-16 sm:px-6">
         <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
           <div className="mb-6 text-center">
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white shadow-lg">
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-white shadow-lg">
               <Lock className="h-6 w-6" />
             </div>
-            <h1 className="text-2xl font-bold text-slate-900">
+            <h1 className="text-2xl font-bold text-ink">
               {t("Admin Login", "כניסת מנהל")}
             </h1>
             <p className="mt-1 text-sm text-slate-500">
@@ -271,7 +271,7 @@ export default function Admin() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-ink">
             {editing === "new" ? t("New Property", "נכס חדש") : t("Edit Property", "עריכת נכס")}
           </h1>
           <Button variant="ghost" size="icon" onClick={() => setEditing(null)}>
@@ -393,7 +393,7 @@ export default function Admin() {
                       <X className="h-3.5 w-3.5" />
                     </button>
                     {i === 0 && (
-                      <span className="absolute bottom-1 left-1 rounded bg-blue-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                      <span className="absolute bottom-1 left-1 rounded bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-white">
                         {t("Cover", "ראשי")}
                       </span>
                     )}
@@ -470,7 +470,7 @@ export default function Admin() {
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-ink">
             {t("Manage Properties", "ניהול נכסים")}
           </h1>
           <p className="text-sm text-slate-500">
@@ -507,7 +507,7 @@ export default function Admin() {
                       />
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-medium text-slate-900">
+                          <span className="font-medium text-ink">
                             {language === "he" ? p.title_he || p.title : p.title}
                           </span>
                           {p.exclusive && <Badge variant="exclusive">{t("Exclusive", "בבלעדיות")}</Badge>}
@@ -519,7 +519,7 @@ export default function Admin() {
                     </div>
                   </td>
                   <td className="px-4 py-3 capitalize text-slate-600">{typeLabel(p.property_type)}</td>
-                  <td className="px-4 py-3 font-medium text-slate-900">
+                  <td className="px-4 py-3 font-medium text-ink">
                     {formatPrice(p.price, p.currency, p.listing_type, language)}
                   </td>
                   <td className="px-4 py-3">
@@ -556,7 +556,7 @@ export default function Admin() {
             <AlertTriangle className="h-6 w-6" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-bold text-slate-900">
+            <h3 className="text-lg font-bold text-ink">
               {t("Are you sure you want to delete?", "האם אתה בטוח שברצונך למחוק?")}
             </h3>
             <p className="mt-1 text-sm text-slate-500">
