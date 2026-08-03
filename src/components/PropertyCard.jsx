@@ -34,7 +34,7 @@ export default function PropertyCard({ property }) {
 
   return (
     <Link to={createPageUrl(`PropertyDetail?id=${property.id}`)}>
-      <Card className="group h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+      <Card className="group h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover">
         <div className="relative h-52 overflow-hidden">
           <img
             src={image}
@@ -52,16 +52,16 @@ export default function PropertyCard({ property }) {
           </div>
         </div>
         <div className="p-5">
-          <div className="mb-1 flex items-center gap-1 text-xs text-slate-500">
+          <div className="mb-1 flex items-center gap-1 text-xs text-muted">
             <MapPin className="h-3.5 w-3.5" />
             <span>{city}</span>
             <span className="mx-1">•</span>
             <span>{typeLabel}</span>
           </div>
-          <h3 className="mb-2 line-clamp-1 text-lg font-bold text-slate-900">
+          <h3 className="mb-2 line-clamp-1 text-lg font-bold text-ink">
             {title}
           </h3>
-          <p className="mb-4 text-xl font-extrabold text-blue-700">
+          <p className="mb-4 text-xl font-extrabold text-primary-700">
             {formatPrice(property.price, property.currency, property.listing_type, language)}
           </p>
           <div className="flex items-center gap-4 border-t border-slate-100 pt-3 text-sm text-slate-600">
