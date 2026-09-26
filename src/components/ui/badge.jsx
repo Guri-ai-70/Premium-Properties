@@ -8,7 +8,7 @@ const styles = {
   warning: "bg-amber-100 text-amber-700",
   outline: "border border-slate-300 text-slate-700",
   exclusive:
-    "bg-gradient-to-r from-accent-gold to-accent-gold-light text-white shadow-sm",
+    "bg-gradient-to-r from-accent-gold to-accent-gold-light text-amber-950 shadow-sm",
 };
 
 export function Badge({ className, variant = "default", ...props }) {

@@ -11,10 +11,6 @@
   direction: rtl;
 }
 
-.rtl :where(input, textarea) {
-  text-align: right;
-}
-
 .ltr {
   direction: ltr;
 }

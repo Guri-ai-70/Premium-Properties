@@ -78,6 +78,7 @@ export default function Admin() {
   const [form, setForm] = useState(EMPTY);
   const [saving, setSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null); // property pending deletion
+  const [notice, setNotice] = useState(""); // message shown in an in-page dialog
 
   // Login form state
   const [username, setUsername] = useState("");
@@ -142,6 +143,7 @@ export default function Admin() {
             <div className="space-y-1.5">
               <Label>{t("Username", "שם משתמש")}</Label>
               <Input
+                dir="ltr"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
@@ -152,6 +154,7 @@ export default function Admin() {
             <div className="space-y-1.5">
               <Label>{t("Password", "סיסמה")}</Label>
               <Input
+                dir="ltr"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -174,7 +177,7 @@ export default function Admin() {
 
           <div className="mt-6 text-center">
             <Link to={createPageUrl("Properties")} className="text-sm text-slate-500 hover:text-slate-700">
-              {t("← Back to Properties", "← חזרה לנכסים")}
+              {t("← Back to Properties", "→ חזרה לנכסים")}
             </Link>
           </div>
         </div>
@@ -207,10 +210,10 @@ export default function Admin() {
     files.forEach((file) => {
       if (!file.type.startsWith("image/")) return;
       if (file.size > MAX_IMAGE_BYTES) {
-        window.alert(
+        setNotice(
           t(
             `"${file.name}" is larger than 2 MB. Please use a smaller image or paste a URL instead.`,
-            `"${file.name}" גדול מ-2 מ"ב. השתמשו בתמונה קטנה יותר או הדביקו קישור.`
+            `"\u2068${file.name}\u2069" גדול מ-2 מ"ב. השתמשו בתמונה קטנה יותר או הדביקו קישור.`
           )
         );
         return;
@@ -246,7 +249,7 @@ export default function Admin() {
       const quota =
         err?.name === "QuotaExceededError" ||
         /quota/i.test(err?.message || "");
-      window.alert(
+      setNotice(
         quota
           ? t(
               "Storage is full — uploaded photos are too large to save. Remove a few images or use image URLs instead.",
@@ -266,6 +269,21 @@ export default function Admin() {
     load();
   };
 
+  // Message dialog (replaces browser alerts, follows the page language/direction)
+  const noticeDialog = (
+    <Modal open={!!notice} onClose={() => setNotice("")}>
+      <div className="flex items-start gap-4">
+        <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+          <AlertTriangle className="h-6 w-6" />
+        </div>
+        <p className="flex-1 pt-2 text-sm text-slate-700">{notice}</p>
+      </div>
+      <div className="mt-6 flex justify-end">
+        <Button onClick={() => setNotice("")}>{t("OK", "אישור")}</Button>
+      </div>
+    </Modal>
+  );
+
   // ---- Form view ----
   if (editing) {
     return (
@@ -282,26 +300,26 @@ export default function Admin() {
         <form onSubmit={handleSave} className="space-y-5">
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label={t("Title (EN)", "כותרת (אנגלית)")}>
-              <Input value={form.title} onChange={(e) => set("title", e.target.value)} required />
+              <Input dir="ltr" value={form.title} onChange={(e) => set("title", e.target.value)} required />
             </Field>
             <Field label={t("Title (HE)", "כותרת (עברית)")}>
-              <Input value={form.title_he} onChange={(e) => set("title_he", e.target.value)} />
+              <Input dir="rtl" value={form.title_he} onChange={(e) => set("title_he", e.target.value)} />
             </Field>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label={t("Description (EN)", "תיאור (אנגלית)")}>
-              <Textarea value={form.description} onChange={(e) => set("description", e.target.value)} />
+              <Textarea dir="ltr" value={form.description} onChange={(e) => set("description", e.target.value)} />
             </Field>
             <Field label={t("Description (HE)", "תיאור (עברית)")}>
-              <Textarea value={form.description_he} onChange={(e) => set("description_he", e.target.value)} />
+              <Textarea dir="rtl" value={form.description_he} onChange={(e) => set("description_he", e.target.value)} />
             </Field>
           </div>
 
           {/* Price / Listing / Type row (dropdowns unchanged) */}
           <div className="grid gap-4 sm:grid-cols-3">
             <Field label={t("Price", "מחיר")}>
-              <Input type="number" value={form.price} onChange={(e) => set("price", e.target.value)} required />
+              <Input type="number" dir="ltr" value={form.price} onChange={(e) => set("price", e.target.value)} required />
             </Field>
             <Field label={t("Listing", "סוג עסקה")}>
               <Select
@@ -350,28 +368,28 @@ export default function Admin() {
 
           <div className="grid gap-4 sm:grid-cols-3">
             <Field label={t("Bedrooms", "חדרי שינה")}>
-              <Input type="number" value={form.bedrooms} onChange={(e) => set("bedrooms", e.target.value)} />
+              <Input type="number" dir="ltr" value={form.bedrooms} onChange={(e) => set("bedrooms", e.target.value)} />
             </Field>
             <Field label={t("Bathrooms", "חדרי רחצה")}>
-              <Input type="number" value={form.bathrooms} onChange={(e) => set("bathrooms", e.target.value)} />
+              <Input type="number" dir="ltr" value={form.bathrooms} onChange={(e) => set("bathrooms", e.target.value)} />
             </Field>
             <Field label={t("Area (m²)", "שטח (מ\"ר)")}>
-              <Input type="number" value={form.area} onChange={(e) => set("area", e.target.value)} />
+              <Input type="number" dir="ltr" value={form.area} onChange={(e) => set("area", e.target.value)} />
             </Field>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label={t("City (EN)", "עיר (אנגלית)")}>
-              <Input value={form.city} onChange={(e) => set("city", e.target.value)} />
+              <Input dir="ltr" value={form.city} onChange={(e) => set("city", e.target.value)} />
             </Field>
             <Field label={t("City (HE)", "עיר (עברית)")}>
-              <Input value={form.city_he} onChange={(e) => set("city_he", e.target.value)} />
+              <Input dir="rtl" value={form.city_he} onChange={(e) => set("city_he", e.target.value)} />
             </Field>
             <Field label={t("Address (EN)", "כתובת (אנגלית)")}>
-              <Input value={form.address} onChange={(e) => set("address", e.target.value)} />
+              <Input dir="ltr" value={form.address} onChange={(e) => set("address", e.target.value)} />
             </Field>
             <Field label={t("Address (HE)", "כתובת (עברית)")}>
-              <Input value={form.address_he} onChange={(e) => set("address_he", e.target.value)} />
+              <Input dir="rtl" value={form.address_he} onChange={(e) => set("address_he", e.target.value)} />
             </Field>
           </div>
 
@@ -417,6 +435,7 @@ export default function Admin() {
               </Button>
               <div className="flex flex-1 items-center gap-2">
                 <Input
+                  dir="auto"
                   ref={urlInputRef}
                   placeholder={t("…or paste an image URL", "…או הדביקו קישור לתמונה")}
                   onKeyDown={(e) => {
@@ -432,7 +451,7 @@ export default function Admin() {
                 </Button>
               </div>
             </div>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               {t(
                 "The first photo is used as the cover. Uploaded images are stored in the browser (keep them under ~2 MB).",
                 "התמונה הראשונה משמשת כתמונה ראשית. תמונות שהועלו נשמרות בדפדפן (עד כ-2 מ\"ב)."
@@ -461,6 +480,7 @@ export default function Admin() {
             </Button>
           </div>
         </form>
+        {noticeDialog}
       </div>
     );
   }
@@ -562,7 +582,7 @@ export default function Admin() {
             <p className="mt-1 text-sm text-slate-500">
               {t(
                 `"${deleteTarget?.title}" will be permanently removed. This cannot be undone.`,
-                `"${deleteTarget?.title}" יימחק לצמיתות. לא ניתן לבטל פעולה זו.`
+                `"${deleteTarget?.title_he || deleteTarget?.title}" יימחק לצמיתות. לא ניתן לבטל פעולה זו.`
               )}
             </p>
           </div>

@@ -168,7 +168,7 @@ export default function Properties() {
             </div>
 
             {filtered.length === 0 ? (
-              <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 py-20 text-slate-400">
+              <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 py-20 text-slate-500">
                 <Building2 className="mb-3 h-10 w-10" />
                 <p>{t("No properties match your filters.", "אין נכסים התואמים לסינון.")}</p>
               </div>
