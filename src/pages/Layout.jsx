@@ -104,8 +104,8 @@ export default function Layout({ children, currentPageName }) {
 
   if (!companyDetails) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        Loading...
+      <div className="flex items-center justify-center h-screen" role="status">
+        {language === 'he' ? 'טוען...' : 'Loading...'}
       </div>
     );
   }
@@ -113,6 +113,18 @@ export default function Layout({ children, currentPageName }) {
   return (
     <LanguageContext.Provider value={languageValue}>
       <div className={`min-h-screen bg-gradient-to-br from-slate-50 to-primary-50 ${language === 'he' ? 'rtl' : 'ltr'}`}>
+        {/* Skip link: first Tab stop, jumps past the header to the page content */}
+        <a
+          href="#main-content"
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById('main-content')?.focus();
+          }}
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:start-3 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-700 focus:shadow-card-hover focus:outline-none focus:ring-2 focus:ring-primary-500"
+        >
+          {language === 'he' ? 'מעבר לתוכן הראשי' : 'Skip to main content'}
+        </a>
+
         {/* Header */}
         <header className="bg-white/95 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -123,9 +135,9 @@ export default function Layout({ children, currentPageName }) {
                   <Home className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-lg sm:text-xl font-bold leading-tight text-ink">
+                  <p className="text-lg sm:text-xl font-bold leading-tight text-ink">
                     {language === 'he' ? companyDetails.company_name_he : companyDetails.company_name}
-                  </h1>
+                  </p>
                   <p className="hidden sm:block text-xs text-slate-500">
                     {language === 'he' ? companyDetails.tagline_he : companyDetails.tagline}
                   </p>
@@ -192,7 +204,7 @@ export default function Layout({ children, currentPageName }) {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1">
+        <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
           {children}
         </main>
 
@@ -205,9 +217,9 @@ export default function Layout({ children, currentPageName }) {
                   <div className="w-8 h-8 bg-gradient-to-r from-primary to-primary-dark rounded-lg flex items-center justify-center">
                     <Home className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-lg font-bold">
+                  <p className="text-lg font-bold">
                     {language === 'he' ? companyDetails.company_name_he : companyDetails.company_name}
-                  </h3>
+                  </p>
                 </div>
                 <p className="text-slate-300 text-sm">
                   {language === 'he'
@@ -217,9 +229,9 @@ export default function Layout({ children, currentPageName }) {
                 </p>
               </div>
               <div>
-                <h4 className="font-semibold mb-4">
+                <h2 className="font-semibold mb-4">
                   {language === 'he' ? 'שירותים' : 'Services'}
-                </h4>
+                </h2>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li>{language === 'he' ? 'מכירת נכסים' : 'Property Sales'}</li>
                   <li>{language === 'he' ? 'השכרת נכסים' : 'Property Rentals'}</li>
@@ -228,9 +240,9 @@ export default function Layout({ children, currentPageName }) {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-4">
-                  {language === 'he' ? 'צור קשר' : 'Contact'}
-                </h4>
+                <h2 className="font-semibold mb-4">
+                  {language === 'he' ? 'צרו קשר' : 'Contact'}
+                </h2>
                 <div className="text-sm text-slate-300 space-y-2">
                   <p><span dir="ltr">{companyDetails.contact_email}</span></p>
                   <p><span dir="ltr">{companyDetails.contact_phone}</span></p>

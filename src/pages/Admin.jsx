@@ -656,9 +656,9 @@ export default function Admin() {
             <AlertTriangle className="h-6 w-6" />
           </div>
           <div className="flex-1">
-            <h3 id="delete-title" className="text-lg font-bold text-ink">
+            <h2 id="delete-title" className="text-lg font-bold text-ink">
               {t("Are you sure you want to delete?", "בטוחים שרוצים למחוק?")}
-            </h3>
+            </h2>
             <p id="delete-desc" className="mt-1 text-sm text-slate-500">
               {t(
                 `"${deleteTarget?.title}" will be permanently removed. This cannot be undone.`,

@@ -192,7 +192,7 @@ export default function PropertyDetail() {
 
             {features.length > 0 && (
               <div className="mt-6">
-                <h3 className="mb-3 font-semibold text-ink">{t("Features", "מאפיינים")}</h3>
+                <h2 className="mb-3 font-semibold text-ink">{t("Features", "מאפיינים")}</h2>
                 <ul className="grid grid-cols-2 gap-2">
                   {features.map((f) => (
                     <li key={f.key} className="flex items-center gap-2 text-sm text-slate-700">
@@ -207,9 +207,9 @@ export default function PropertyDetail() {
 
             {company && (
               <div className="mt-6 border-t border-slate-100 pt-6">
-                <h3 className="mb-3 font-semibold text-ink">
+                <h2 className="mb-3 font-semibold text-ink">
                   {t("Interested? Get in touch", "מעוניינים? צרו קשר")}
-                </h3>
+                </h2>
                 <a href={`mailto:${company.contact_email}`} className={`mb-2 w-full ${buttonVariants()}`}>
                   <Mail className="me-2 h-4 w-4" />
                   {t("Email Agent", "שלחו אימייל")}
