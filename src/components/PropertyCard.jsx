@@ -42,7 +42,7 @@ export default function PropertyCard({ property }) {
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="absolute left-3 top-3 flex flex-wrap gap-2">
+          <div className="absolute start-3 top-3 flex flex-wrap gap-2">
             <Badge variant={property.listing_type === "rent" ? "warning" : "default"}>
               {property.listing_type === "rent" ? t("For Rent", "להשכרה") : t("For Sale", "למכירה")}
             </Badge>
@@ -77,7 +77,7 @@ export default function PropertyCard({ property }) {
             </span>
             <span className="flex items-center gap-1.5">
               <Maximize className="h-4 w-4 text-slate-400" />
-              {property.area} m²
+              {property.area} {t("m²", "מ\"ר")}
             </span>
           </div>
         </div>

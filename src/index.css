@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Inter", system-ui, sans-serif;
+  /* Inter has no Hebrew letters, so Hebrew falls through to Heebo letter by letter. */
+  font-family: "Inter", "Heebo", Arial, sans-serif;
 }
 
 .rtl {
@@ -18,9 +19,31 @@
   direction: ltr;
 }
 
-[dir="rtl"] .font-sans,
-.rtl {
-  font-family: "Heebo", "Inter", system-ui, sans-serif;
+/* ---- Hebrew typography (applies only when the page is in Hebrew) ---- */
+
+/* Hebrew is never letter-spaced; a touch of word spacing and taller lines read better. */
+html[dir="rtl"] body {
+  line-height: 1.7;
+  word-spacing: 0.05em;
+}
+
+html[dir="rtl"] [class*="tracking-"] {
+  letter-spacing: normal;
+}
+
+/* Hebrew reads smaller than Latin at the same size: 13px minimum, taller line heights.
+   Small text that already grows on larger screens (sm:text-…) is left alone. */
+html[dir="rtl"] .text-xs:not([class*="sm:text-"]) {
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+html[dir="rtl"] .leading-tight {
+  line-height: 1.4;
+}
+
+html[dir="rtl"] .leading-relaxed {
+  line-height: 1.9;
 }
 
 * {

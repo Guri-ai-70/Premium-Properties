@@ -156,7 +156,7 @@ export default function Layout({ children, currentPageName }) {
                   className="flex items-center gap-2"
                 >
                   <Globe className="w-4 h-4" />
-                  <span>{language === 'he' ? 'עברית' : 'English'}</span>
+                  <span lang={language === 'he' ? 'en' : 'he'}>{language === 'he' ? 'English' : 'עברית'}</span>
                 </Button>
 
                 {currentUser ? (
@@ -169,13 +169,13 @@ export default function Layout({ children, currentPageName }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={handleLogout}>
-                        {language === 'he' ? 'התנתק' : 'Logout'}
+                        {language === 'he' ? 'התנתקות' : 'Logout'}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 ) : (
                   <Button size="sm" onClick={handleLogin}>
-                    {language === 'he' ? 'התחבר' : 'Login'}
+                    {language === 'he' ? 'התחברות' : 'Login'}
                   </Button>
                 )}
               </div>
@@ -231,7 +231,7 @@ export default function Layout({ children, currentPageName }) {
               </div>
             </div>
             <div className="border-t border-slate-800 mt-8 pt-8 text-center text-sm text-slate-400">
-              <p>© 2024 {companyDetails.company_name}. {language === 'he' ? 'כל הזכויות שמורות' : 'All rights reserved'}.</p>
+              <p>© {new Date().getFullYear()} {language === 'he' ? companyDetails.company_name_he : companyDetails.company_name}. {language === 'he' ? 'כל הזכויות שמורות' : 'All rights reserved'}.</p>
             </div>
           </div>
         </footer>

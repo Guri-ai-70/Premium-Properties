@@ -70,7 +70,7 @@ export default function PropertyDetail() {
         </h1>
         <Link to={createPageUrl("Properties")} className="mt-4 inline-block">
           <Button variant="outline" className="mt-4">
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeft className="me-2 h-4 w-4 rtl:-scale-x-100" />
             {t("Back to Properties", "חזרה לנכסים")}
           </Button>
         </Link>
@@ -97,14 +97,14 @@ export default function PropertyDetail() {
         value: property.bedrooms,
       },
     { icon: Bath, label: t("Bathrooms", "חדרי רחצה"), value: property.bathrooms },
-    { icon: Maximize, label: t("Area", "שטח"), value: `${property.area} m²` },
+    { icon: Maximize, label: t("Area", "שטח"), value: `${property.area} ${t("m²", "מ\"ר")}` },
   ].filter(Boolean);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <Link to={createPageUrl("Properties")}>
         <Button variant="ghost" size="sm" className="mb-4">
-          <ArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft className="me-2 h-4 w-4 rtl:-scale-x-100" />
           {t("Back to Properties", "חזרה לנכסים")}
         </Button>
       </Link>

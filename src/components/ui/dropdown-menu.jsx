@@ -32,7 +32,7 @@ export function DropdownMenu({ children }) {
 
   return (
     <DropdownContext.Provider value={{ open, setOpen }}>
-      <div ref={ref} className="relative inline-block text-left">
+      <div ref={ref} className="relative inline-block text-start">
         {children}
       </div>
     </DropdownContext.Provider>
@@ -62,7 +62,7 @@ export function DropdownMenuContent({ align = "start", className, children }) {
     <div
       className={cn(
         "absolute z-50 mt-2 min-w-[10rem] overflow-hidden rounded-md border border-slate-200 bg-white p-1 shadow-lg",
-        align === "end" ? "right-0" : "left-0",
+        align === "end" ? "end-0" : "start-0",
         className
       )}
     >

@@ -168,7 +168,7 @@ export default function Admin() {
             )}
 
             <Button type="submit" className="w-full" disabled={loggingIn}>
-              {loggingIn ? t("Signing in...", "מתחבר...") : t("Sign In", "התחברות")}
+              {loggingIn ? t("Signing in...", "מתחברים...") : t("Sign In", "התחברות")}
             </Button>
           </form>
 
@@ -388,12 +388,12 @@ export default function Admin() {
                       type="button"
                       onClick={() => removeImage(i)}
                       title={t("Remove", "הסרה")}
-                      className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white opacity-90 shadow hover:bg-red-700"
+                      className="absolute end-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white opacity-90 shadow hover:bg-red-700"
                     >
                       <X className="h-3.5 w-3.5" />
                     </button>
                     {i === 0 && (
-                      <span className="absolute bottom-1 left-1 rounded bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                      <span className="absolute bottom-1 start-1 rounded bg-primary px-1.5 py-0.5 text-xs font-semibold text-white">
                         {t("Cover", "ראשי")}
                       </span>
                     )}
@@ -412,7 +412,7 @@ export default function Admin() {
                 onChange={(e) => addImageFiles(e.target.files)}
               />
               <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()}>
-                <Upload className="mr-2 h-4 w-4" />
+                <Upload className="me-2 h-4 w-4" />
                 {t("Upload from computer", "העלאה מהמחשב")}
               </Button>
               <div className="flex flex-1 items-center gap-2">
@@ -427,7 +427,7 @@ export default function Admin() {
                   }}
                 />
                 <Button type="button" variant="secondary" onClick={addImageUrl}>
-                  <ImagePlus className="mr-2 h-4 w-4" />
+                  <ImagePlus className="me-2 h-4 w-4" />
                   {t("Add", "הוספה")}
                 </Button>
               </div>
@@ -454,7 +454,7 @@ export default function Admin() {
 
           <div className="flex gap-3 pt-2">
             <Button type="submit" disabled={saving}>
-              {saving ? t("Saving...", "שומר...") : t("Save Property", "שמירת נכס")}
+              {saving ? t("Saving...", "שומרים...") : t("Save Property", "שמירת נכס")}
             </Button>
             <Button type="button" variant="outline" onClick={() => setEditing(null)}>
               {t("Cancel", "ביטול")}
@@ -478,21 +478,21 @@ export default function Admin() {
           </p>
         </div>
         <Button onClick={openNew}>
-          <Plus className="mr-2 h-4 w-4" />
+          <Plus className="me-2 h-4 w-4" />
           {t("Add Property", "הוספת נכס")}
         </Button>
       </div>
 
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+          <table className="w-full text-start text-sm">
             <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500">
               <tr>
                 <th className="px-4 py-3">{t("Property", "נכס")}</th>
                 <th className="px-4 py-3">{t("Type", "סוג")}</th>
                 <th className="px-4 py-3">{t("Price", "מחיר")}</th>
                 <th className="px-4 py-3">{t("Status", "סטטוס")}</th>
-                <th className="px-4 py-3 text-right">{t("Actions", "פעולות")}</th>
+                <th className="px-4 py-3 text-end">{t("Actions", "פעולות")}</th>
               </tr>
             </thead>
             <tbody>
@@ -557,7 +557,7 @@ export default function Admin() {
           </div>
           <div className="flex-1">
             <h3 className="text-lg font-bold text-ink">
-              {t("Are you sure you want to delete?", "האם אתה בטוח שברצונך למחוק?")}
+              {t("Are you sure you want to delete?", "בטוחים שרוצים למחוק?")}
             </h3>
             <p className="mt-1 text-sm text-slate-500">
               {t(
@@ -572,7 +572,7 @@ export default function Admin() {
             {t("Cancel", "ביטול")}
           </Button>
           <Button variant="destructive" onClick={confirmDelete}>
-            <Trash2 className="mr-2 h-4 w-4" />
+            <Trash2 className="me-2 h-4 w-4" />
             {t("Delete", "מחיקה")}
           </Button>
         </div>

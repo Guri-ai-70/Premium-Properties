@@ -34,8 +34,11 @@ export default function Properties() {
         map.set(p.city, { en: p.city, he: p.city_he || p.city });
       }
     });
-    return Array.from(map.values()).sort((a, b) => a.en.localeCompare(b.en));
-  }, [properties]);
+    // Sort by the name the visitor actually sees (Hebrew order in Hebrew mode).
+    return Array.from(map.values()).sort((a, b) =>
+      language === "he" ? a.he.localeCompare(b.he, "he") : a.en.localeCompare(b.en, "en")
+    );
+  }, [properties, language]);
 
   const filtered = useMemo(() => {
     return properties.filter((p) => {
@@ -82,7 +85,7 @@ export default function Properties() {
           </p>
 
           {/* Filters */}
-          <div className="mt-8 flex flex-col gap-1.5 rounded-3xl bg-white p-1.5 shadow-card sm:flex-row sm:[&>*+*]:border-s sm:[&>*+*]:border-slate-200">
+          <div className="mt-8 flex flex-col gap-1.5 rounded-3xl bg-white p-1.5 shadow-card sm:flex-row sm:[&>*]:flex-1 sm:[&>*+*]:border-s sm:[&>*+*]:border-slate-200">
             <Select
               value={city}
               onChange={(e) => setCity(e.target.value)}
