@@ -13,17 +13,39 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LanguageContext } from "@/components/LanguageContext";
 
+const LANGUAGE_KEY = "pp_language";
+
 export default function Layout({ children, currentPageName }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(null);
-  const [language, setLanguage] = useState('en');
+  // Default to Hebrew; remember the visitor's last choice across reloads.
+  const [language, setLanguage] = useState(() => {
+    try {
+      const saved = localStorage.getItem(LANGUAGE_KEY);
+      return saved === 'en' || saved === 'he' ? saved : 'he';
+    } catch {
+      return 'he';
+    }
+  });
   const [companyDetails, setCompanyDetails] = useState(null);
 
   useEffect(() => {
     loadUser();
     loadCompanyDetails();
   }, []);
+
+  // Keep <html lang/dir> in sync so the browser, screen readers and native
+  // controls (select lists, scrollbars) all follow the chosen language.
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.documentElement.dir = language === 'he' ? 'rtl' : 'ltr';
+    try {
+      localStorage.setItem(LANGUAGE_KEY, language);
+    } catch {
+      // Storage unavailable (private mode) — language just won't persist.
+    }
+  }, [language]);
 
   const loadUser = async () => {
     try {
@@ -88,17 +110,6 @@ export default function Layout({ children, currentPageName }) {
   return (
     <LanguageContext.Provider value={languageValue}>
       <div className={`min-h-screen bg-gradient-to-br from-slate-50 to-primary-50 ${language === 'he' ? 'rtl' : 'ltr'}`}>
-        <style>
-          {`
-            .rtl {
-              direction: rtl;
-            }
-            .ltr {
-              direction: ltr;
-            }
-          `}
-        </style>
-
         {/* Header */}
         <header className="bg-white/95 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
