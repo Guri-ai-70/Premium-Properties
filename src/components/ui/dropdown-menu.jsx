@@ -46,10 +46,10 @@ export function DropdownMenuTrigger({ asChild, children }) {
     setOpen(!open);
   };
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, { onClick: toggle });
+    return React.cloneElement(children, { onClick: toggle, "aria-expanded": open, "aria-haspopup": "true" });
   }
   return (
-    <button type="button" onClick={toggle}>
+    <button type="button" onClick={toggle} aria-expanded={open} aria-haspopup="true">
       {children}
     </button>
   );

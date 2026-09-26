@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Property } from "@/entities/Property";
-import { useLanguage } from "@/components/LanguageContext";
+import { useLanguage, usePageTitle } from "@/components/LanguageContext";
 import PropertyCard from "@/components/PropertyCard";
 import { Select } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,6 +9,7 @@ import { Building2 } from "lucide-react";
 export default function Properties() {
   const { language } = useLanguage();
   const t = (en, he) => (language === "he" ? he : en);
+  usePageTitle(t("Properties for sale and rent", "נכסים למכירה ולהשכרה"));
 
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -89,6 +90,7 @@ export default function Properties() {
             <Select
               value={city}
               onChange={(e) => setCity(e.target.value)}
+              aria-label={t("City", "עיר")}
               className="rounded-full border-0 bg-transparent text-ink sm:flex-1"
               options={[
                 { value: "all", label: t("All cities", "כל הערים") },
@@ -101,6 +103,7 @@ export default function Properties() {
             <Select
               value={listingType}
               onChange={(e) => setListingType(e.target.value)}
+              aria-label={t("Deal type", "סוג עסקה")}
               className="rounded-full border-0 bg-transparent text-ink sm:flex-1"
               options={[
                 { value: "all", label: t("All listings", "כל הנכסים") },
@@ -111,6 +114,7 @@ export default function Properties() {
             <Select
               value={propertyType}
               onChange={(e) => setPropertyType(e.target.value)}
+              aria-label={t("Property type", "סוג נכס")}
               className="rounded-full border-0 bg-transparent text-ink sm:flex-1"
               options={[
                 { value: "all", label: t("All types", "כל הסוגים") },

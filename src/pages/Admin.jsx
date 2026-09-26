@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Property } from "@/entities/Property";
 import { User } from "@/entities/User";
 import { createPageUrl } from "@/utils";
-import { useLanguage } from "@/components/LanguageContext";
+import { useLanguage, usePageTitle } from "@/components/LanguageContext";
 import { formatPrice } from "@/lib/utils";
 import { getRooms, FEATURES } from "@/lib/propertyFeatures";
 import { Button } from "@/components/ui/button";
@@ -128,6 +128,18 @@ export default function Admin() {
     }
   };
 
+  usePageTitle(
+    !authChecked
+      ? ""
+      : !isAdmin
+      ? t("Admin Login", "כניסת מנהל")
+      : editing === "new"
+      ? t("New Property", "נכס חדש")
+      : editing
+      ? t("Edit Property", "עריכת נכס")
+      : t("Manage Properties", "ניהול נכסים")
+  );
+
   if (!authChecked) {
     return <div className="py-20 text-center text-slate-500">{t("Loading...", "טוען...")}</div>;
   }
@@ -151,9 +163,12 @@ export default function Admin() {
 
           <form onSubmit={handleLoginSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label>{t("Username", "שם משתמש")}</Label>
+              <Label htmlFor="admin-username">{t("Username", "שם משתמש")}</Label>
               <Input
+                id="admin-username"
                 dir="ltr"
+                aria-invalid={loginError ? true : undefined}
+                aria-describedby={loginError ? "login-error" : undefined}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
@@ -162,9 +177,12 @@ export default function Admin() {
               />
             </div>
             <div className="space-y-1.5">
-              <Label>{t("Password", "סיסמה")}</Label>
+              <Label htmlFor="admin-password">{t("Password", "סיסמה")}</Label>
               <Input
+                id="admin-password"
                 dir="ltr"
+                aria-invalid={loginError ? true : undefined}
+                aria-describedby={loginError ? "login-error" : undefined}
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -175,7 +193,7 @@ export default function Admin() {
             </div>
 
             {loginError && (
-              <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+              <p id="login-error" role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
                 {loginError}
               </p>
             )}
@@ -291,12 +309,12 @@ export default function Admin() {
 
   // Message dialog (replaces browser alerts, follows the page language/direction)
   const noticeDialog = (
-    <Modal open={!!notice} onClose={() => setNotice("")}>
+    <Modal open={!!notice} onClose={() => setNotice("")} labelledBy="notice-text">
       <div className="flex items-start gap-4">
         <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
           <AlertTriangle className="h-6 w-6" />
         </div>
-        <p className="flex-1 pt-2 text-sm text-slate-700">{notice}</p>
+        <p id="notice-text" className="flex-1 pt-2 text-sm text-slate-700">{notice}</p>
       </div>
       <div className="mt-6 flex justify-end">
         <Button onClick={() => setNotice("")}>{t("OK", "אישור")}</Button>
@@ -312,7 +330,7 @@ export default function Admin() {
           <h1 className="text-2xl font-bold text-ink">
             {editing === "new" ? t("New Property", "נכס חדש") : t("Edit Property", "עריכת נכס")}
           </h1>
-          <Button variant="ghost" size="icon" onClick={() => setEditing(null)}>
+          <Button variant="ghost" size="icon" onClick={() => setEditing(null)} aria-label={t("Close", "סגירה")}>
             <X className="h-5 w-5" />
           </Button>
         </div>
@@ -380,7 +398,7 @@ export default function Admin() {
             />
             <span className="text-sm font-semibold text-amber-800">
               {t("Exclusive listing", "נכס בבלעדיות")}{" "}
-              <span className="font-normal text-amber-600">
+              <span className="font-normal text-amber-700">
                 {t("(בבלעדיות — shown as a gold badge)", "(מוצג כתג זהב)")}
               </span>
             </span>
@@ -410,7 +428,8 @@ export default function Admin() {
             </Field>
           </div>
 
-          <Field label={t("Features", "מאפיינים")}>
+          <fieldset className="space-y-1.5">
+            <legend className="text-sm font-medium text-slate-700">{t("Features", "מאפיינים")}</legend>
             <div className="flex flex-wrap gap-x-6 gap-y-3 rounded-xl border border-slate-200 px-4 py-3">
               {FEATURES.map((f) => (
                 <label key={f.key} className="flex items-center gap-2 text-sm text-slate-700">
@@ -424,7 +443,7 @@ export default function Admin() {
                 </label>
               ))}
             </div>
-          </Field>
+          </fieldset>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label={t("City (EN)", "עיר (אנגלית)")}>
@@ -454,6 +473,7 @@ export default function Admin() {
                       type="button"
                       onClick={() => removeImage(i)}
                       title={t("Remove", "הסרה")}
+                      aria-label={t(`Remove photo ${i + 1}`, `הסרת תמונה ${i + 1}`)}
                       className="absolute end-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white opacity-90 shadow hover:bg-red-700"
                     >
                       <X className="h-3.5 w-3.5" />
@@ -485,6 +505,7 @@ export default function Admin() {
                 <Input
                   dir="auto"
                   ref={urlInputRef}
+                  aria-label={t("Image URL", "קישור לתמונה")}
                   placeholder={t("…or paste an image URL", "…או הדביקו קישור לתמונה")}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -597,7 +618,12 @@ export default function Admin() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-2">
-                      <Button variant="ghost" size="icon" onClick={() => openEdit(p)}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => openEdit(p)}
+                        aria-label={t(`Edit ${p.title}`, `עריכת ${p.title_he || p.title}`)}
+                      >
                         <Pencil className="h-4 w-4" />
                       </Button>
                       <Button
@@ -605,6 +631,7 @@ export default function Admin() {
                         size="icon"
                         className="text-red-600 hover:bg-red-50"
                         onClick={() => setDeleteTarget(p)}
+                        aria-label={t(`Delete ${p.title}`, `מחיקת ${p.title_he || p.title}`)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -618,16 +645,21 @@ export default function Admin() {
       </Card>
 
       {/* Delete confirmation frame */}
-      <Modal open={!!deleteTarget} onClose={() => setDeleteTarget(null)}>
+      <Modal
+        open={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        labelledBy="delete-title"
+        describedBy="delete-desc"
+      >
         <div className="flex items-start gap-4">
           <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
             <AlertTriangle className="h-6 w-6" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-bold text-ink">
+            <h3 id="delete-title" className="text-lg font-bold text-ink">
               {t("Are you sure you want to delete?", "בטוחים שרוצים למחוק?")}
             </h3>
-            <p className="mt-1 text-sm text-slate-500">
+            <p id="delete-desc" className="mt-1 text-sm text-slate-500">
               {t(
                 `"${deleteTarget?.title}" will be permanently removed. This cannot be undone.`,
                 `"${deleteTarget?.title_he || deleteTarget?.title}" יימחק לצמיתות. לא ניתן לבטל פעולה זו.`
@@ -650,10 +682,12 @@ export default function Admin() {
 }
 
 function Field({ label, children }) {
+  // Links the visible label to its field so screen readers announce it.
+  const id = React.useId();
   return (
     <div className="space-y-1.5">
-      <Label>{label}</Label>
-      {children}
+      <Label htmlFor={id}>{label}</Label>
+      {React.isValidElement(children) ? React.cloneElement(children, { id }) : children}
     </div>
   );
 }

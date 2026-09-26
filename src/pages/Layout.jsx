@@ -97,7 +97,10 @@ export default function Layout({ children, currentPageName }) {
     navigate(createPageUrl("Properties"));
   };
 
-  const languageValue = { language, toggleLanguage };
+  const siteName = companyDetails
+    ? (language === 'he' ? companyDetails.company_name_he : companyDetails.company_name)
+    : '';
+  const languageValue = { language, toggleLanguage, siteName };
 
   if (!companyDetails) {
     return (
@@ -113,17 +116,17 @@ export default function Layout({ children, currentPageName }) {
         {/* Header */}
         <header className="bg-white/95 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
+            <div className="flex flex-wrap justify-between items-center gap-x-4 gap-y-2 min-h-16 py-2">
               {/* Logo */}
               <Link to={createPageUrl("Properties")} className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg">
                   <Home className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-ink">
+                  <h1 className="text-lg sm:text-xl font-bold leading-tight text-ink">
                     {language === 'he' ? companyDetails.company_name_he : companyDetails.company_name}
                   </h1>
-                  <p className="text-xs text-slate-500">
+                  <p className="hidden sm:block text-xs text-slate-500">
                     {language === 'he' ? companyDetails.tagline_he : companyDetails.tagline}
                   </p>
                 </div>
@@ -148,7 +151,7 @@ export default function Layout({ children, currentPageName }) {
               </nav>
 
               {/* Language & User Menu */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 sm:gap-4">
                 <Button
                   variant="outline"
                   size="sm"
@@ -162,7 +165,12 @@ export default function Layout({ children, currentPageName }) {
                 {currentUser ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm" className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-2"
+                        aria-label={`${currentUser.full_name} – ${language === 'he' ? 'תפריט משתמש' : 'user menu'}`}
+                      >
                         <User className="w-4 h-4" />
                         <span className="hidden sm:inline">{currentUser.full_name}</span>
                       </Button>

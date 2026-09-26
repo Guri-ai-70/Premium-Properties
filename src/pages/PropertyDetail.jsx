@@ -3,11 +3,11 @@ import { useSearchParams, Link } from "react-router-dom";
 import { Property } from "@/entities/Property";
 import { AppSettings } from "@/entities/AppSettings";
 import { createPageUrl } from "@/utils";
-import { useLanguage } from "@/components/LanguageContext";
+import { useLanguage, usePageTitle } from "@/components/LanguageContext";
 import { formatPrice } from "@/lib/utils";
 import { getRooms, hasRooms, formatFloor, FEATURES } from "@/lib/propertyFeatures";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   DoorOpen,
@@ -45,6 +45,14 @@ export default function PropertyDetail() {
     })();
   }, [id]);
 
+  usePageTitle(
+    property
+      ? t(property.title, property.title_he || property.title)
+      : loading
+      ? ""
+      : t("Property not found", "הנכס לא נמצא")
+  );
+
   if (loading) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -72,11 +80,9 @@ export default function PropertyDetail() {
         <h1 className="text-2xl font-bold text-ink">
           {t("Property not found", "הנכס לא נמצא")}
         </h1>
-        <Link to={createPageUrl("Properties")} className="mt-4 inline-block">
-          <Button variant="outline" className="mt-4">
-            <ArrowLeft className="me-2 h-4 w-4 rtl:-scale-x-100" />
-            {t("Back to Properties", "חזרה לנכסים")}
-          </Button>
+        <Link to={createPageUrl("Properties")} className={`mt-8 ${buttonVariants({ variant: "outline" })}`}>
+          <ArrowLeft className="me-2 h-4 w-4 rtl:-scale-x-100" />
+          {t("Back to Properties", "חזרה לנכסים")}
         </Link>
       </div>
     );
@@ -111,11 +117,9 @@ export default function PropertyDetail() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <Link to={createPageUrl("Properties")}>
-        <Button variant="ghost" size="sm" className="mb-4">
-          <ArrowLeft className="me-2 h-4 w-4 rtl:-scale-x-100" />
-          {t("Back to Properties", "חזרה לנכסים")}
-        </Button>
+      <Link to={createPageUrl("Properties")} className={`mb-4 ${buttonVariants({ variant: "ghost", size: "sm" })}`}>
+        <ArrowLeft className="me-2 h-4 w-4 rtl:-scale-x-100" />
+        {t("Back to Properties", "חזרה לנכסים")}
       </Link>
 
       <div className="grid gap-8 lg:grid-cols-3">
@@ -133,7 +137,10 @@ export default function PropertyDetail() {
               {images.map((img, i) => (
                 <button
                   key={i}
+                  type="button"
                   onClick={() => setActiveImage(i)}
+                  aria-label={t(`Show photo ${i + 1} of ${images.length}`, `הצגת תמונה ${i + 1} מתוך ${images.length}`)}
+                  aria-pressed={i === activeImage}
                   className={`h-20 w-28 overflow-hidden rounded-lg border-2 ${
                     i === activeImage ? "border-primary" : "border-transparent"
                   }`}
@@ -203,17 +210,17 @@ export default function PropertyDetail() {
                 <h3 className="mb-3 font-semibold text-ink">
                   {t("Interested? Get in touch", "מעוניינים? צרו קשר")}
                 </h3>
-                <a href={`mailto:${company.contact_email}`}>
-                  <Button className="mb-2 w-full">
-                    <Mail className="me-2 h-4 w-4" />
-                    {t("Email Agent", "שלחו אימייל")}
-                  </Button>
+                <a href={`mailto:${company.contact_email}`} className={`mb-2 w-full ${buttonVariants()}`}>
+                  <Mail className="me-2 h-4 w-4" />
+                  {t("Email Agent", "שלחו אימייל")}
                 </a>
-                <a href={`tel:${company.contact_phone}`}>
-                  <Button variant="outline" className="w-full" dir="ltr">
-                    <Phone className="me-2 h-4 w-4" />
-                    <span>{company.contact_phone}</span>
-                  </Button>
+                <a
+                  href={`tel:${company.contact_phone}`}
+                  className={`w-full ${buttonVariants({ variant: "outline" })}`}
+                  aria-label={t(`Call ${company.contact_phone}`, `התקשרו ${company.contact_phone}`)}
+                >
+                  <Phone className="me-2 h-4 w-4" />
+                  <span dir="ltr">{company.contact_phone}</span>
                 </a>
               </div>
             )}
