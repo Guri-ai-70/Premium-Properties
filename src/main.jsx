@@ -10,7 +10,8 @@ seedData();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <HashRouter>
+    {/* Opt in to React Router v7 behavior now (silences the dev-console warnings). */}
+    <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <App />
     </HashRouter>
   </React.StrictMode>
