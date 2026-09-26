@@ -5,6 +5,7 @@ import { User } from "@/entities/User";
 import { createPageUrl } from "@/utils";
 import { useLanguage } from "@/components/LanguageContext";
 import { formatPrice } from "@/lib/utils";
+import { getRooms, FEATURES } from "@/lib/propertyFeatures";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,8 +35,17 @@ const EMPTY = {
   listing_type: "sale",
   property_type: "apartment",
   bedrooms: 0,
+  rooms: "",
   bathrooms: 0,
   area: 0,
+  floor: "",
+  total_floors: "",
+  parking: "",
+  master_suite: false,
+  elevator: false,
+  balcony: false,
+  safe_room: false,
+  storage: false,
   city: "",
   city_he: "",
   address: "",
@@ -192,7 +202,13 @@ export default function Admin() {
   };
 
   const openEdit = (p) => {
-    setForm({ ...EMPTY, ...p, images: Array.isArray(p.images) ? [...p.images] : [] });
+    setForm({
+      ...EMPTY,
+      ...p,
+      // Older properties have no room count yet: suggest bedrooms + 1.
+      rooms: p.rooms ?? getRooms(p) ?? "",
+      images: Array.isArray(p.images) ? [...p.images] : [],
+    });
     setEditing(p.id);
   };
 
@@ -236,6 +252,10 @@ export default function Admin() {
       ...form,
       price: Number(form.price) || 0,
       bedrooms: Number(form.bedrooms) || 0,
+      rooms: form.rooms === "" ? null : Number(form.rooms),
+      floor: form.floor === "" ? null : Number(form.floor),
+      total_floors: form.total_floors === "" ? null : Number(form.total_floors),
+      parking: form.parking === "" ? null : Number(form.parking),
       bathrooms: Number(form.bathrooms) || 0,
       area: Number(form.area) || 0,
       images: Array.isArray(form.images) ? form.images : [],
@@ -367,8 +387,8 @@ export default function Admin() {
           </label>
 
           <div className="grid gap-4 sm:grid-cols-3">
-            <Field label={t("Bedrooms", "חדרי שינה")}>
-              <Input type="number" dir="ltr" value={form.bedrooms} onChange={(e) => set("bedrooms", e.target.value)} />
+            <Field label={t("Rooms (incl. living room)", "חדרים (כולל סלון)")}>
+              <Input type="number" dir="ltr" min="0" step="0.5" value={form.rooms} onChange={(e) => set("rooms", e.target.value)} />
             </Field>
             <Field label={t("Bathrooms", "חדרי רחצה")}>
               <Input type="number" dir="ltr" value={form.bathrooms} onChange={(e) => set("bathrooms", e.target.value)} />
@@ -377,6 +397,34 @@ export default function Admin() {
               <Input type="number" dir="ltr" value={form.area} onChange={(e) => set("area", e.target.value)} />
             </Field>
           </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Field label={t("Floor (0 = ground)", "קומה (0 = קרקע)")}>
+              <Input type="number" dir="ltr" min="0" value={form.floor} onChange={(e) => set("floor", e.target.value)} />
+            </Field>
+            <Field label={t("Floors in building", "מספר קומות בבניין")}>
+              <Input type="number" dir="ltr" min="0" value={form.total_floors} onChange={(e) => set("total_floors", e.target.value)} />
+            </Field>
+            <Field label={t("Parking spots", "חניות")}>
+              <Input type="number" dir="ltr" min="0" value={form.parking} onChange={(e) => set("parking", e.target.value)} />
+            </Field>
+          </div>
+
+          <Field label={t("Features", "מאפיינים")}>
+            <div className="flex flex-wrap gap-x-6 gap-y-3 rounded-xl border border-slate-200 px-4 py-3">
+              {FEATURES.map((f) => (
+                <label key={f.key} className="flex items-center gap-2 text-sm text-slate-700">
+                  <input
+                    type="checkbox"
+                    checked={!!form[f.key]}
+                    onChange={(e) => set(f.key, e.target.checked)}
+                    className="h-4 w-4 rounded border-slate-300 accent-primary"
+                  />
+                  {t(f.en, f.he)}
+                </label>
+              ))}
+            </div>
+          </Field>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label={t("City (EN)", "עיר (אנגלית)")}>

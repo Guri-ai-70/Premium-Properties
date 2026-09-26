@@ -5,11 +5,15 @@ import { AppSettings } from "@/entities/AppSettings";
 import { createPageUrl } from "@/utils";
 import { useLanguage } from "@/components/LanguageContext";
 import { formatPrice } from "@/lib/utils";
+import { getRooms, hasRooms, formatFloor, FEATURES } from "@/lib/propertyFeatures";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Bed,
+  DoorOpen,
+  Building,
+  Car,
+  Check,
   Bath,
   Maximize,
   MapPin,
@@ -89,16 +93,21 @@ export default function PropertyDetail() {
     ? property.images
     : ["https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=80"];
 
+  const rooms = getRooms(property);
+  const floor = formatFloor(property, language);
+  const parking = Number(property.parking) || 0;
   const facts = [
-    property.property_type !== "commercial" &&
-      property.property_type !== "plot" && {
-        icon: Bed,
-        label: t("Bedrooms", "חדרי שינה"),
-        value: property.bedrooms,
-      },
+    hasRooms(property) && rooms !== null && {
+      icon: DoorOpen,
+      label: t("Rooms", "חדרים"),
+      value: rooms,
+    },
     { icon: Bath, label: t("Bathrooms", "חדרי רחצה"), value: property.bathrooms },
     { icon: Maximize, label: t("Area", "שטח"), value: `${property.area} ${t("m²", "מ\"ר")}` },
+    floor && { icon: Building, label: t("Floor", "קומה"), value: floor },
+    parking > 0 && { icon: Car, label: t("Parking", "חניה"), value: parking },
   ].filter(Boolean);
+  const features = FEATURES.filter((f) => property[f.key]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -173,6 +182,21 @@ export default function PropertyDetail() {
                 </div>
               ))}
             </div>
+
+            {features.length > 0 && (
+              <div className="mt-6">
+                <h3 className="mb-3 font-semibold text-ink">{t("Features", "מאפיינים")}</h3>
+                <ul className="grid grid-cols-2 gap-2">
+                  {features.map((f) => (
+                    <li key={f.key} className="flex items-center gap-2 text-sm text-slate-700">
+                      <Check className="h-4 w-4 flex-shrink-0 text-emerald-600" />
+                      <f.icon className="h-4 w-4 flex-shrink-0 text-slate-500" />
+                      {t(f.en, f.he)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {company && (
               <div className="mt-6 border-t border-slate-100 pt-6">

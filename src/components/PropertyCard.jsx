@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { useLanguage } from "@/components/LanguageContext";
 import { formatPrice } from "@/lib/utils";
+import { getRooms, hasRooms } from "@/lib/propertyFeatures";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Bed, Bath, Maximize, MapPin } from "lucide-react";
+import { DoorOpen, Bath, Maximize, MapPin } from "lucide-react";
 
 const PLACEHOLDER =
   "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=80";
@@ -65,10 +66,10 @@ export default function PropertyCard({ property }) {
             {formatPrice(property.price, property.currency, property.listing_type, language)}
           </p>
           <div className="flex items-center gap-4 border-t border-slate-100 pt-3 text-sm text-slate-600">
-            {property.property_type !== "commercial" && property.property_type !== "plot" && (
+            {hasRooms(property) && getRooms(property) !== null && (
               <span className="flex items-center gap-1.5">
-                <Bed className="h-4 w-4 text-slate-400" />
-                {property.bedrooms}
+                <DoorOpen className="h-4 w-4 text-slate-400" />
+                {getRooms(property)} {t("rooms", "חדרים")}
               </span>
             )}
             <span className="flex items-center gap-1.5">
