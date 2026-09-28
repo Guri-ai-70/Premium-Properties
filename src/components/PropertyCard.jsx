@@ -53,7 +53,7 @@ export default function PropertyCard({ property }) {
           </div>
         </div>
         <div className="p-5">
-          <div className="mb-1 flex items-center gap-1 text-sm leading-5 text-muted rtl:text-[15px]">
+          <div className="mb-1 flex items-center gap-1 text-[15px] leading-6 text-muted rtl:text-base">
             <MapPin className="h-3.5 w-3.5" />
             <span>{city}</span>
             <span className="mx-1">•</span>
