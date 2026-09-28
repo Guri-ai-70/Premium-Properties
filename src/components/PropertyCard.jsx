@@ -53,7 +53,7 @@ export default function PropertyCard({ property }) {
           </div>
         </div>
         <div className="p-5">
-          <div className="mb-1 flex items-center gap-1 text-xs text-muted">
+          <div className="mb-1 flex items-center gap-1 text-sm leading-5 text-muted rtl:text-[15px]">
             <MapPin className="h-3.5 w-3.5" />
             <span>{city}</span>
             <span className="mx-1">•</span>
@@ -65,7 +65,7 @@ export default function PropertyCard({ property }) {
           <p className="mb-4 text-xl font-extrabold text-primary-700">
             {formatPrice(property.price, property.currency, property.listing_type, language)}
           </p>
-          <div className="flex items-center gap-4 border-t border-slate-100 pt-3 text-sm text-slate-600">
+          <div className="flex items-center gap-4 border-t border-slate-100 pt-3 text-base leading-6 text-slate-600">
             {hasRooms(property) && getRooms(property) !== null && (
               <span className="flex items-center gap-1.5">
                 <DoorOpen className="h-4 w-4 text-slate-400" />

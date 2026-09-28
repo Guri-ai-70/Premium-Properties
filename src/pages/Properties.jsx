@@ -91,7 +91,7 @@ export default function Properties() {
               value={city}
               onChange={(e) => setCity(e.target.value)}
               aria-label={t("City", "עיר")}
-              className="rounded-full border-0 bg-transparent text-ink sm:flex-1"
+              className="rounded-full border-0 bg-transparent text-lg text-ink sm:flex-1"
               options={[
                 { value: "all", label: t("All cities", "כל הערים") },
                 ...cityOptions.map((c) => ({
@@ -104,7 +104,7 @@ export default function Properties() {
               value={listingType}
               onChange={(e) => setListingType(e.target.value)}
               aria-label={t("Deal type", "סוג עסקה")}
-              className="rounded-full border-0 bg-transparent text-ink sm:flex-1"
+              className="rounded-full border-0 bg-transparent text-lg text-ink sm:flex-1"
               options={[
                 { value: "all", label: t("All listings", "כל הנכסים") },
                 { value: "sale", label: t("For Sale", "למכירה") },
@@ -115,7 +115,7 @@ export default function Properties() {
               value={propertyType}
               onChange={(e) => setPropertyType(e.target.value)}
               aria-label={t("Property type", "סוג נכס")}
-              className="rounded-full border-0 bg-transparent text-ink sm:flex-1"
+              className="rounded-full border-0 bg-transparent text-lg text-ink sm:flex-1"
               options={[
                 { value: "all", label: t("All types", "כל הסוגים") },
                 { value: "apartment", label: t("Apartment", "דירה") },
