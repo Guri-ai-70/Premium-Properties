@@ -4,7 +4,7 @@ import { Property } from "@/entities/Property";
 import { AppSettings } from "@/entities/AppSettings";
 import { createPageUrl } from "@/utils";
 import { useLanguage, usePageTitle } from "@/components/LanguageContext";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, displayPhone, telHref } from "@/lib/utils";
 import { getRooms, hasRooms, formatFloor, FEATURES } from "@/lib/propertyFeatures";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -215,12 +215,12 @@ export default function PropertyDetail() {
                   {t("Email Agent", "שלחו אימייל")}
                 </a>
                 <a
-                  href={`tel:${company.contact_phone}`}
+                  href={telHref(company.contact_phone)}
                   className={`w-full ${buttonVariants({ variant: "outline" })}`}
-                  aria-label={t(`Call ${company.contact_phone}`, `התקשרו ${company.contact_phone}`)}
+                  aria-label={t(`Call ${company.contact_phone}`, `התקשרו ${displayPhone(company.contact_phone, "he")}`)}
                 >
                   <Phone className="me-2 h-4 w-4" />
-                  <span dir="ltr">{company.contact_phone}</span>
+                  <span dir="ltr">{displayPhone(company.contact_phone, language)}</span>
                 </a>
               </div>
             )}

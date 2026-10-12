@@ -20,11 +20,15 @@ export function imageSrcSet(url, widths = [480, 800, 1200]) {
   return widths.map((w) => `${sizedImage(url, w)} ${w}w`).join(", ");
 }
 
-// Israeli numbers stored as "+972 3-555-0199" display locally as "03-555-0199"
+// Israeli numbers stored as "+972-3-1234567" display locally as "03-1234567"
 // in Hebrew. The tel: link keeps the stored international form.
 export function displayPhone(phone, lang = "en") {
   if (!phone || lang !== "he") return phone;
   return phone.replace(/^\+972[\s-]?/, "0");
+}
+
+export function telHref(phone) {
+  return `tel:${String(phone || "").replace(/\s/g, "")}`;
 }
 
 // Maps the stored currency symbol to an ISO code for Intl.

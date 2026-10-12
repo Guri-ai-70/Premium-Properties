@@ -1,5 +1,19 @@
 import { AppSettings } from "./AppSettings";
 import { Property } from "./Property";
+import { read, write } from "./localDB";
+
+// DEMO DATA: placeholder phone (displays as 03-1234567) and a fictional agent.
+// Neither belongs to a real person or business.
+const DEMO_PHONE = "+972-3-1234567";
+const DEMO_AGENT = {
+  demo: true,
+  name: "Dana Alon",
+  name_he: "דנה אלון",
+  role: "Senior property advisor",
+  role_he: "יועצת נדל\"ן בכירה",
+};
+// Phone numbers earlier versions of the demo stored in visitors' browsers.
+const OLD_DEMO_PHONES = ["+972 3-555-0199"];
 
 // Seeds first-run demo data. Safe to call on every boot: each entity only
 // writes when its collection is empty.
@@ -14,13 +28,15 @@ export function seedData() {
         tagline: "Luxury Real Estate, Redefined",
         tagline_he: "נדל\"ן יוקרתי, מוגדר מחדש",
         contact_email: "hello@premiumproperties.com",
-        contact_phone: "+972 3-555-0199",
+        contact_phone: DEMO_PHONE,
         address: "12 Rothschild Blvd, Tel Aviv, Israel",
         address_he: "שדרות רוטשילד 12, תל אביב, ישראל",
+        agent: DEMO_AGENT,
       },
       created_date: new Date().toISOString(),
     },
   ]);
+  upgradeCompanyDetails();
 
   Property._seed([
     {
@@ -221,4 +237,23 @@ export function seedData() {
       created_date: new Date(Date.now() - 16 * 86400000).toISOString(),
     },
   ]);
+}
+
+// Browsers that ran an earlier version keep their seeded company record, so
+// bring the demo fields up to date there: replace the old demo phone and add
+// the demo agent. Anything the owner set themselves is left alone.
+function upgradeCompanyDetails() {
+  const records = read("app_settings");
+  const company = records.find((r) => r.key === "company_details");
+  if (!company?.value) return;
+  let changed = false;
+  if (OLD_DEMO_PHONES.includes(company.value.contact_phone)) {
+    company.value.contact_phone = DEMO_PHONE;
+    changed = true;
+  }
+  if (!company.value.agent) {
+    company.value.agent = DEMO_AGENT;
+    changed = true;
+  }
+  if (changed) write("app_settings", records);
 }

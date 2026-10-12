@@ -5,7 +5,7 @@ import { Settings, Globe, User, Building2, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { User as UserEntity } from "@/entities/User";
 import { AppSettings } from "@/entities/AppSettings";
-import { displayPhone } from "@/lib/utils";
+import { displayPhone, telHref } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -237,7 +237,7 @@ export default function Layout({ children, currentPageName }) {
                   </li>
                   <li>
                     <a
-                      href={`tel:${companyDetails.contact_phone.replace(/[\s-]/g, '')}`}
+                      href={telHref(companyDetails.contact_phone)}
                       dir="ltr"
                       className="inline-flex min-h-11 items-center tabular-nums underline-offset-4 hover:text-stone-50 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-light"
                     >
