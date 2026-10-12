@@ -43,6 +43,11 @@ export default {
           DEFAULT: "#9a7440",
           dark: "#7a5a2b",
         },
+        // Second status colour (rentals): deep olive, 7:1 with white text.
+        olive: {
+          light: "#a3b59a",
+          DEFAULT: "#3d5a47",
+        },
         muted: "#64748b",
         surface: "#ffffff",
         "surface-alt": "#f8fafc",

@@ -57,9 +57,18 @@ export default function PropertyCard({ property }) {
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
         />
-        {/* Status badges: deal type in ink, Exclusive in brass; same frame, side by side */}
+        {/* Status badges: sale in ink, rent in olive, Exclusive in brass; same frame, side by side */}
         <div className="absolute start-3 top-3 flex flex-wrap gap-1.5">
-          <span className={badge + " bg-ink/90 ring-white/25"}>{deal}</span>
+          <span
+            className={
+              badge +
+              (property.listing_type === "rent"
+                ? " bg-olive ring-olive-light/60"
+                : " bg-ink/90 ring-white/25")
+            }
+          >
+            {deal}
+          </span>
           {property.exclusive && (
             <span className={badge + " bg-brass-dark ring-brass-light/60"}>
               {t("Exclusive", "בבלעדיות")}
