@@ -3,25 +3,8 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { useLanguage } from "@/components/LanguageContext";
 import { formatPrice, sizedImage, imageSrcSet } from "@/lib/utils";
-import { getRooms, hasRooms } from "@/lib/propertyFeatures";
-
-const PLACEHOLDER =
-  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=80";
-
-const typeLabels = {
-  apartment: { en: "Apartment", he: "דירה" },
-  garden_apartment: { en: "Garden Apartment", he: "דירת גן" },
-  duplex: { en: "Duplex", he: "דופלקס" },
-  penthouse: { en: "Penthouse", he: "פנטהאוז" },
-  mini_penthouse: { en: "Mini Penthouse", he: "מיני פנטהאוז" },
-  house: { en: "House", he: "בית" },
-  villa: { en: "Villa", he: "וילה" },
-  commercial: { en: "Commercial", he: "מסחרי" },
-  plot: { en: "Plot", he: "מגרש" },
-};
-
-const badge =
-  "rounded-[2px] px-2.5 py-0.5 text-[13px] font-semibold leading-5 text-white shadow-sm ring-1 ring-inset";
+import { getRooms, hasRooms, propertyTypeLabel, PLACEHOLDER_IMAGE } from "@/lib/propertyFeatures";
+import StatusBadges from "@/components/StatusBadges";
 
 export default function PropertyCard({ property }) {
   const { language } = useLanguage();
@@ -29,10 +12,8 @@ export default function PropertyCard({ property }) {
 
   const title = t(property.title, property.title_he || property.title);
   const city = t(property.city, property.city_he || property.city);
-  const image = property.images?.[0] || PLACEHOLDER;
-  const typeLabel =
-    typeLabels[property.property_type]?.[language] || property.property_type;
-  const deal = property.listing_type === "rent" ? t("For rent", "להשכרה") : t("For sale", "למכירה");
+  const image = property.images?.[0] || PLACEHOLDER_IMAGE;
+  const typeLabel = propertyTypeLabel(property.property_type, language);
 
   const rooms = hasRooms(property) ? getRooms(property) : null;
   const baths = Number(property.bathrooms) || 0;
@@ -57,23 +38,8 @@ export default function PropertyCard({ property }) {
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
         />
-        {/* Status badges: sale in ink, rent in olive, Exclusive in brass; same frame, side by side */}
         <div className="absolute start-3 top-3 flex flex-wrap gap-1.5">
-          <span
-            className={
-              badge +
-              (property.listing_type === "rent"
-                ? " bg-olive ring-olive-light/60"
-                : " bg-ink/90 ring-white/25")
-            }
-          >
-            {deal}
-          </span>
-          {property.exclusive && (
-            <span className={badge + " bg-brass-dark ring-brass-light/60"}>
-              {t("Exclusive", "בבלעדיות")}
-            </span>
-          )}
+          <StatusBadges property={property} />
         </div>
       </div>
       <div className="mt-4">
