@@ -20,6 +20,9 @@ const typeLabels = {
   plot: { en: "Plot", he: "מגרש" },
 };
 
+const badge =
+  "rounded-[2px] px-2.5 py-0.5 text-[13px] font-semibold leading-5 text-white shadow-sm ring-1 ring-inset";
+
 export default function PropertyCard({ property }) {
   const { language } = useLanguage();
   const t = (en, he) => (language === "he" ? he : en);
@@ -54,17 +57,18 @@ export default function PropertyCard({ property }) {
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
         />
-        {property.exclusive && (
-          <span className="absolute start-3 top-3 rounded-[2px] bg-brass-dark px-2.5 py-1 text-[13px] font-semibold text-white shadow-sm">
-            {t("Exclusive", "בבלעדיות")}
-          </span>
-        )}
+        {/* Status badges: deal type in ink, Exclusive in brass; same frame, side by side */}
+        <div className="absolute start-3 top-3 flex flex-wrap gap-1.5">
+          <span className={badge + " bg-ink/90 ring-white/25"}>{deal}</span>
+          {property.exclusive && (
+            <span className={badge + " bg-brass-dark ring-brass-light/60"}>
+              {t("Exclusive", "בבלעדיות")}
+            </span>
+          )}
+        </div>
       </div>
       <div className="mt-4">
         <p className="text-[15px] text-stone-600">
-          <span className="font-semibold text-ink">{deal}</span>
-          <span aria-hidden="true"> · </span>
-          <span className="sr-only">, </span>
           {typeLabel}
           <span aria-hidden="true"> · </span>
           <span className="sr-only">, </span>
