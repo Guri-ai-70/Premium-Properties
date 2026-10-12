@@ -14,6 +14,29 @@
   color: #1b1916;
 }
 
+/* Browser-drawn surfaces follow the palette: text caret, native checkboxes
+   and radios, and a thin limestone scrollbar. */
+html {
+  caret-color: #7a5a2b;
+  accent-color: #1b1916;
+  scrollbar-color: #a99e8f #f3efe8;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3efe8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a99e8f;
+  border: 2px solid #f3efe8;
+  border-radius: 999px;
+}
+
 /* Prices, counts and areas line up and do not jitter. */
 .tabular-nums {
   font-variant-numeric: tabular-nums;

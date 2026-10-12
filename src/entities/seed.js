@@ -2,9 +2,13 @@ import { AppSettings } from "./AppSettings";
 import { Property } from "./Property";
 import { read, write } from "./localDB";
 
-// DEMO DATA: placeholder phone (displays as 03-1234567) and a fictional agent.
-// Neither belongs to a real person or business.
+// DEMO DATA: placeholder phone (displays as 03-1234567), example.com email,
+// a fictional street address and a fictional agent. None of them belongs to
+// a real person, business or place.
 const DEMO_PHONE = "+972-3-1234567";
+const DEMO_EMAIL = "demo@example.com";
+const DEMO_ADDRESS = "1 Example Street, Demo City (demo address)";
+const DEMO_ADDRESS_HE = "רחוב הדוגמה 1, עיר ההדגמה (כתובת לדוגמה)";
 const DEMO_AGENT = {
   demo: true,
   name: "Dana Alon",
@@ -12,8 +16,11 @@ const DEMO_AGENT = {
   role: "Senior property advisor",
   role_he: "יועצת נדל\"ן בכירה",
 };
-// Phone numbers earlier versions of the demo stored in visitors' browsers.
+// Details earlier versions of the demo stored in visitors' browsers.
 const OLD_DEMO_PHONES = ["+972 3-555-0199"];
+const OLD_DEMO_EMAILS = ["hello@premiumproperties.com"];
+const OLD_DEMO_ADDRESSES = ["12 Rothschild Blvd, Tel Aviv, Israel"];
+const OLD_DEMO_ADDRESSES_HE = ["שדרות רוטשילד 12, תל אביב, ישראל"];
 
 // Seeds first-run demo data. Safe to call on every boot: each entity only
 // writes when its collection is empty.
@@ -27,10 +34,10 @@ export function seedData() {
         company_name_he: "נכסים פרימיום",
         tagline: "Luxury Real Estate, Redefined",
         tagline_he: "נדל\"ן יוקרתי, מוגדר מחדש",
-        contact_email: "hello@premiumproperties.com",
+        contact_email: DEMO_EMAIL,
         contact_phone: DEMO_PHONE,
-        address: "12 Rothschild Blvd, Tel Aviv, Israel",
-        address_he: "שדרות רוטשילד 12, תל אביב, ישראל",
+        address: DEMO_ADDRESS,
+        address_he: DEMO_ADDRESS_HE,
         agent: DEMO_AGENT,
       },
       created_date: new Date().toISOString(),
@@ -240,17 +247,24 @@ export function seedData() {
 }
 
 // Browsers that ran an earlier version keep their seeded company record, so
-// bring the demo fields up to date there: replace the old demo phone and add
-// the demo agent. Anything the owner set themselves is left alone.
+// bring the demo fields up to date there: replace the old demo phone, email
+// and address, and add the demo agent. Anything the owner set themselves is
+// left alone.
 function upgradeCompanyDetails() {
   const records = read("app_settings");
   const company = records.find((r) => r.key === "company_details");
   if (!company?.value) return;
   let changed = false;
-  if (OLD_DEMO_PHONES.includes(company.value.contact_phone)) {
-    company.value.contact_phone = DEMO_PHONE;
-    changed = true;
-  }
+  const replace = (field, oldValues, value) => {
+    if (oldValues.includes(company.value[field])) {
+      company.value[field] = value;
+      changed = true;
+    }
+  };
+  replace("contact_phone", OLD_DEMO_PHONES, DEMO_PHONE);
+  replace("contact_email", OLD_DEMO_EMAILS, DEMO_EMAIL);
+  replace("address", OLD_DEMO_ADDRESSES, DEMO_ADDRESS);
+  replace("address_he", OLD_DEMO_ADDRESSES_HE, DEMO_ADDRESS_HE);
   if (!company.value.agent) {
     company.value.agent = DEMO_AGENT;
     changed = true;

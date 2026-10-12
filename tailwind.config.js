@@ -10,17 +10,6 @@ export default {
         display: ["'Frank Ruhl Libre'", "Georgia", "serif"],
       },
       colors: {
-        primary: {
-          50: "#eff6ff",
-          100: "#dbeafe",
-          200: "#bfdbfe",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-          900: "#0c2f63",
-          DEFAULT: "#2563eb",
-          dark: "#0c2f63",
-        },
         // Warm near-black: text, dark grounds, primary actions.
         ink: {
           DEFAULT: "#1b1916",
@@ -48,18 +37,8 @@ export default {
           light: "#a3b59a",
           DEFAULT: "#3d5a47",
         },
-        muted: "#64748b",
-        surface: "#ffffff",
-        "surface-alt": "#f8fafc",
-        "accent-gold": {
-          DEFAULT: "#f59e0b",
-          light: "#eab308",
-        },
       },
       boxShadow: {
-        card: "0 1px 3px 0 rgba(15, 23, 42, 0.08), 0 1px 2px -1px rgba(15, 23, 42, 0.06)",
-        "card-hover":
-          "0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.1)",
         panel: "0 18px 40px -12px rgba(27, 25, 22, 0.45)",
       },
       keyframes: {

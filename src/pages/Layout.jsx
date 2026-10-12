@@ -230,7 +230,7 @@ export default function Layout({ children, currentPageName }) {
                     <a
                       href={`mailto:${companyDetails.contact_email}`}
                       dir="ltr"
-                      className="inline-flex min-h-11 items-center underline-offset-4 hover:text-stone-50 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-light"
+                      className="inline-flex min-h-11 items-center underline decoration-stone-600 underline-offset-4 hover:text-stone-50 hover:decoration-brass-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-light"
                     >
                       {companyDetails.contact_email}
                     </a>
@@ -239,7 +239,7 @@ export default function Layout({ children, currentPageName }) {
                     <a
                       href={telHref(companyDetails.contact_phone)}
                       dir="ltr"
-                      className="inline-flex min-h-11 items-center tabular-nums underline-offset-4 hover:text-stone-50 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-light"
+                      className="inline-flex min-h-11 items-center tabular-nums underline decoration-stone-600 underline-offset-4 hover:text-stone-50 hover:decoration-brass-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-light"
                     >
                       {displayPhone(companyDetails.contact_phone, language)}
                     </a>
@@ -251,12 +251,10 @@ export default function Layout({ children, currentPageName }) {
                 <h2 className="mb-4 text-sm font-semibold text-brass-light">
                   {t('Services', 'שירותים')}
                 </h2>
-                <ul className="space-y-3 text-stone-400">
-                  <li>{t('Property Sales', 'מכירת נכסים')}</li>
-                  <li>{t('Property Rentals', 'השכרת נכסים')}</li>
-                  <li>{t('Real Estate Consulting', 'ייעוץ נדל"ן')}</li>
-                  <li>{t('Property Marketing', 'שיווק נכסים')}</li>
-                </ul>
+                {/* Plain text, not links: only the services the site actually offers */}
+                <p className="text-stone-400">
+                  {t('Property sales and rentals.', 'מכירה והשכרה של נכסים.')}
+                </p>
               </div>
             </div>
             <div className="mt-14 flex flex-col gap-2 border-t border-stone-700/60 pt-6 text-sm text-stone-400 sm:flex-row sm:items-center sm:justify-between">

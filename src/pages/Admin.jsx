@@ -628,7 +628,8 @@ export default function Admin() {
         </Button>
       </div>
 
-      <div className="overflow-x-auto rounded-[4px] bg-white ring-1 ring-inset ring-stone-200">
+      {/* On the page ground, ruled like the rest of the site: no boxed card */}
+      <div className="overflow-x-auto">
         <table className="w-full min-w-[720px] text-start">
           <caption className="sr-only">
             {t(
@@ -636,7 +637,7 @@ export default function Admin() {
               "כל הנכסים, עם סוג, מחיר, סטטוס ופעולות עריכה ומחיקה"
             )}
           </caption>
-          <thead className="border-b border-stone-200 text-[15px] text-stone-600">
+          <thead className="border-b border-stone-400 text-[15px] text-stone-600">
             <tr>
               <th scope="col" className="px-4 py-3 text-start font-medium">{t("Property", "נכס")}</th>
               <th scope="col" className="px-4 py-3 text-start font-medium">{t("Type", "סוג")}</th>
@@ -649,7 +650,7 @@ export default function Admin() {
             {properties.map((p) => {
               const title = language === "he" ? p.title_he || p.title : p.title;
               return (
-                <tr key={p.id} className="border-b border-stone-100 last:border-0 hover:bg-stone-50">
+                <tr key={p.id} className="border-b border-stone-300 hover:bg-stone-200/40">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-4">
                       <img

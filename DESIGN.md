@@ -231,13 +231,13 @@ A warm, low-chroma palette: ink and limestone do the work, brass marks, olive di
 
 ### Neutral
 - **Limestone** (stone-100): the page ground, header ground (95% with backdrop blur), mobile call bar ground.
-- **Chalk** (stone-50): hover fill on outline buttons and table rows; footer wordmark on ink.
+- **Chalk** (stone-50): hover fill on outline buttons; footer wordmark on ink.
 - **Sandstone** (stone-200): skeletons, image placeholders, ghost-button hover (60%), header bottom border.
 - **Hairline Stone** (stone-300): the rules: results header rule, facts row, form section rules, input borders.
-- **Weathered Stone** (stone-400 / stone-500): outline-badge ring, select chevrons, placeholders, secondary text on ink.
-- **Quiet Stone** (stone-600): meta text (type · city, facts, labels, counts) on limestone.
+- **Weathered Stone** (stone-400 / stone-500): outline-badge ring, select chevrons, the scrollbar thumb, secondary text on ink. Never used for readable text on white.
+- **Quiet Stone** (stone-600): meta text (type · city, facts, labels, counts) on limestone, and input placeholders on white (5.9:1).
 - **Deep Stone** (stone-700): lead paragraphs, ghost-button text, label text.
-- **White** (white): search panel, inputs, dialogs, admin table surface, the call button on ink.
+- **White** (white): search panel, inputs, dialogs, the call button on ink.
 - **Error Red** (error / error-text / error-bg): admin form errors and destructive actions only. Not a brand colour.
 
 ### Named Rules
@@ -248,6 +248,8 @@ A warm, low-chroma palette: ink and limestone do the work, brass marks, olive di
 **The No-Blue Rule.** No blue in the brand layer: no blue buttons, links, focus rings, badges or gradients.
 
 **The Status-by-Fill Rule.** All status badges share one frame; the fill alone separates them: sale = ink, rent = olive, Exclusive = brass-dark, Featured = transparent with a stone outline.
+
+**The Browser-Surface Rule.** Parts the browser draws follow the palette too: the text caret is brass-dark, native checkboxes and radios take ink (`accent-color`), the scrollbar is a thin stone-400 thumb on limestone, and text selection is brass-light with ink text.
 
 ## Typography
 
@@ -280,7 +282,7 @@ A warm, low-chroma palette: ink and limestone do the work, brass marks, olive di
 
 A single centred container (max 1280px) with 16 / 24 / 32px side gutters at mobile / sm (640px) / lg (1024px). The sticky header is 64px, limestone at 95% with a backdrop blur and a stone-200 bottom rule.
 
-The home page opens with a full-bleed photo hero (min 500px mobile, 640px sm, viewport height minus header at lg, capped 860px) with content anchored to the bottom: headline, subtitle, then the search panel set into the photo. The search panel is a two-column grid on mobile and a single five-track row on desktop (four selects plus the count-bearing submit). Results follow in a 1 / 2 / 3-column grid with a 32px column gap and 56px row gap, introduced by a heading row that sits on a stone-300 hairline with count, "Clear filters" and the sort select on the end side.
+The home page opens with a full-bleed photo hero (min 500px mobile, 640px sm, viewport height minus header at lg, capped 860px) with content anchored to the bottom: headline, subtitle, the search panel set into the photo, and the caption plate beneath it at the end side. On phones the panel is a single row, a "Filters" toggle (showing the number of active filters) beside the count-bearing submit, and the four selects open below on demand (`aria-expanded`), so the photograph keeps the first screen. From sm up the four selects sit in the panel: two columns at sm, a single five-track row on desktop (four selects plus the submit). Results follow in a 1 / 2 / 3-column grid with a 32px column gap and 56px row gap, introduced by a heading row that sits on a stone-300 hairline with count, "Clear filters" and the sort select on the end side.
 
 The listing page reads top to bottom like a sheet: back link, a header row (badges, H1 and address at start; price at end on desktop) closed by a hairline, a full-width gallery (4:3 mobile, 16:9 desktop) with a thumbnail strip, a facts row as a `dl` between two hairlines (2 / 3 / 6 columns), then a two-column body (text, and a 380px sticky contact panel) on desktop. On mobile a sticky bottom bar keeps Call and WhatsApp in reach and stops at the page end.
 
@@ -324,24 +326,24 @@ Quiet, solid, near-square.
 - **Variants:** sale = ink at 90% with a white/25 ring; rent = olive with olive-light ring; Exclusive ("בבלעדיות") = brass-dark with brass-light ring; Featured = transparent, stone-700 text, stone-400 ring, no shadow (shown on the listing page only).
 
 ### Cards / Containers
-- **Property card:** no box. A 4:3 photo (4px corners, Sandstone placeholder) with badges at the top-start corner, then meta (type · city, 15px stone-600), the serif card title, the price and a facts line separated by middle dots (with screen-reader commas). Hover: photo scales to 1.03 over 700ms and the title gains a 1px brass underline at 6px offset. The whole card is one link with a brass focus ring offset 4px.
+- **Property card:** no box. A 4:3 photo (4px corners, Sandstone placeholder) with badges at the top-start corner, then the serif card title, the meta line under it (type · city, 15px stone-600; never above the title as an eyebrow), the price and a facts line separated by middle dots (with screen-reader commas). Hover: photo scales to 1.03 over 700ms and the title gains a 1px brass underline at 6px offset. The whole card is one link with a brass focus ring offset 4px.
 - **Contact panel:** the one ink block on the listing page. 32px padding, serif title in white, advisor initials monogram (56px brass circle, ink serif initials), stacked call / WhatsApp / email actions.
-- **Admin table:** white surface with a stone-200 inset ring, 4px corners, stone-100 row rules, Chalk row hover.
+- **Admin table:** no box. It sits on the limestone ground like the rest of the site: a stone-400 rule under the column headings, stone-300 hairlines between rows, Sandstone/40 row hover, a screen-reader caption and `scope="col"` headers.
 - **Notice:** white with a brass/60 inset ring and a dark-brass warning icon (statement demo note); error notices are error-bg with an error inset ring.
 
 ### Inputs / Fields
-- **Style:** white, 1px stone-300 border, 4px corners, 44px tall, 16px text, stone-500 placeholder. Hover border stone-400. Native selects keep native behaviour with a stone-500 chevron at the end side.
+- **Style:** white, 1px stone-300 border, 4px corners, 44px tall, 16px text, stone-600 placeholder (5.9:1). Hover border stone-400. Native selects keep native behaviour with a stone-500 chevron at the end side.
 - **Focus:** border turns ink plus a 2px brass/60 ring.
 - **Error:** `aria-invalid` turns the border Error Red; the message sits below in 15px error-text with an icon, and a summary alert heads the form.
 - **Search field (hero):** borderless select under a 13px caption; the whole field cell highlights (Chalk hover, Limestone when focused) and draws the brass ring on keyboard focus.
 
 ### Navigation
 - **Header:** serif wordmark at the start; at the end, text-weight controls (15px medium, stone-700, 44px tall, 4px corners): nav links (md+), a 1px stone-300 divider, the language toggle (Globe icon, the other language's name in its own `lang`), and login or the user menu. The active link is ink with a 2px brass underline at 10px offset.
-- **Footer:** ink ground, three columns (wordmark and tagline; Contact; Services) with brass-light 14px semibold column headings, stone-300/400 text, 44px link targets, then a bottom row on a stone-700 hairline with copyright, the accessibility statement link and the demo-site note.
+- **Footer:** ink ground, three columns (wordmark and tagline; Contact; Services) with brass-light 14px semibold column headings. Contact holds the only links (email and phone, always underlined in stone-600, brass-light on hover, 44px targets) plus the demo address; Services is one plain-text line, "Property sales and rentals" / "מכירה והשכרה של נכסים", styled so it never looks clickable. Then a bottom row on a stone-700 hairline with copyright, the accessibility statement link and the demo-site note.
 - **Skip link:** first tab stop; appears top-start as a white chip with panel shadow and brass ring.
 
 ### Hero Caption Plate (signature)
-A small ink/70 plate at the hero's top-end corner, 44px tall: "Pictured:" in stone-400 then the photographed listing's title · city, linking to it. It names the real listing in the photo rather than decorating it.
+A small ink/70 plate at the hero's bottom-end corner, directly under the search panel, 44px tall: "Pictured:" in stone-400 then the photographed listing's title · city, linking to it. It names the real listing in the photo rather than decorating it. It sits in its own row below the panel (the panel owns the bottom edge), so it never overlaps the search or the headline.
 
 ### Gallery (signature)
 Full-width 4:3 / 16:9 image, 48px round ink/70 previous/next buttons at start and end, an "n / total" counter (2px ink/75 plate, `dir="ltr"`) at the bottom-end, and a strip of 112×80 thumbnails where the current one wears a brass ring.

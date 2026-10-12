@@ -7,7 +7,7 @@ import { Select } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createPageUrl } from "@/utils";
 import { sizedImage, imageSrcSet } from "@/lib/utils";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown, SlidersHorizontal } from "lucide-react";
 
 // A filter field inside the hero search panel: small label over a large value.
 // Keyboard focus draws a brass ring around the whole field (WCAG 2.4.7).
@@ -21,7 +21,7 @@ function SearchField({ label, children }) {
 }
 
 const fieldSelect =
-  "h-9 rounded-none border-0 bg-transparent px-0 pe-7 text-base font-medium text-ink focus-visible:ring-0 sm:text-[17px]";
+  "h-9 rounded-none border-0 bg-transparent px-0 pe-7 text-base font-medium text-ink focus-visible:ring-0 sm:text-lg";
 
 // Max-price steps. Sale and rent prices live on different scales, so the list
 // follows the chosen deal type (both groups when "sale or rent" is chosen).
@@ -54,6 +54,7 @@ export default function Properties() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const resultsRef = useRef(null);
+  const [filtersOpen, setFiltersOpen] = useState(false); // phones only
 
   // Filters and sort live in the URL (#/Properties?city=Haifa&deal=sale…), so a
   // filtered list can be shared, survives a reload and comes back on Back.
@@ -145,7 +146,8 @@ export default function Properties() {
   );
   const heroImage = heroProperty?.images?.[0];
 
-  const isFiltered = city !== "all" || listingType !== "all" || propertyType !== "all" || maxPrice !== null;
+  const activeFilters = [city !== "all", listingType !== "all", propertyType !== "all", maxPrice !== null].filter(Boolean).length;
+  const isFiltered = activeFilters > 0;
   // Clears the filters; the chosen sort order stays.
   const clearFilters = () => updateParams({ city: null, deal: null, type: null, max: null });
 
@@ -182,22 +184,7 @@ export default function Properties() {
           className="absolute inset-0 -z-10 bg-gradient-to-t from-ink/90 via-ink/45 to-ink/20"
         />
 
-        {heroProperty && (
-          <Link
-            to={createPageUrl(`PropertyDetail?id=${heroProperty.id}`)}
-            className="group absolute end-4 top-4 inline-flex min-h-11 max-w-[calc(100%-2rem)] items-center gap-2 rounded-[4px] bg-ink/70 px-3.5 text-sm text-stone-200 transition-colors hover:bg-ink/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-light sm:end-6 sm:top-6"
-          >
-            <span className="truncate">
-              <span className="text-stone-400">{t("Pictured: ", "בתמונה: ")}</span>
-              {t(heroProperty.title, heroProperty.title_he || heroProperty.title)}
-              {" · "}
-              {t(heroProperty.city, heroProperty.city_he || heroProperty.city)}
-            </span>
-            <ArrowLeft className="h-4 w-4 shrink-0 ltr:rotate-180" aria-hidden="true" />
-          </Link>
-        )}
-
-        <div className="relative mx-auto mt-auto w-full max-w-7xl px-4 pb-6 pt-24 sm:px-6 sm:pb-12 sm:pt-28 lg:px-8 lg:pb-16">
+        <div className="relative mx-auto mt-auto w-full max-w-7xl px-4 pb-4 pt-24 sm:px-6 sm:pb-8 sm:pt-28 lg:px-8 lg:pb-10">
           <h1 className="max-w-3xl font-display text-[2.5rem] font-bold leading-[1.08] text-white [text-wrap:balance] sm:text-6xl lg:text-7xl">
             {t("Find Your Next Home", "מצאו את הבית הבא שלכם")}
           </h1>
@@ -216,8 +203,14 @@ export default function Properties() {
               e.preventDefault();
               showResults();
             }}
-            className="mt-6 grid grid-cols-2 gap-1 rounded-md bg-white p-1.5 text-ink shadow-panel sm:mt-8 sm:p-2 lg:max-w-6xl lg:grid-cols-[1fr_1fr_1fr_1fr_auto] lg:items-center"
+            className="mt-6 grid grid-cols-2 gap-1 rounded-[4px] bg-white p-1.5 text-ink shadow-panel sm:mt-8 sm:p-2 lg:max-w-6xl lg:grid-cols-[1fr_1fr_1fr_1fr_auto] lg:items-center"
           >
+            {/* On phones the four fields fold behind a "Filters" toggle so the
+                photograph keeps the first screen; from sm up they sit in the panel. */}
+            <div
+              id="search-fields"
+              className={`${filtersOpen ? "grid" : "hidden"} col-span-2 grid-cols-2 gap-1 sm:contents`}
+            >
             <SearchField label={t("City", "עיר")}>
               <Select
                 value={city}
@@ -290,16 +283,52 @@ export default function Properties() {
                 )}
               </Select>
             </SearchField>
+            </div>
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((o) => !o)}
+              aria-expanded={filtersOpen}
+              aria-controls="search-fields"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[4px] px-3 text-base font-semibold text-ink ring-1 ring-inset ring-stone-300 hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass sm:hidden"
+            >
+              <SlidersHorizontal className="h-5 w-5" aria-hidden="true" />
+              {t("Filters", "סינון")}
+              {activeFilters > 0 && (
+                <span className="tabular-nums text-brass-dark">({activeFilters})</span>
+              )}
+              <ChevronDown
+                className={`h-4 w-4 transition-transform motion-reduce:transition-none ${filtersOpen ? "rotate-180" : ""}`}
+                aria-hidden="true"
+              />
+            </button>
             <button
               type="submit"
               disabled={loading}
-              className="col-span-2 mt-1 inline-flex min-h-12 items-center justify-center gap-2 rounded-[4px] bg-ink px-7 text-base font-semibold text-white transition-colors hover:bg-ink-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 disabled:opacity-60 sm:min-h-14 lg:col-span-1 lg:mt-0"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[4px] bg-ink px-4 text-base font-semibold text-white transition-colors hover:bg-ink-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 disabled:opacity-60 sm:col-span-2 sm:mt-1 sm:min-h-14 sm:px-7 lg:col-span-1 lg:mt-0"
             >
               <span className="tabular-nums">
                 {loading ? t("Show listings", "הצגת נכסים") : t(`Show ${countLabel(filtered.length)}`, `הצגת ${countLabel(filtered.length)}`)}
               </span>
             </button>
           </form>
+
+          {/* Caption for the photograph: bottom-end corner, under the search */}
+          {heroProperty && (
+            <div className="mt-3 flex justify-end lg:max-w-6xl">
+              <Link
+                to={createPageUrl(`PropertyDetail?id=${heroProperty.id}`)}
+                className="inline-flex min-h-11 max-w-full items-center gap-2 rounded-[4px] bg-ink/70 px-3.5 text-sm text-stone-200 transition-colors hover:bg-ink/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-light"
+              >
+                <span className="truncate">
+                  <span className="text-stone-400">{t("Pictured: ", "בתמונה: ")}</span>
+                  {t(heroProperty.title, heroProperty.title_he || heroProperty.title)}
+                  {" · "}
+                  {t(heroProperty.city, heroProperty.city_he || heroProperty.city)}
+                </span>
+                <ArrowLeft className="h-4 w-4 shrink-0 ltr:rotate-180" aria-hidden="true" />
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 

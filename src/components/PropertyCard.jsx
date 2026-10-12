@@ -46,15 +46,16 @@ export default function PropertyCard({ property }) {
         </div>
       </div>
       <div className="mt-4">
-        <p className="text-[15px] text-stone-600">
+        <h3 className="line-clamp-1 font-display text-[22px] font-bold leading-snug text-ink decoration-brass decoration-1 underline-offset-[6px] group-hover:underline">
+          {title}
+        </h3>
+        {/* Type and city follow the title (no label above the heading) */}
+        <p className="mt-1 text-[15px] text-stone-600">
           {typeLabel}
           <span aria-hidden="true"> · </span>
           <span className="sr-only">, </span>
           {city}
         </p>
-        <h3 className="mt-1.5 line-clamp-1 font-display text-[22px] font-bold leading-snug text-ink decoration-brass decoration-1 underline-offset-[6px] group-hover:underline">
-          {title}
-        </h3>
         <p className="mt-2 text-lg font-semibold tabular-nums text-ink">
           {formatPrice(property.price, property.currency, property.listing_type, language)}
         </p>
