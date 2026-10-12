@@ -522,14 +522,17 @@ export default function Admin() {
                 {form.images.map((src, i) => (
                   <li key={i} className="relative aspect-[4/3] overflow-hidden rounded-[4px] bg-stone-200">
                     <img src={sizedImage(src, 400)} alt="" className="h-full w-full object-cover" />
-                    <button
+                    <Button
                       type="button"
+                      variant="overlay"
+                      size="icon-sm"
                       onClick={() => removeImage(i)}
                       aria-label={t(`Remove photo ${i + 1}`, `הסרת תמונה ${i + 1}`)}
-                      className="absolute end-1.5 top-1.5 flex h-9 w-9 items-center justify-center rounded-full bg-ink/80 text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-light"
+                      // Keeps its darker fill, red "remove" hover and light-brass ring with no gap on the photo.
+                      className="absolute end-1.5 top-1.5 bg-ink/80 hover:bg-red-700 focus-visible:ring-brass-light focus-visible:ring-offset-0"
                     >
                       <X className="h-4 w-4" aria-hidden="true" />
-                    </button>
+                    </Button>
                     {i === 0 && (
                       <span className="absolute bottom-1.5 start-1.5 rounded-[2px] bg-ink/90 px-2 py-0.5 text-[13px] font-semibold text-white">
                         {t("Cover", "ראשית")}

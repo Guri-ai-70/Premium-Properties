@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Property } from "@/entities/Property";
 import { useLanguage, usePageTitle } from "@/components/LanguageContext";
 import PropertyCard from "@/components/PropertyCard";
+import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createPageUrl } from "@/utils";
@@ -396,13 +397,13 @@ export default function Properties() {
             <p className="mt-2 text-stone-600">
               {t("Try another city, deal type or price.", "אפשר לנסות עיר, סוג עסקה או מחיר אחרים.")}
             </p>
-            <button
+            <Button
               type="button"
               onClick={clearFilters}
-              className="mt-6 inline-flex min-h-11 items-center rounded-[4px] bg-ink px-5 font-semibold text-white hover:bg-ink-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2"
+              className="mt-6 text-base"
             >
               {t("Show all properties", "הצגת כל הנכסים")}
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
