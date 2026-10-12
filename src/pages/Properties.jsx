@@ -10,9 +10,11 @@ import { sizedImage, imageSrcSet } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 
 // A filter field inside the hero search panel: small label over a large value.
+// Keyboard focus draws a brass ring around the whole field (WCAG 2.4.7).
 function SearchField({ label, children }) {
   return (
-    <label className="block rounded-[4px] px-4 pb-1 pt-2.5 transition-colors focus-within:bg-stone-100 hover:bg-stone-50">
+    <label className="block rounded-[4px] px-4 pb-1 pt-2.5 transition-colors focus-within:bg-stone-100 hover:bg-stone-50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brass">
+
       <span className="block text-[13px] font-medium text-stone-600">{label}</span>
       {children}
     </label>

@@ -261,7 +261,15 @@ export default function Layout({ children, currentPageName }) {
             </div>
             <div className="mt-14 flex flex-col gap-2 border-t border-stone-700/60 pt-6 text-sm text-stone-400 sm:flex-row sm:items-center sm:justify-between">
               <p>© {new Date().getFullYear()} {siteName}. {t('All rights reserved', 'כל הזכויות שמורות')}.</p>
-              <p>{t('Demo site: all listings and details are fictional.', 'אתר הדגמה: כל הנכסים והפרטים באתר בדויים.')}</p>
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-6">
+                <Link
+                  to={createPageUrl("Accessibility")}
+                  className="inline-flex min-h-11 items-center font-medium text-stone-200 underline decoration-stone-600 underline-offset-4 hover:text-white hover:decoration-brass-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-light"
+                >
+                  {t('Accessibility statement', 'הצהרת נגישות')}
+                </Link>
+                <p>{t('Demo site: all listings and details are fictional.', 'אתר הדגמה: כל הנכסים והפרטים באתר בדויים.')}</p>
+              </div>
             </div>
           </div>
         </footer>

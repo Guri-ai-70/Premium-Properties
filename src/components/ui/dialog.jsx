@@ -64,7 +64,7 @@ export function Modal({ open, onClose, children, className, labelledBy, describe
         aria-describedby={describedBy}
         tabIndex={-1}
         className={cn(
-          "relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl",
+          "relative w-full max-w-md rounded-[4px] bg-white p-6 shadow-panel sm:p-8",
           className
         )}
       >

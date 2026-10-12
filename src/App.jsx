@@ -4,6 +4,7 @@ import Layout from "@/pages/Layout";
 import Properties from "@/pages/Properties";
 import PropertyDetail from "@/pages/PropertyDetail";
 import Admin from "@/pages/Admin";
+import Accessibility from "@/pages/Accessibility";
 
 // Derives the current page name from the path so Layout can highlight nav.
 function currentPageName(pathname) {
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/Properties" element={<Properties />} />
         <Route path="/PropertyDetail" element={<PropertyDetail />} />
         <Route path="/Admin" element={<Admin />} />
+        <Route path="/Accessibility" element={<Accessibility />} />
         <Route path="*" element={<Navigate to="/Properties" replace />} />
       </Routes>
     </Layout>
