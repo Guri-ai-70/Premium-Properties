@@ -6,7 +6,8 @@ import { createPageUrl } from "@/utils";
 import { WHATSAPP_NUMBER } from "@/config";
 import { useLanguage, usePageTitle } from "@/components/LanguageContext";
 import StatusBadges from "@/components/StatusBadges";
-import { formatPrice, displayPhone, telHref, sizedImage, imageSrcSet } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn, formatPrice, displayPhone, telHref, sizedImage, imageSrcSet } from "@/lib/utils";
 import {
   getRooms,
   hasRooms,
@@ -57,7 +58,8 @@ function BackLink({ t }) {
 
 // WhatsApp: a real link once WHATSAPP_NUMBER is set in config.js; until then a
 // placeholder button that opens nothing and says the number is coming.
-function WhatsAppButton({ t, title, className, onPlaceholder }) {
+// Both forms take their look from the shared Button styles.
+function WhatsAppButton({ t, title, variant, className, onPlaceholder }) {
   const content = (
     <>
       <MessageCircle className="h-5 w-5" aria-hidden="true" />
@@ -71,16 +73,16 @@ function WhatsAppButton({ t, title, className, onPlaceholder }) {
         href={`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`}
         target="_blank"
         rel="noopener noreferrer"
-        className={className}
+        className={cn(buttonVariants({ variant, size: "lg" }), className)}
       >
         {content}
       </a>
     );
   }
   return (
-    <button type="button" onClick={onPlaceholder} className={className}>
+    <Button type="button" variant={variant} size="lg" onClick={onPlaceholder} className={className}>
       {content}
-    </button>
+    </Button>
   );
 }
 
@@ -142,7 +144,7 @@ export default function PropertyDetail() {
         </p>
         <Link
           to={createPageUrl("Properties")}
-          className={`mt-8 inline-flex min-h-12 items-center gap-2 rounded-[4px] bg-ink px-6 font-semibold text-white hover:bg-ink-soft ${focusRing}`}
+          className={cn(buttonVariants({ size: "lg" }), "mt-8 gap-2 text-base")}
         >
           <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true" />
           {t("Back to all properties", "חזרה לכל הנכסים")}
@@ -177,7 +179,8 @@ export default function PropertyDetail() {
   const agentName = agent ? t(agent.name, agent.name_he) : null;
   const phoneShown = company ? displayPhone(company.contact_phone, language) : null;
 
-  const callClass = `inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-[4px] px-4 text-base font-semibold ${focusRing}`;
+  // Call/WhatsApp keep their 48px height, 16px text and tighter padding on the shared Button.
+  const callSize = "gap-2 px-4 text-base";
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
@@ -220,22 +223,26 @@ export default function PropertyDetail() {
           />
           {images.length > 1 && (
             <>
-              <button
+              <Button
                 type="button"
+                variant="overlay"
+                size="icon-lg"
                 onClick={() => go(-1)}
                 aria-label={t("Previous photo", "התמונה הקודמת")}
-                className={`absolute start-3 top-1/2 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-ink/70 text-white transition-colors hover:bg-ink ${focusRing}`}
+                className="absolute start-3 top-1/2 -translate-y-1/2"
               >
                 <ChevronLeft className="h-6 w-6 rtl:-scale-x-100" aria-hidden="true" />
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                variant="overlay"
+                size="icon-lg"
                 onClick={() => go(1)}
                 aria-label={t("Next photo", "התמונה הבאה")}
-                className={`absolute end-3 top-1/2 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-ink/70 text-white transition-colors hover:bg-ink ${focusRing}`}
+                className="absolute end-3 top-1/2 -translate-y-1/2"
               >
                 <ChevronRight className="h-6 w-6 rtl:-scale-x-100" aria-hidden="true" />
-              </button>
+              </Button>
               <p
                 className="absolute bottom-3 end-3 rounded-[2px] bg-ink/75 px-2.5 py-0.5 text-[13px] font-semibold tabular-nums text-white"
                 aria-live="polite"
@@ -254,7 +261,7 @@ export default function PropertyDetail() {
                 onClick={() => setActiveImage(i)}
                 aria-label={t(`Show photo ${i + 1} of ${images.length}`, `הצגת תמונה ${i + 1} מתוך ${images.length}`)}
                 aria-pressed={i === current}
-                className={`h-20 w-28 shrink-0 overflow-hidden rounded-[4px] ring-2 ring-offset-2 ring-offset-stone-100 transition ${
+                className={`h-20 w-28 shrink-0 overflow-hidden rounded-[4px] ring-2 ring-offset-2 ring-offset-stone-100 transition-[opacity,box-shadow] duration-150 ${
                   i === current ? "ring-brass" : "ring-transparent opacity-75 hover:opacity-100"
                 } ${focusRing}`}
               >
@@ -321,7 +328,7 @@ export default function PropertyDetail() {
                 <a
                   href={telHref(company.contact_phone)}
                   aria-label={t(`Call ${phoneShown}`, `התקשרו ${phoneShown}`)}
-                  className={`${callClass} bg-white text-ink hover:bg-stone-100 focus-visible:ring-offset-ink`}
+                  className={cn(buttonVariants({ variant: "inverse", size: "lg" }), callSize)}
                 >
                   <Phone className="h-5 w-5" aria-hidden="true" />
                   <span dir="ltr" className="tabular-nums">{phoneShown}</span>
@@ -329,8 +336,9 @@ export default function PropertyDetail() {
                 <WhatsAppButton
                   t={t}
                   title={title}
+                  variant="outline-inverse"
                   onPlaceholder={() => setWhatsAppNote(true)}
-                  className={`${callClass} text-white ring-1 ring-inset ring-stone-500 hover:bg-ink-soft focus-visible:ring-offset-ink`}
+                  className={callSize}
                 />
                 <p aria-live="polite" className="text-sm text-stone-400 empty:hidden">
                   {whatsAppNote &&
@@ -359,7 +367,7 @@ export default function PropertyDetail() {
             <a
               href={telHref(company.contact_phone)}
               aria-label={t(`Call ${phoneShown}`, `התקשרו ${phoneShown}`)}
-              className={`${callClass} bg-ink text-white`}
+              className={cn(buttonVariants({ size: "lg" }), callSize, "flex-1")}
             >
               <Phone className="h-5 w-5" aria-hidden="true" />
               {t("Call", "התקשרו")}
@@ -367,11 +375,12 @@ export default function PropertyDetail() {
             <WhatsAppButton
               t={t}
               title={title}
+              variant="outline"
               onPlaceholder={() => {
                 setWhatsAppNote(true);
                 document.getElementById("contact-heading")?.scrollIntoView({ block: "center" });
               }}
-              className={`${callClass} bg-white text-ink ring-1 ring-inset ring-stone-300`}
+              className={cn(callSize, "flex-1")}
             />
           </div>
         </div>

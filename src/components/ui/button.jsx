@@ -13,12 +13,21 @@ const buttonVariants = cva(
         ghost: "text-stone-700 hover:bg-stone-200/60 hover:text-ink",
         destructive: "bg-red-700 text-white hover:bg-red-800",
         secondary: "bg-stone-200 text-ink hover:bg-stone-300",
+        // On the ink contact panel: white primary, and an outlined secondary.
+        // The focus-ring offset is ink so the ring has no light halo on the dark panel.
+        inverse: "bg-white text-ink hover:bg-stone-100 focus-visible:ring-offset-ink",
+        "outline-inverse":
+          "text-white ring-1 ring-inset ring-stone-500 hover:bg-ink-soft focus-visible:ring-offset-ink",
+        // Round controls laid over photographs (gallery arrows, remove photo).
+        overlay: "rounded-full bg-ink/70 text-white hover:bg-ink",
       },
       size: {
         default: "h-11 px-5",
         sm: "h-10 px-3",
         lg: "h-12 px-6",
         icon: "h-11 w-11",
+        "icon-sm": "h-9 w-9",
+        "icon-lg": "h-12 w-12",
       },
     },
     defaultVariants: {
