@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-12T00:00:00Z",
+  "title": "Design System: Premium Properties / נכסים פרימיום",
+  "extensions": {
+    "colorMeta": {
+      "ink": { "role": "primary", "displayName": "Warm Ink", "canonical": "#1b1916", "tonalRamp": ["#1b1916", "#2b2824", "#423d37", "#5c554d", "#7a7268", "#9d958a", "#c4bdb2", "#ebe6de"] },
+      "ink-soft": { "role": "primary", "displayName": "Soft Ink", "canonical": "#2b2824", "tonalRamp": ["#1b1916", "#2b2824", "#423d37", "#5c554d", "#7a7268", "#9d958a", "#c4bdb2", "#ebe6de"] },
+      "stone-100": { "role": "neutral", "displayName": "Limestone", "canonical": "#f3efe8", "tonalRamp": ["#4f483f", "#6b6257", "#857a6c", "#a99e8f", "#d3c8b7", "#e6dfd3", "#f3efe8", "#f9f7f3"] },
+      "stone-50": { "role": "neutral", "displayName": "Chalk", "canonical": "#f9f7f3", "tonalRamp": ["#4f483f", "#6b6257", "#857a6c", "#a99e8f", "#d3c8b7", "#e6dfd3", "#f3efe8", "#f9f7f3"] },
+      "stone-200": { "role": "neutral", "displayName": "Sandstone", "canonical": "#e6dfd3", "tonalRamp": ["#4f483f", "#6b6257", "#857a6c", "#a99e8f", "#d3c8b7", "#e6dfd3", "#f3efe8", "#f9f7f3"] },
+      "stone-300": { "role": "neutral", "displayName": "Hairline Stone", "canonical": "#d3c8b7", "tonalRamp": ["#4f483f", "#6b6257", "#857a6c", "#a99e8f", "#d3c8b7", "#e6dfd3", "#f3efe8", "#f9f7f3"] },
+      "stone-400": { "role": "neutral", "displayName": "Weathered Stone", "canonical": "#a99e8f", "tonalRamp": ["#4f483f", "#6b6257", "#857a6c", "#a99e8f", "#d3c8b7", "#e6dfd3", "#f3efe8", "#f9f7f3"] },
+      "stone-500": { "role": "neutral", "displayName": "Weathered Stone (deep)", "canonical": "#857a6c", "tonalRamp": ["#4f483f", "#6b6257", "#857a6c", "#a99e8f", "#d3c8b7", "#e6dfd3", "#f3efe8", "#f9f7f3"] },
+      "stone-600": { "role": "neutral", "displayName": "Quiet Stone", "canonical": "#6b6257", "tonalRamp": ["#4f483f", "#6b6257", "#857a6c", "#a99e8f", "#d3c8b7", "#e6dfd3", "#f3efe8", "#f9f7f3"] },
+      "stone-700": { "role": "neutral", "displayName": "Deep Stone", "canonical": "#4f483f", "tonalRamp": ["#4f483f", "#6b6257", "#857a6c", "#a99e8f", "#d3c8b7", "#e6dfd3", "#f3efe8", "#f9f7f3"] },
+      "white": { "role": "neutral", "displayName": "White", "canonical": "#ffffff" },
+      "brass": { "role": "secondary", "displayName": "Antique Brass", "canonical": "#9a7440", "tonalRamp": ["#3a2a14", "#5a421f", "#7a5a2b", "#9a7440", "#b58f5a", "#c9a66b", "#e0cba3", "#f4ecdc"] },
+      "brass-dark": { "role": "secondary", "displayName": "Dark Brass", "canonical": "#7a5a2b", "tonalRamp": ["#3a2a14", "#5a421f", "#7a5a2b", "#9a7440", "#b58f5a", "#c9a66b", "#e0cba3", "#f4ecdc"] },
+      "brass-light": { "role": "secondary", "displayName": "Pale Brass", "canonical": "#c9a66b", "tonalRamp": ["#3a2a14", "#5a421f", "#7a5a2b", "#9a7440", "#b58f5a", "#c9a66b", "#e0cba3", "#f4ecdc"] },
+      "olive": { "role": "tertiary", "displayName": "Deep Olive", "canonical": "#3d5a47", "tonalRamp": ["#1a2a1f", "#2a4033", "#3d5a47", "#56735f", "#7a947f", "#a3b59a", "#c9d5c2", "#ecf1e8"] },
+      "olive-light": { "role": "tertiary", "displayName": "Pale Olive", "canonical": "#a3b59a", "tonalRamp": ["#1a2a1f", "#2a4033", "#3d5a47", "#56735f", "#7a947f", "#a3b59a", "#c9d5c2", "#ecf1e8"] },
+      "error": { "role": "status", "displayName": "Error Red", "canonical": "#b91c1c" },
+      "error-text": { "role": "status", "displayName": "Error Red (text)", "canonical": "#991b1b" },
+      "error-bg": { "role": "status", "displayName": "Error Wash", "canonical": "#fef2f2" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Home hero H1 only, white on the photo scrim. 40 / 60 / 72px." },
+      "headline": { "displayName": "Headline", "purpose": "Listing H1 (36 / 48 / 60px) and page H1s on admin and the statement." },
+      "title": { "displayName": "Title", "purpose": "Section headings; 24px for panel, dialog and empty-state titles; 20px for form legends." },
+      "card-title": { "displayName": "Card Title", "purpose": "Listing card titles (one line) and the wordmark." },
+      "price": { "displayName": "Price", "purpose": "Heebo semibold tabular. 18px on cards, 36 / 48px on the listing header." },
+      "body-lead": { "displayName": "Body Lead", "purpose": "Descriptions and statement paragraphs, max 65ch, line-height 1.9 in Hebrew." },
+      "body": { "displayName": "Body", "purpose": "Default text, inputs, selects. Line-height 1.7 in Hebrew." },
+      "meta": { "displayName": "Meta", "purpose": "Type · city, fact labels, header controls, button text." },
+      "label": { "displayName": "Label", "purpose": "Badges, gallery counter, search-field captions. 13px is the Hebrew floor." }
+    },
+    "shadows": [
+      { "name": "panel", "value": "0 18px 40px -12px rgba(27, 25, 22, 0.45)", "purpose": "Floating panels only: hero search panel, dialogs, dropdown menus, focused skip link." },
+      { "name": "badge-lift", "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05)", "purpose": "Status badges lying on photographs." }
+    ],
+    "motion": [
+      { "name": "settle", "value": "settle 1.6s cubic-bezier(0.16, 1, 0.3, 1) both (scale 1.06 -> 1)", "purpose": "Hero photo settles on load. Disabled under prefers-reduced-motion." },
+      { "name": "card-photo-zoom", "value": "transform 700ms ease-out, scale 1.03", "purpose": "Listing card photo on hover. Disabled under prefers-reduced-motion." },
+      { "name": "color-transition", "value": "color, background-color, border-color 150ms cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default hover and focus state change." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ],
+    "focus": {
+      "light": "0 0 0 2px #f3efe8, 0 0 0 4px #9a7440",
+      "dark": "0 0 0 2px #1b1916, 0 0 0 4px #9a7440",
+      "on-ink-link": "0 0 0 2px #c9a66b",
+      "field": "border #1b1916 + 0 0 0 2px rgba(154, 116, 64, 0.6)"
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ink, near-square, 44px. The main action on light grounds.",
+      "html": "<button class=\"ds-btn-primary\">הצגת 6 נכסים</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 20px; background: #1b1916; color: #ffffff; font-family: Heebo, Arial, sans-serif; font-size: 15px; font-weight: 600; border: none; border-radius: 4px; cursor: pointer; transition: background-color 150ms; } .ds-btn-primary:hover { background: #2b2824; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #f3efe8, 0 0 0 4px #9a7440; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "White with a hairline stone border; secondary actions in admin.",
+      "html": "<button class=\"ds-btn-outline\">ביטול</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 20px; background: #ffffff; color: #1b1916; font-family: Heebo, Arial, sans-serif; font-size: 15px; font-weight: 600; border: 1px solid #d3c8b7; border-radius: 4px; cursor: pointer; transition: background-color 150ms, border-color 150ms; } .ds-btn-outline:hover { background: #f9f7f3; border-color: #a99e8f; } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px #f3efe8, 0 0 0 4px #9a7440; }"
+    },
+    {
+      "name": "Ghost Header Control",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Text-weight header controls (nav, language, login); active link wears a brass underline.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link ds-nav-active\" href=\"#\" aria-current=\"page\">נכסים</a><span class=\"ds-nav-div\"></span><button class=\"ds-nav-link\">English</button></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 4px; direction: rtl; background: #f3efe8; padding: 10px 16px; border-bottom: 1px solid #e6dfd3; } .ds-nav-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 4px; background: transparent; border: none; font-family: Heebo, Arial, sans-serif; font-size: 15px; font-weight: 500; color: #4f483f; text-decoration: none; cursor: pointer; transition: background-color 150ms, color 150ms; } .ds-nav-link:hover { background: rgba(230, 223, 211, 0.6); color: #1b1916; } .ds-nav-link:focus-visible { outline: none; box-shadow: 0 0 0 2px #9a7440; } .ds-nav-active { color: #1b1916; text-decoration: underline; text-decoration-color: #9a7440; text-decoration-thickness: 2px; text-underline-offset: 10px; } .ds-nav-div { width: 1px; height: 20px; background: #d3c8b7; margin: 0 4px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "White field, hairline stone border, ink border plus brass ring on focus.",
+      "html": "<input class=\"ds-input\" placeholder=\"שם הנכס\" />",
+      "css": ".ds-input { height: 44px; width: 100%; max-width: 320px; padding: 8px 12px; background: #ffffff; color: #1b1916; font-family: Heebo, Arial, sans-serif; font-size: 16px; border: 1px solid #d3c8b7; border-radius: 4px; direction: rtl; } .ds-input::placeholder { color: #6b6257; } .ds-input:hover { border-color: #a99e8f; } .ds-input:focus-visible { outline: none; border-color: #1b1916; box-shadow: 0 0 0 2px rgba(154, 116, 64, 0.6); } .ds-input[aria-invalid=true] { border-color: #b91c1c; }"
+    },
+    {
+      "name": "Status Badges",
+      "kind": "chip",
+      "refersTo": "badge-sale",
+      "description": "One 2px frame; fill tells them apart: sale ink, rent olive, Exclusive brass-dark, Featured outline.",
+      "html": "<div class=\"ds-badges\"><span class=\"ds-badge ds-badge-sale\">למכירה</span><span class=\"ds-badge ds-badge-rent\">להשכרה</span><span class=\"ds-badge ds-badge-excl\">בבלעדיות</span><span class=\"ds-badge ds-badge-feat\">מומלץ</span></div>",
+      "css": ".ds-badges { display: flex; gap: 6px; direction: rtl; flex-wrap: wrap; } .ds-badge { display: inline-flex; padding: 2px 10px; border-radius: 2px; font-family: Heebo, Arial, sans-serif; font-size: 13px; font-weight: 600; line-height: 20px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); } .ds-badge-sale { background: rgba(27, 25, 22, 0.9); color: #ffffff; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25); } .ds-badge-rent { background: #3d5a47; color: #ffffff; box-shadow: inset 0 0 0 1px rgba(163,181,154,0.6); } .ds-badge-excl { background: #7a5a2b; color: #ffffff; box-shadow: inset 0 0 0 1px rgba(201,166,107,0.6); } .ds-badge-feat { background: transparent; color: #4f483f; box-shadow: inset 0 0 0 1px #a99e8f; }"
+    },
+    {
+      "name": "Property Card",
+      "kind": "card",
+      "refersTo": "property-card",
+      "description": "No box: a 4:3 photo with badges, then meta, serif title, price and facts. Hover zooms the photo and underlines the title in brass.",
+      "html": "<a class=\"ds-card\" href=\"#\"><div class=\"ds-card-img\"><span class=\"ds-card-badge\">למכירה</span></div><h3 class=\"ds-card-title\">פנטהאוז עם נוף לים</h3><p class=\"ds-card-meta\">דירה · תל אביב</p><p class=\"ds-card-price\">8,500,000 ₪</p><p class=\"ds-card-meta\">5 חדרים · 3 חדרי רחצה · 220 מ\"ר</p></a>",
+      "css": ".ds-card { display: block; width: 300px; direction: rtl; text-decoration: none; color: #1b1916; border-radius: 4px; font-family: Heebo, Arial, sans-serif; } .ds-card:focus-visible { outline: none; box-shadow: 0 0 0 4px #f3efe8, 0 0 0 6px #9a7440; } .ds-card-img { position: relative; aspect-ratio: 4 / 3; border-radius: 4px; overflow: hidden; background: linear-gradient(135deg, #d3c8b7, #a99e8f); transition: transform 700ms ease-out; } .ds-card:hover .ds-card-img { transform: scale(1.03); } .ds-card-badge { position: absolute; top: 12px; inset-inline-start: 12px; padding: 2px 10px; border-radius: 2px; background: rgba(27,25,22,0.9); color: #fff; font-size: 13px; font-weight: 600; line-height: 20px; } .ds-card-title + .ds-card-meta { margin-top: 4px; } .ds-card-meta { margin: 16px 0 0; font-size: 15px; color: #6b6257; font-variant-numeric: tabular-nums; } .ds-card-title { margin: 16px 0 0; font-family: 'Frank Ruhl Libre', Georgia, serif; font-size: 22px; font-weight: 700; line-height: 1.375; text-decoration-color: #9a7440; text-underline-offset: 6px; } .ds-card:hover .ds-card-title { text-decoration-line: underline; } .ds-card-price { margin: 8px 0 0; font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Hero Search Panel",
+      "kind": "custom",
+      "refersTo": "search-panel",
+      "description": "White panel set into the hero photo: captioned borderless selects and a submit carrying the live count.",
+      "html": "<form class=\"ds-search\"><label class=\"ds-search-field\"><span>עיר</span><select><option>כל הערים</option></select></label><label class=\"ds-search-field\"><span>סוג עסקה</span><select><option>מכירה או השכרה</option></select></label><button class=\"ds-search-go\" type=\"button\">הצגת 6 נכסים</button></form>",
+      "css": ".ds-search { display: grid; grid-template-columns: 1fr 1fr auto; gap: 4px; align-items: center; padding: 8px; background: #ffffff; color: #1b1916; border-radius: 6px; box-shadow: 0 18px 40px -12px rgba(27,25,22,0.45); direction: rtl; font-family: Heebo, Arial, sans-serif; max-width: 640px; } .ds-search-field { display: block; padding: 10px 16px 4px; border-radius: 4px; transition: background-color 150ms; } .ds-search-field:hover { background: #f9f7f3; } .ds-search-field:focus-within { background: #f3efe8; box-shadow: 0 0 0 2px #9a7440; } .ds-search-field span { display: block; font-size: 13px; font-weight: 500; color: #6b6257; } .ds-search-field select { width: 100%; height: 36px; border: 0; background: transparent; font: inherit; font-size: 17px; font-weight: 500; color: #1b1916; outline: none; } .ds-search-go { min-height: 56px; padding: 0 28px; background: #1b1916; color: #fff; font: inherit; font-size: 16px; font-weight: 600; border: none; border-radius: 4px; cursor: pointer; transition: background-color 150ms; } .ds-search-go:hover { background: #2b2824; } .ds-search-go:focus-visible { outline: none; box-shadow: 0 0 0 2px #fff, 0 0 0 4px #9a7440; }"
+    },
+    {
+      "name": "Contact Panel",
+      "kind": "custom",
+      "refersTo": "contact-panel",
+      "description": "The one ink block on a listing: serif title, initials monogram, white call button, outlined WhatsApp, email link.",
+      "html": "<aside class=\"ds-contact\"><h2>מעוניינים בנכס?</h2><div class=\"ds-contact-agent\"><span class=\"ds-mono\">דא</span><div><p class=\"ds-agent-name\">דנה אלון</p><p class=\"ds-agent-role\">יועצת נדל\"ן בכירה</p></div></div><a class=\"ds-call\" href=\"#\" dir=\"ltr\">03-1234567</a><button class=\"ds-wa\">וואטסאפ</button></aside>",
+      "css": ".ds-contact { width: 320px; padding: 32px; background: #1b1916; color: #e6dfd3; border-radius: 4px; direction: rtl; font-family: Heebo, Arial, sans-serif; display: grid; gap: 12px; } .ds-contact h2 { margin: 0 0 12px; font-family: 'Frank Ruhl Libre', Georgia, serif; font-size: 24px; font-weight: 700; color: #fff; } .ds-contact-agent { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; } .ds-mono { display: flex; width: 56px; height: 56px; align-items: center; justify-content: center; border-radius: 9999px; background: #9a7440; color: #1b1916; font-family: 'Frank Ruhl Libre', Georgia, serif; font-size: 20px; font-weight: 700; } .ds-agent-name { margin: 0; font-size: 18px; font-weight: 600; color: #fff; } .ds-agent-role { margin: 0; color: #a99e8f; } .ds-call, .ds-wa { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 4px; font: inherit; font-size: 16px; font-weight: 600; text-decoration: none; cursor: pointer; font-variant-numeric: tabular-nums; } .ds-call { background: #fff; color: #1b1916; border: none; } .ds-call:hover { background: #f3efe8; } .ds-wa { background: transparent; color: #fff; border: none; box-shadow: inset 0 0 0 1px #857a6c; } .ds-wa:hover { background: #2b2824; } .ds-call:focus-visible, .ds-wa:focus-visible { outline: none; box-shadow: 0 0 0 2px #1b1916, 0 0 0 4px #9a7440; }"
+    },
+    {
+      "name": "Facts Row",
+      "kind": "custom",
+      "refersTo": "headline",
+      "description": "Listing facts as a measured definition row between two hairlines.",
+      "html": "<dl class=\"ds-facts\"><div><dt>סוג נכס</dt><dd>וילה</dd></div><div><dt>חדרים</dt><dd>7</dd></div><div><dt>שטח</dt><dd>380 מ\"ר</dd></div></dl>",
+      "css": ".ds-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 24px; margin: 0; padding: 8px 0; border-top: 1px solid #d3c8b7; border-bottom: 1px solid #d3c8b7; direction: rtl; font-family: Heebo, Arial, sans-serif; max-width: 560px; } .ds-facts div { padding: 16px 0; } .ds-facts dt { font-size: 15px; color: #6b6257; } .ds-facts dd { margin: 4px 0 0; font-size: 20px; font-weight: 600; color: #1b1916; font-variant-numeric: tabular-nums; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Printed Property Sheet",
+    "overview": "The site behaves like a brokerage's printed listing sheet laid on limestone: a real photograph at full scale, a Hebrew serif headline set large, and the facts below it in a measured row separated by hairline rules. Nothing is boxed for decoration. Listing cards are a photo with type set under it, not a card with a border and a shadow. The only filled dark blocks are structural: the footer, the contact panel on a listing, and the primary action.\n\nThe world is warm and quiet. Warm near-black ink and limestone neutrals carry almost everything; brass is the single accent and appears as a thin line (active-nav underline, hover underline, focus ring, icon tint) far more often than as a fill. Olive exists only to tell a rental from a sale. There is no blue anywhere in the brand layer; any blue on screen comes from the photographs.\n\nThe system is Hebrew-first. The document opens as `lang=\"he\" dir=\"rtl\"`, every layout uses logical properties (start/end, `ps-`, `me-`), directional icons mirror in RTL, and the Hebrew type scale is enforced globally. English is a full second language, not a fallback. Credibility comes from restraint and real detail: no invented statistics, testimonials or claims, and demo data is labelled as demo.",
+    "keyCharacteristics": [
+      "Photography leads; the brand recedes to ink, limestone and a brass line.",
+      "Hebrew-first RTL with logical properties and a dedicated Hebrew type scale.",
+      "Serif headlines (Frank Ruhl Libre), one sans for everything else including numerals (Heebo).",
+      "Hairline stone rules instead of card boxes; near-square 4px corners.",
+      "Every target at least 44px; every focus a visible brass ring.",
+      "Israeli formats: ₪ after the number in Hebrew, dd.MM.yyyy dates, local 03-… phone display."
+    ],
+    "rules": [
+      { "name": "The One Brass Rule", "body": "Brass is the only accent. It appears mostly as a 1–2px line or an icon tint; filled brass is reserved for the Exclusive badge (dark step) and the advisor monogram.", "section": "colors" },
+      { "name": "The Dark-Step Text Rule", "body": "Any brass that is read as text on a light ground uses brass-dark (#7a5a2b). Brass (#9a7440) is for lines, rings and icons only.", "section": "colors" },
+      { "name": "The No-Blue Rule", "body": "No blue in the brand layer: no blue buttons, links, focus rings, badges or gradients.", "section": "colors" },
+      { "name": "The Status-by-Fill Rule", "body": "All status badges share one frame; the fill alone separates them: sale = ink, rent = olive, Exclusive = brass-dark, Featured = transparent with a stone outline.", "section": "colors" },
+      { "name": "The Hebrew Floor Rule", "body": "In RTL, no text is smaller than 13px (`text-xs` is lifted to 13px/20px), body line-height is 1.7, `leading-tight` becomes 1.4 and `leading-relaxed` 1.9, word-spacing is +0.05em.", "section": "typography" },
+      { "name": "The No-Tracking Rule", "body": "Hebrew is never letter-spaced; any tracking utility is reset to normal under `dir=\"rtl\"`. No uppercase-tracked labels.", "section": "typography" },
+      { "name": "The Tabular Numbers Rule", "body": "Prices, counts, areas, phone numbers and the gallery counter use tabular figures so they align and don't jitter as filters change.", "section": "typography" },
+      { "name": "The Israeli Format Rule", "body": "Prices go through `Intl.NumberFormat('he-IL', {currency: 'ILS'})`, which puts ₪ after the number in Hebrew (\"8,500,000 ₪\", rent adds \"לחודש\"); English shows \"₪8,500,000 / mo\". Dates use he-IL 2-digit day/month (dd.MM.yyyy). Phones are stored as +972 and shown locally as 03-… in Hebrew, set `dir=\"ltr\"`; the `tel:` link keeps the international form.", "section": "typography" },
+      { "name": "The Logical Properties Rule", "body": "Layout uses start/end, `ps-`/`pe-`, `ms-`/`me-` and `text-start`/`text-end` only. Directional icons (arrows, chevrons, login) flip with `rtl:-scale-x-100`.", "section": "layout" },
+      { "name": "The 44px Rule", "body": "Every interactive element is at least 44px tall (`min-h-11`); primary call actions and gallery arrows are 48px.", "section": "layout" },
+      { "name": "The Float-Only Shadow Rule", "body": "A shadow means \"this floats above a photo or the page\". Inline content, cards and the contact panel stay flat.", "section": "elevation" },
+      { "name": "The 4px Rule", "body": "Corners are 4px (2px for badges). No pill buttons, no 12–16px rounded cards.", "section": "shapes" }
+    ],
+    "dos": [
+      "**Do** let a real listing photograph carry the first viewport; name it with the caption plate.",
+      "**Do** use ink, limestone and stone for almost everything, with brass as a line or tint (One Brass Rule).",
+      "**Do** use brass-dark (#7a5a2b) for any brass text on light grounds and keep all text at ≥4.5:1.",
+      "**Do** set headlines in Frank Ruhl Libre bold and everything else, including numbers, in Heebo with tabular figures.",
+      "**Do** keep Hebrew at 13px minimum, line-height 1.7, with no letter-spacing.",
+      "**Do** use logical properties and mirror directional icons in RTL.",
+      "**Do** format prices with Intl he-IL (₪ after the number in Hebrew), dates as dd.MM.yyyy, and phones as local 03-… in Hebrew with `dir=\"ltr\"`.",
+      "**Do** make every target at least 44px and give every focusable element a visible 2px brass ring (brass-light on ink).",
+      "**Do** separate content with 1px stone-300 hairlines and keep corners at 4px (2px for badges).",
+      "**Do** label demo data as demo (footer note, statement draft note, placeholder WhatsApp that dials nothing)."
+    ],
+    "donts": [
+      "**Don't** use blue anywhere in the brand layer.",
+      "**Don't** add kickers or eyebrows (small uppercase labels above headings).",
+      "**Don't** invent statistics, counts, testimonials or claims; the only numbers shown are real listing data.",
+      "**Don't** wrap listings in bordered, shadowed, heavily rounded cards.",
+      "**Don't** add shadows to inline content; shadows are for floating panels only.",
+      "**Don't** use physical left/right properties or unmirrored arrows.",
+      "**Don't** letter-space or uppercase Hebrew.",
+      "**Don't** add a second accent colour; olive is a status colour for rentals, not decoration."
+    ]
+  }
+}

@@ -12,3 +12,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 /.claude
+
+# Impeccable: local and generated files. Screenshots, review captures, comps,
+# build state, critique snapshots and live-mode files stay on this machine.
+# PRODUCT.md, DESIGN.md, .impeccable/surfaces/ (direction briefs),
+# .impeccable/config.json and .impeccable/design.json are meant to be committed.
+.impeccable/review/
+.impeccable/mocks/
+.impeccable/build/
+.impeccable/critique/
+.impeccable/live/
+.impeccable/config.local.json

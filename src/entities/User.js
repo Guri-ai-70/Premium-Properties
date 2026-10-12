@@ -22,7 +22,7 @@ export const User = {
     const user = {
       id: "USR_ADMIN",
       full_name: "Administrator",
-      email: "admin@premiumproperties.com",
+      email: "admin@example.com", // demo address
       role: "admin",
     };
     localStorage.setItem(SESSION_KEY, JSON.stringify(user));

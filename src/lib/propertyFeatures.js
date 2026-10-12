@@ -28,6 +28,26 @@ export function formatFloor(property, lang) {
   return label;
 }
 
+// Shown when a listing has no photos.
+export const PLACEHOLDER_IMAGE =
+  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=80";
+
+const PROPERTY_TYPES = {
+  apartment: { en: "Apartment", he: "דירה" },
+  garden_apartment: { en: "Garden Apartment", he: "דירת גן" },
+  duplex: { en: "Duplex", he: "דופלקס" },
+  penthouse: { en: "Penthouse", he: "פנטהאוז" },
+  mini_penthouse: { en: "Mini Penthouse", he: "מיני פנטהאוז" },
+  house: { en: "House", he: "בית" },
+  villa: { en: "Villa", he: "וילה" },
+  commercial: { en: "Commercial", he: "מסחרי" },
+  plot: { en: "Plot", he: "מגרש" },
+};
+
+export function propertyTypeLabel(type, lang) {
+  return PROPERTY_TYPES[type]?.[lang] || type;
+}
+
 // Yes/no features, in display order.
 export const FEATURES = [
   { key: "master_suite", icon: BedDouble, en: "Master suite", he: "יחידת הורים" },

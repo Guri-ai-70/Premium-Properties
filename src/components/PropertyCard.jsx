@@ -1,88 +1,76 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { useLanguage } from "@/components/LanguageContext";
-import { formatPrice } from "@/lib/utils";
-import { getRooms, hasRooms } from "@/lib/propertyFeatures";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { DoorOpen, Bath, Maximize, MapPin } from "lucide-react";
-
-const PLACEHOLDER =
-  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=80";
-
-const typeLabels = {
-  apartment: { en: "Apartment", he: "דירה" },
-  garden_apartment: { en: "Garden Apartment", he: "דירת גן" },
-  duplex: { en: "Duplex", he: "דופלקס" },
-  penthouse: { en: "Penthouse", he: "פנטהאוז" },
-  mini_penthouse: { en: "Mini Penthouse", he: "מיני פנטהאוז" },
-  house: { en: "House", he: "בית" },
-  villa: { en: "Villa", he: "וילה" },
-  commercial: { en: "Commercial", he: "מסחרי" },
-  plot: { en: "Plot", he: "מגרש" },
-};
+import { formatPrice, sizedImage, imageSrcSet } from "@/lib/utils";
+import { getRooms, hasRooms, propertyTypeLabel, PLACEHOLDER_IMAGE } from "@/lib/propertyFeatures";
+import StatusBadges from "@/components/StatusBadges";
 
 export default function PropertyCard({ property }) {
   const { language } = useLanguage();
+  const location = useLocation();
   const t = (en, he) => (language === "he" ? he : en);
 
   const title = t(property.title, property.title_he || property.title);
   const city = t(property.city, property.city_he || property.city);
-  const image = property.images?.[0] || PLACEHOLDER;
-  const typeLabel =
-    typeLabels[property.property_type]?.[language] || property.property_type;
+  const image = property.images?.[0] || PLACEHOLDER_IMAGE;
+  const typeLabel = propertyTypeLabel(property.property_type, language);
+
+  const rooms = hasRooms(property) ? getRooms(property) : null;
+  const baths = Number(property.bathrooms) || 0;
+  const facts = [
+    rooms !== null && t(`${rooms} rooms`, `${rooms} חדרים`),
+    baths > 0 &&
+      (baths === 1 ? t("1 bath", "חדר רחצה") : t(`${baths} baths`, `${baths} חדרי רחצה`)),
+    property.area && t(`${property.area} m²`, `${property.area} מ"ר`),
+  ].filter(Boolean);
 
   return (
-    <Link to={createPageUrl(`PropertyDetail?id=${property.id}`)}>
-      <Card className="group h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover">
-        <div className="relative h-52 overflow-hidden">
-          <img
-            src={image}
-            alt={title}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-          <div className="absolute start-3 top-3 flex flex-wrap gap-2">
-            <Badge variant={property.listing_type === "rent" ? "warning" : "default"}>
-              {property.listing_type === "rent" ? t("For Rent", "להשכרה") : t("For Sale", "למכירה")}
-            </Badge>
-            {property.exclusive && (
-              <Badge variant="exclusive">{t("Exclusive", "בבלעדיות")}</Badge>
-            )}
-          </div>
+    <Link
+      to={createPageUrl(`PropertyDetail?id=${property.id}`)}
+      // The detail page's "All properties" link returns to this filtered list.
+      state={{ listSearch: location.search }}
+      className="group block rounded-[4px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-4 focus-visible:ring-offset-stone-100"
+    >
+      <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] bg-stone-200">
+        <img
+          src={sizedImage(image, 800)}
+          srcSet={imageSrcSet(image, [480, 800, 1200])}
+          sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+        />
+        <div className="absolute start-3 top-3 flex flex-wrap gap-1.5">
+          <StatusBadges property={property} />
         </div>
-        <div className="p-5">
-          <div className="mb-1 flex items-center gap-1 text-[15px] leading-6 text-muted rtl:text-base">
-            <MapPin className="h-3.5 w-3.5" />
-            <span>{city}</span>
-            <span className="mx-1">•</span>
-            <span>{typeLabel}</span>
-          </div>
-          <h3 className="mb-2 line-clamp-1 text-lg font-bold text-ink">
-            {title}
-          </h3>
-          <p className="mb-4 text-xl font-extrabold text-primary-700">
-            {formatPrice(property.price, property.currency, property.listing_type, language)}
+      </div>
+      <div className="mt-4">
+        <h3 className="line-clamp-1 font-display text-[22px] font-bold leading-snug text-ink decoration-brass decoration-1 underline-offset-[6px] group-hover:underline">
+          {title}
+        </h3>
+        {/* Type and city follow the title (no label above the heading) */}
+        <p className="mt-1 text-[15px] text-stone-600">
+          {typeLabel}
+          <span aria-hidden="true"> · </span>
+          <span className="sr-only">, </span>
+          {city}
+        </p>
+        <p className="mt-2 text-lg font-semibold tabular-nums text-ink">
+          {formatPrice(property.price, property.currency, property.listing_type, language)}
+        </p>
+        {facts.length > 0 && (
+          <p className="mt-1.5 text-[15px] tabular-nums text-stone-600">
+            {facts.map((f, i) => (
+              <React.Fragment key={i}>
+                {i > 0 && <span aria-hidden="true" className="mx-1.5 text-stone-400">·</span>}
+                {i > 0 && <span className="sr-only">, </span>}
+                {f}
+              </React.Fragment>
+            ))}
           </p>
-          <div className="flex items-center gap-4 border-t border-slate-100 pt-3 text-base leading-6 text-slate-600">
-            {hasRooms(property) && getRooms(property) !== null && (
-              <span className="flex items-center gap-1.5">
-                <DoorOpen className="h-4 w-4 text-slate-400" />
-                {getRooms(property)} {t("rooms", "חדרים")}
-              </span>
-            )}
-            <span className="flex items-center gap-1.5">
-              <Bath className="h-4 w-4 text-slate-400" />
-              {property.bathrooms}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Maximize className="h-4 w-4 text-slate-400" />
-              {property.area} {t("m²", "מ\"ר")}
-            </span>
-          </div>
-        </div>
-      </Card>
+        )}
+      </div>
     </Link>
   );
 }
