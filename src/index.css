@@ -3,8 +3,26 @@
 @tailwind utilities;
 
 :root {
-  /* Inter has no Hebrew letters, so Hebrew falls through to Heebo letter by letter. */
-  font-family: "Inter", "Heebo", Arial, sans-serif;
+  /* Heebo has Hebrew and Latin, so a mixed line stays in one face. */
+  font-family: "Heebo", Arial, sans-serif;
+  color: #1b1916;
+  background-color: #f3efe8;
+}
+
+::selection {
+  background-color: #c9a66b;
+  color: #1b1916;
+}
+
+/* Prices, counts and areas line up and do not jitter. */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe-settle {
+    animation: none !important;
+  }
 }
 
 .rtl {

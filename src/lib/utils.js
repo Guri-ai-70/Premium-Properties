@@ -6,6 +6,27 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
+// Unsplash URLs take a width parameter; ask for the size actually shown
+// instead of always downloading the 1200px original. Other URLs pass through.
+export function sizedImage(url, width) {
+  if (!url || !url.includes("images.unsplash.com")) return url;
+  return /[?&]w=\d+/.test(url)
+    ? url.replace(/([?&]w=)\d+/, `$1${width}`)
+    : `${url}${url.includes("?") ? "&" : "?"}w=${width}`;
+}
+
+export function imageSrcSet(url, widths = [480, 800, 1200]) {
+  if (!url || !url.includes("images.unsplash.com")) return undefined;
+  return widths.map((w) => `${sizedImage(url, w)} ${w}w`).join(", ");
+}
+
+// Israeli numbers stored as "+972 3-555-0199" display locally as "03-555-0199"
+// in Hebrew. The tel: link keeps the stored international form.
+export function displayPhone(phone, lang = "en") {
+  if (!phone || lang !== "he") return phone;
+  return phone.replace(/^\+972[\s-]?/, "0");
+}
+
 // Maps the stored currency symbol to an ISO code for Intl.
 const CURRENCY_CODES = { "₪": "ILS", ILS: "ILS", $: "USD", USD: "USD", "€": "EUR", EUR: "EUR" };
 

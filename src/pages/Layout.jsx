@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Home, Settings, Globe, User, Building2 } from "lucide-react";
+import { Settings, Globe, User, Building2, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { User as UserEntity } from "@/entities/User";
 import { AppSettings } from "@/entities/AppSettings";
+import { displayPhone } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +15,10 @@ import {
 import { LanguageContext } from "@/components/LanguageContext";
 
 const LANGUAGE_KEY = "pp_language";
+
+// Quiet header controls: text-weight, 44px tall, no filled buttons competing with the page.
+const headerControl =
+  "inline-flex min-h-11 items-center gap-2 rounded-[4px] px-3 text-[15px] font-medium text-stone-700 transition-colors hover:bg-stone-200/60 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass";
 
 export default function Layout({ children, currentPageName }) {
   const location = useLocation();
@@ -104,15 +109,17 @@ export default function Layout({ children, currentPageName }) {
 
   if (!companyDetails) {
     return (
-      <div className="flex items-center justify-center h-screen" role="status">
+      <div className="flex h-screen items-center justify-center bg-stone-100 text-stone-600" role="status">
         {language === 'he' ? 'טוען...' : 'Loading...'}
       </div>
     );
   }
 
+  const t = (en, he) => (language === 'he' ? he : en);
+
   return (
     <LanguageContext.Provider value={languageValue}>
-      <div className={`min-h-screen bg-gradient-to-br from-slate-50 to-primary-50 ${language === 'he' ? 'rtl' : 'ltr'}`}>
+      <div className={`min-h-screen bg-stone-100 text-ink ${language === 'he' ? 'rtl' : 'ltr'}`}>
         {/* Skip link: first Tab stop, jumps past the header to the page content */}
         <a
           href="#main-content"
@@ -120,85 +127,81 @@ export default function Layout({ children, currentPageName }) {
             e.preventDefault();
             document.getElementById('main-content')?.focus();
           }}
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:start-3 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-700 focus:shadow-card-hover focus:outline-none focus:ring-2 focus:ring-primary-500"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:start-3 focus:z-[60] focus:rounded-[4px] focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink focus:shadow-panel focus:outline-none focus:ring-2 focus:ring-brass"
         >
-          {language === 'he' ? 'מעבר לתוכן הראשי' : 'Skip to main content'}
+          {t('Skip to main content', 'מעבר לתוכן הראשי')}
         </a>
 
         {/* Header */}
-        <header className="bg-white/95 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap justify-between items-center gap-x-4 gap-y-2 min-h-16 py-2">
-              {/* Logo */}
-              <Link to={createPageUrl("Properties")} className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg">
-                  <Home className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <p className="text-lg sm:text-xl font-bold leading-tight text-ink">
-                    {language === 'he' ? companyDetails.company_name_he : companyDetails.company_name}
-                  </p>
-                  <p className="hidden sm:block text-xs text-slate-500">
-                    {language === 'he' ? companyDetails.tagline_he : companyDetails.tagline}
-                  </p>
-                </div>
-              </Link>
+        <header className="sticky top-0 z-50 border-b border-stone-200 bg-stone-100/95 backdrop-blur-sm">
+          <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+            {/* Wordmark */}
+            <Link
+              to={createPageUrl("Properties")}
+              className="rounded-[4px] font-display text-[22px] font-bold leading-none text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass sm:text-2xl"
+            >
+              {siteName}
+            </Link>
 
+            <div className="flex items-center gap-1 sm:gap-2">
               {/* Navigation */}
-              <nav className="hidden md:flex items-center gap-8">
-                {navigationItems.map((item) => (
-                  <Link
-                    key={item.title}
-                    to={item.url}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                      location.pathname === item.url
-                        ? 'bg-primary-50 text-primary-700'
-                        : 'text-slate-600 hover:text-ink hover:bg-slate-50'
-                    }`}
-                  >
-                    <item.icon className="w-4 h-4" />
-                    <span className="font-medium">{item.title}</span>
-                  </Link>
-                ))}
+              <nav className="hidden items-center gap-1 md:flex" aria-label={t('Main', 'ראשי')}>
+                {navigationItems.map((item) => {
+                  const active = location.pathname === item.url.replace(/^#/, '');
+                  return (
+                    <Link
+                      key={item.title}
+                      to={item.url}
+                      aria-current={active ? 'page' : undefined}
+                      className={`${headerControl} ${active ? 'text-ink underline decoration-brass decoration-2 underline-offset-[10px]' : ''}`}
+                    >
+                      {item.title}
+                    </Link>
+                  );
+                })}
               </nav>
 
-              {/* Language & User Menu */}
-              <div className="flex items-center gap-2 sm:gap-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={toggleLanguage}
-                  className="flex items-center gap-2"
-                >
-                  <Globe className="w-4 h-4" />
-                  <span lang={language === 'he' ? 'en' : 'he'}>{language === 'he' ? 'English' : 'עברית'}</span>
-                </Button>
+              <span className="mx-1 hidden h-5 w-px bg-stone-300 md:block" aria-hidden="true" />
 
-                {currentUser ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center gap-2"
-                        aria-label={`${currentUser.full_name} – ${language === 'he' ? 'תפריט משתמש' : 'user menu'}`}
-                      >
-                        <User className="w-4 h-4" />
-                        <span className="hidden sm:inline">{currentUser.full_name}</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={handleLogout}>
-                        {language === 'he' ? 'התנתקות' : 'Logout'}
+              <button type="button" onClick={toggleLanguage} className={headerControl}>
+                <Globe className="h-4 w-4" aria-hidden="true" />
+                <span lang={language === 'he' ? 'en' : 'he'}>{language === 'he' ? 'English' : 'עברית'}</span>
+              </button>
+
+              {currentUser ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className={headerControl}
+                      aria-label={`${currentUser.full_name} – ${t('user menu', 'תפריט משתמש')}`}
+                    >
+                      <User className="h-4 w-4" />
+                      <span className="hidden sm:inline">{currentUser.full_name}</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    {isAdmin && (
+                      <DropdownMenuItem onClick={() => navigate(createPageUrl("Admin"))} className="md:hidden">
+                        {t('Admin', 'ניהול')}
                       </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <Button size="sm" onClick={handleLogin}>
-                    {language === 'he' ? 'התחברות' : 'Login'}
-                  </Button>
-                )}
-              </div>
+                    )}
+                    <DropdownMenuItem onClick={handleLogout}>
+                      {t('Logout', 'התנתקות')}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleLogin}
+                  className={headerControl}
+                  aria-label={t('Admin login', 'כניסת מנהל')}
+                >
+                  <LogIn className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true" />
+                  <span className="hidden sm:inline">{t('Login', 'התחברות')}</span>
+                </button>
+              )}
             </div>
           </div>
         </header>
@@ -209,49 +212,56 @@ export default function Layout({ children, currentPageName }) {
         </main>
 
         {/* Footer */}
-        <footer className="bg-ink text-white py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-3 gap-8">
+        <footer className="bg-ink text-stone-300">
+          <div className="mx-auto max-w-7xl px-4 pb-10 pt-16 sm:px-6 lg:px-8">
+            <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
               <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 bg-gradient-to-r from-primary to-primary-dark rounded-lg flex items-center justify-center">
-                    <Home className="w-5 h-5 text-white" />
-                  </div>
-                  <p className="text-lg font-bold">
-                    {language === 'he' ? companyDetails.company_name_he : companyDetails.company_name}
-                  </p>
-                </div>
-                <p className="text-slate-300 text-sm">
-                  {language === 'he'
-                    ? companyDetails.tagline_he
-                    : companyDetails.tagline
-                  }
+                <p className="font-display text-3xl font-bold text-stone-50">{siteName}</p>
+                <p className="mt-3 max-w-xs text-stone-400">
+                  {t(companyDetails.tagline, companyDetails.tagline_he)}
                 </p>
               </div>
               <div>
-                <h2 className="font-semibold mb-4">
-                  {language === 'he' ? 'שירותים' : 'Services'}
+                <h2 className="mb-4 text-sm font-semibold text-brass-light">
+                  {t('Contact', 'צרו קשר')}
                 </h2>
-                <ul className="space-y-2 text-sm text-slate-300">
-                  <li>{language === 'he' ? 'מכירת נכסים' : 'Property Sales'}</li>
-                  <li>{language === 'he' ? 'השכרת נכסים' : 'Property Rentals'}</li>
-                  <li>{language === 'he' ? 'ייעוץ נדל"ן' : 'Real Estate Consulting'}</li>
-                  <li>{language === 'he' ? 'שיווק נכסים' : 'Property Marketing'}</li>
+                <ul className="space-y-1">
+                  <li>
+                    <a
+                      href={`mailto:${companyDetails.contact_email}`}
+                      dir="ltr"
+                      className="inline-flex min-h-11 items-center underline-offset-4 hover:text-stone-50 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-light"
+                    >
+                      {companyDetails.contact_email}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href={`tel:${companyDetails.contact_phone.replace(/[\s-]/g, '')}`}
+                      dir="ltr"
+                      className="inline-flex min-h-11 items-center tabular-nums underline-offset-4 hover:text-stone-50 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-light"
+                    >
+                      {displayPhone(companyDetails.contact_phone, language)}
+                    </a>
+                  </li>
+                  <li className="pt-2 text-stone-400">{t(companyDetails.address, companyDetails.address_he)}</li>
                 </ul>
               </div>
               <div>
-                <h2 className="font-semibold mb-4">
-                  {language === 'he' ? 'צרו קשר' : 'Contact'}
+                <h2 className="mb-4 text-sm font-semibold text-brass-light">
+                  {t('Services', 'שירותים')}
                 </h2>
-                <div className="text-sm text-slate-300 space-y-2">
-                  <p><span dir="ltr">{companyDetails.contact_email}</span></p>
-                  <p><span dir="ltr">{companyDetails.contact_phone}</span></p>
-                  <p>{language === 'he' ? companyDetails.address_he : companyDetails.address}</p>
-                </div>
+                <ul className="space-y-3 text-stone-400">
+                  <li>{t('Property Sales', 'מכירת נכסים')}</li>
+                  <li>{t('Property Rentals', 'השכרת נכסים')}</li>
+                  <li>{t('Real Estate Consulting', 'ייעוץ נדל"ן')}</li>
+                  <li>{t('Property Marketing', 'שיווק נכסים')}</li>
+                </ul>
               </div>
             </div>
-            <div className="border-t border-slate-800 mt-8 pt-8 text-center text-sm text-slate-400">
-              <p>© {new Date().getFullYear()} {language === 'he' ? companyDetails.company_name_he : companyDetails.company_name}. {language === 'he' ? 'כל הזכויות שמורות' : 'All rights reserved'}.</p>
+            <div className="mt-14 flex flex-col gap-2 border-t border-stone-700/60 pt-6 text-sm text-stone-400 sm:flex-row sm:items-center sm:justify-between">
+              <p>© {new Date().getFullYear()} {siteName}. {t('All rights reserved', 'כל הזכויות שמורות')}.</p>
+              <p>{t('Demo site: all listings and details are fictional.', 'אתר הדגמה: כל הנכסים והפרטים באתר בדויים.')}</p>
             </div>
           </div>
         </footer>
