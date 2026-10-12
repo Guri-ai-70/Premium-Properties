@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, useLocation, Link } from "react-router-dom";
 import { Property } from "@/entities/Property";
 import { AppSettings } from "@/entities/AppSettings";
 import { createPageUrl } from "@/utils";
@@ -41,9 +41,12 @@ function initials(name = "") {
 }
 
 function BackLink({ t }) {
+  // Return to the list as the visitor left it (filters and sort kept).
+  const location = useLocation();
+  const listSearch = location.state?.listSearch || "";
   return (
     <Link
-      to={createPageUrl("Properties")}
+      to={createPageUrl("Properties") + listSearch}
       className={`inline-flex min-h-11 items-center gap-2 rounded-[4px] text-[15px] font-medium text-stone-600 hover:text-ink ${focusRing}`}
     >
       <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true" />

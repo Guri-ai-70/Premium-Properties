@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Property } from "@/entities/Property";
 import { useLanguage, usePageTitle } from "@/components/LanguageContext";
 import PropertyCard from "@/components/PropertyCard";
@@ -13,8 +13,7 @@ import { ArrowLeft } from "lucide-react";
 // Keyboard focus draws a brass ring around the whole field (WCAG 2.4.7).
 function SearchField({ label, children }) {
   return (
-    <label className="block rounded-[4px] px-4 pb-1 pt-2.5 transition-colors focus-within:bg-stone-100 hover:bg-stone-50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brass">
-
+    <label className="block min-w-0 rounded-[4px] px-3 pb-1 pt-2 transition-colors focus-within:bg-stone-100 hover:bg-stone-50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brass sm:px-4 sm:pt-2.5">
       <span className="block text-[13px] font-medium text-stone-600">{label}</span>
       {children}
     </label>
@@ -22,7 +21,30 @@ function SearchField({ label, children }) {
 }
 
 const fieldSelect =
-  "h-9 rounded-none border-0 bg-transparent px-0 pe-7 text-[17px] font-medium text-ink focus-visible:ring-0";
+  "h-9 rounded-none border-0 bg-transparent px-0 pe-7 text-base font-medium text-ink focus-visible:ring-0 sm:text-[17px]";
+
+// Max-price steps. Sale and rent prices live on different scales, so the list
+// follows the chosen deal type (both groups when "sale or rent" is chosen).
+const PRICE_STEPS = {
+  sale: [3000000, 5000000, 8000000, 10000000, 15000000],
+  rent: [5000, 7500, 10000, 15000],
+};
+
+const SORTS = ["newest", "price-asc", "price-desc", "area-desc"];
+const PROPERTY_TYPES = ["apartment", "garden_apartment", "duplex", "penthouse", "mini_penthouse", "house", "villa", "commercial", "plot"];
+
+// Compact shekel label for the price menu: "₪5M" / "5 מיליון ₪", "₪7,500" / "7,500 ₪".
+function priceStepLabel(value, lang) {
+  if (value >= 1000000) {
+    const m = value / 1000000;
+    return lang === "he" ? `${m} מיליון ₪` : `₪${m}M`;
+  }
+  return new Intl.NumberFormat(lang === "he" ? "he-IL" : "en-US", {
+    style: "currency",
+    currency: "ILS",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
 
 export default function Properties() {
   const { language } = useLanguage();
@@ -31,10 +53,39 @@ export default function Properties() {
 
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [city, setCity] = useState("all");
-  const [listingType, setListingType] = useState("all");
-  const [propertyType, setPropertyType] = useState("all");
   const resultsRef = useRef(null);
+
+  // Filters and sort live in the URL (#/Properties?city=Haifa&deal=sale…), so a
+  // filtered list can be shared, survives a reload and comes back on Back.
+  const [params, setParams] = useSearchParams();
+  const cityParam = params.get("city") || "all";
+  const listingType = ["sale", "rent"].includes(params.get("deal")) ? params.get("deal") : "all";
+  const propertyType = PROPERTY_TYPES.includes(params.get("type")) ? params.get("type") : "all";
+  const maxPrice = Number(params.get("max")) > 0 ? Number(params.get("max")) : null;
+  const sort = SORTS.includes(params.get("sort")) ? params.get("sort") : "newest";
+
+  // Updates one or more URL params; "all"/empty removes them. Replaces the
+  // history entry so filtering doesn't fill the Back button.
+  const updateParams = (changes) => {
+    const next = new URLSearchParams(params);
+    Object.entries(changes).forEach(([key, value]) => {
+      if (value === null || value === undefined || value === "" || value === "all" || (key === "sort" && value === "newest")) {
+        next.delete(key);
+      } else {
+        next.set(key, String(value));
+      }
+    });
+    setParams(next, { replace: true });
+  };
+  const setCity = (v) => updateParams({ city: v });
+  const setPropertyType = (v) => updateParams({ type: v });
+  const setSort = (v) => updateParams({ sort: v });
+  // Changing deal type drops a max price that belongs to the other scale.
+  const setListingType = (v) => {
+    const steps = v === "all" ? [...PRICE_STEPS.sale, ...PRICE_STEPS.rent] : PRICE_STEPS[v];
+    updateParams({ deal: v, max: maxPrice && steps.includes(maxPrice) ? maxPrice : null });
+  };
+  const setMaxPrice = (v) => updateParams({ max: v === "all" ? null : v });
 
   useEffect(() => {
     (async () => {
@@ -60,14 +111,29 @@ export default function Properties() {
     );
   }, [properties, language]);
 
+  // A city in a shared or old link that no longer has listings falls back to "all".
+  const city =
+    cityParam !== "all" && !loading && !cityOptions.some((c) => c.en === cityParam) ? "all" : cityParam;
+
   const filtered = useMemo(() => {
-    return properties.filter((p) => {
+    const list = properties.filter((p) => {
       if (city !== "all" && p.city !== city) return false;
       if (listingType !== "all" && p.listing_type !== listingType) return false;
       if (propertyType !== "all" && p.property_type !== propertyType) return false;
+      if (maxPrice !== null && Number(p.price) > maxPrice) return false;
       return true;
     });
-  }, [properties, city, listingType, propertyType]);
+    // `properties` already arrives newest first.
+    const by = {
+      "price-asc": (a, b) => Number(a.price) - Number(b.price),
+      "price-desc": (a, b) => Number(b.price) - Number(a.price),
+      "area-desc": (a, b) => Number(b.area) - Number(a.area),
+    }[sort];
+    return by ? [...list].sort(by) : list;
+  }, [properties, city, listingType, propertyType, maxPrice, sort]);
+
+  const priceOptionsFor = (deal) =>
+    PRICE_STEPS[deal].map((v) => ({ value: String(v), label: priceStepLabel(v, language) }));
 
   // The hero shows a real listing: the first featured exclusive one with a photo.
   const heroProperty = useMemo(
@@ -79,12 +145,9 @@ export default function Properties() {
   );
   const heroImage = heroProperty?.images?.[0];
 
-  const isFiltered = city !== "all" || listingType !== "all" || propertyType !== "all";
-  const clearFilters = () => {
-    setCity("all");
-    setListingType("all");
-    setPropertyType("all");
-  };
+  const isFiltered = city !== "all" || listingType !== "all" || propertyType !== "all" || maxPrice !== null;
+  // Clears the filters; the chosen sort order stays.
+  const clearFilters = () => updateParams({ city: null, deal: null, type: null, max: null });
 
   const showResults = () => {
     const el = resultsRef.current;
@@ -102,7 +165,7 @@ export default function Properties() {
   return (
     <div>
       {/* Hero: a real listing's photograph with the search set into it */}
-      <section className="relative isolate flex min-h-[620px] flex-col overflow-hidden bg-ink text-white sm:min-h-[640px] lg:h-[calc(100svh-4rem)] lg:max-h-[860px]">
+      <section className="relative isolate flex min-h-[500px] flex-col overflow-hidden bg-ink text-white sm:min-h-[640px] lg:h-[calc(100svh-4rem)] lg:max-h-[860px]">
         {heroImage && (
           <img
             src={sizedImage(heroImage, 1600)}
@@ -134,11 +197,11 @@ export default function Properties() {
           </Link>
         )}
 
-        <div className="relative mx-auto mt-auto w-full max-w-7xl px-4 pb-8 pt-28 sm:px-6 sm:pb-12 lg:px-8 lg:pb-16">
-          <h1 className="max-w-3xl font-display text-[2.75rem] font-bold leading-[1.08] text-white [text-wrap:balance] sm:text-6xl lg:text-7xl">
+        <div className="relative mx-auto mt-auto w-full max-w-7xl px-4 pb-6 pt-24 sm:px-6 sm:pb-12 sm:pt-28 lg:px-8 lg:pb-16">
+          <h1 className="max-w-3xl font-display text-[2.5rem] font-bold leading-[1.08] text-white [text-wrap:balance] sm:text-6xl lg:text-7xl">
             {t("Find Your Next Home", "מצאו את הבית הבא שלכם")}
           </h1>
-          <p className="mt-4 max-w-xl text-lg text-stone-200 sm:text-xl">
+          <p className="mt-3 max-w-xl text-base text-stone-200 sm:mt-4 sm:text-xl">
             {t(
               "A curated selection of premium properties for sale and rent across Israel.",
               "מבחר נכסי יוקרה למכירה ולהשכרה ברחבי ישראל."
@@ -153,7 +216,7 @@ export default function Properties() {
               e.preventDefault();
               showResults();
             }}
-            className="mt-8 grid gap-1 rounded-md bg-white p-2 text-ink shadow-panel sm:grid-cols-3 lg:max-w-5xl lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-center"
+            className="mt-6 grid grid-cols-2 gap-1 rounded-md bg-white p-1.5 text-ink shadow-panel sm:mt-8 sm:p-2 lg:max-w-6xl lg:grid-cols-[1fr_1fr_1fr_1fr_auto] lg:items-center"
           >
             <SearchField label={t("City", "עיר")}>
               <Select
@@ -200,10 +263,37 @@ export default function Properties() {
                 ]}
               />
             </SearchField>
+            <SearchField label={t("Max price", "מחיר עד")}>
+              <Select
+                value={maxPrice ? String(maxPrice) : "all"}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                className={fieldSelect}
+              >
+                <option value="all">{t("Any price", "כל מחיר")}</option>
+                {listingType === "all" ? (
+                  <>
+                    <optgroup label={t("For sale", "למכירה")}>
+                      {priceOptionsFor("sale").map((o) => (
+                        <option key={o.value} value={o.value}>{o.label}</option>
+                      ))}
+                    </optgroup>
+                    <optgroup label={t("For rent, per month", "להשכרה, לחודש")}>
+                      {priceOptionsFor("rent").map((o) => (
+                        <option key={o.value} value={o.value}>{o.label}</option>
+                      ))}
+                    </optgroup>
+                  </>
+                ) : (
+                  priceOptionsFor(listingType).map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))
+                )}
+              </Select>
+            </SearchField>
             <button
               type="submit"
               disabled={loading}
-              className="mt-1 inline-flex min-h-14 items-center justify-center gap-2 rounded-[4px] bg-ink px-7 text-base font-semibold text-white transition-colors hover:bg-ink-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 disabled:opacity-60 sm:col-span-3 lg:col-span-1 lg:mt-0"
+              className="col-span-2 mt-1 inline-flex min-h-12 items-center justify-center gap-2 rounded-[4px] bg-ink px-7 text-base font-semibold text-white transition-colors hover:bg-ink-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 disabled:opacity-60 sm:min-h-14 lg:col-span-1 lg:mt-0"
             >
               <span className="tabular-nums">
                 {loading ? t("Show listings", "הצגת נכסים") : t(`Show ${countLabel(filtered.length)}`, `הצגת ${countLabel(filtered.length)}`)}
@@ -218,13 +308,13 @@ export default function Properties() {
         ref={resultsRef}
         tabIndex={-1}
         aria-labelledby="results-heading"
-        className="mx-auto max-w-7xl scroll-mt-20 px-4 py-14 focus:outline-none sm:px-6 sm:py-20 lg:px-8"
+        className="mx-auto max-w-7xl scroll-mt-20 px-4 py-8 focus:outline-none sm:px-6 sm:py-20 lg:px-8"
       >
-        <div className="mb-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-stone-300 pb-5">
+        <div className="mb-6 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-stone-300 pb-3 sm:mb-8 sm:gap-y-2 sm:pb-5">
           <h2 id="results-heading" className="font-display text-3xl font-bold text-ink sm:text-4xl">
             {isFiltered ? t("Matching properties", "נכסים מתאימים") : t("All properties", "כל הנכסים")}
           </h2>
-          <div className="flex items-center gap-4 text-stone-600">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-stone-600">
             {!loading && (
               <span className="tabular-nums" aria-live="polite">
                 {countLabel(filtered.length)}
@@ -239,6 +329,20 @@ export default function Properties() {
                 {t("Clear filters", "ניקוי סינון")}
               </button>
             )}
+            <label className="flex items-center gap-2">
+              <span className="text-[15px]">{t("Sort by", "מיון לפי")}</span>
+              <Select
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+                className="h-11 min-w-[11rem] bg-transparent text-[15px] font-medium"
+                options={[
+                  { value: "newest", label: t("Newest first", "החדשים ביותר") },
+                  { value: "price-asc", label: t("Price: low to high", "מחיר: מהנמוך לגבוה") },
+                  { value: "price-desc", label: t("Price: high to low", "מחיר: מהגבוה לנמוך") },
+                  { value: "area-desc", label: t("Largest first", "השטח הגדול ביותר") },
+                ]}
+              />
+            </label>
           </div>
         </div>
 
@@ -261,7 +365,7 @@ export default function Properties() {
               {t("No properties match these filters", "אין נכסים שמתאימים לסינון הזה")}
             </p>
             <p className="mt-2 text-stone-600">
-              {t("Try another city or deal type.", "אפשר לנסות עיר או סוג עסקה אחרים.")}
+              {t("Try another city, deal type or price.", "אפשר לנסות עיר, סוג עסקה או מחיר אחרים.")}
             </p>
             <button
               type="button"

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { useLanguage } from "@/components/LanguageContext";
 import { formatPrice, sizedImage, imageSrcSet } from "@/lib/utils";
@@ -8,6 +8,7 @@ import StatusBadges from "@/components/StatusBadges";
 
 export default function PropertyCard({ property }) {
   const { language } = useLanguage();
+  const location = useLocation();
   const t = (en, he) => (language === "he" ? he : en);
 
   const title = t(property.title, property.title_he || property.title);
@@ -27,6 +28,8 @@ export default function PropertyCard({ property }) {
   return (
     <Link
       to={createPageUrl(`PropertyDetail?id=${property.id}`)}
+      // The detail page's "All properties" link returns to this filtered list.
+      state={{ listSearch: location.search }}
       className="group block rounded-[4px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-4 focus-visible:ring-offset-stone-100"
     >
       <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] bg-stone-200">
