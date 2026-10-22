@@ -18,7 +18,7 @@ npm run preview   # preview the production build locally
 
 ## Features
 
-- **Properties** page — hero with live stats, search + listing/type filters, a Featured section, and a responsive listing grid.
+- **Properties** page — full-bleed hero photo of a real featured listing (captioned, linking to it), a search panel set into the hero (city, deal, property type, max price) whose button shows the live count of matching listings, and a sortable results grid. Filters live in the URL, so a filtered list can be shared.
 - **Property detail** — image gallery, full specs, contact actions.
 - **Admin** — username/password login, then full create / edit / delete of listings.
   - **Delete** opens a confirmation dialog ("Are you sure you want to delete?").
@@ -63,7 +63,7 @@ src/
   index.css             Tailwind + RTL styles
   pages/
     Layout.jsx          header / nav / footer
-    Properties.jsx      listing page with filters + stats
+    Properties.jsx      listing page: photo hero + in-hero search + results grid
     PropertyDetail.jsx  single-listing page
     Admin.jsx           login gate + CRUD + delete modal + image manager
   components/
