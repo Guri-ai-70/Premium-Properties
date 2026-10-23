@@ -525,7 +525,7 @@ export default function Admin() {
                     <Button
                       type="button"
                       variant="overlay"
-                      size="icon-sm"
+                      size="icon"
                       onClick={() => removeImage(i)}
                       aria-label={t(`Remove photo ${i + 1}`, `הסרת תמונה ${i + 1}`)}
                       // Keeps its darker fill, red "remove" hover and light-brass ring with no gap on the photo.
