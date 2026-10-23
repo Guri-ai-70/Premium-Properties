@@ -42,6 +42,12 @@ export default {
           light: "#a3b59a",
           DEFAULT: "#3d5a47",
         },
+        // Errors and destructive actions only; not a brand colour.
+        error: {
+          DEFAULT: "#b91c1c",
+          text: "#991b1b",
+          bg: "#fef2f2",
+        },
       },
       boxShadow: {
         panel: "0 18px 40px -12px rgba(27, 25, 22, 0.45)",

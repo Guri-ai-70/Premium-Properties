@@ -11,7 +11,7 @@ const buttonVariants = cva(
         outline:
           "border border-stone-300 bg-white text-ink hover:border-stone-400 hover:bg-stone-50",
         ghost: "text-stone-700 hover:bg-stone-200/60 hover:text-ink",
-        destructive: "bg-red-700 text-white hover:bg-red-800",
+        destructive: "bg-error text-white hover:bg-error-text",
         secondary: "bg-stone-200 text-ink hover:bg-stone-300",
         // On the ink contact panel: white primary, and an outlined secondary.
         // The focus-ring offset is ink so the ring has no light halo on the dark panel.
