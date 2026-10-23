@@ -30,10 +30,12 @@ npm run preview   # preview the production build locally
 
 Open **Login** in the header (or go to the Admin page). Default credentials:
 
-- **Username:** `admin`
-- **Password:** `premium2026`
+- **Username:** `demo`
+- **Password:** `demo1234`
 
-Change them in **`src/config.js`**. Note: because this is a static, frontend-only site, this login only *hides* the admin panel from casual visitors — it is not real security. Importantly, a visitor cannot change your published listings: their edits only affect their own browser. Real, shared, server-saved admin would require a backend.
+Change them in **`src/config.js`**.
+
+> **Admin is a demo mode.** Listing changes (add, edit, delete, photos) are saved only in the visitor's own browser (`localStorage`). They are not visible to anyone else, not even you on another browser or device, and clearing the site's data resets them. The login is also not real security: this is a static, frontend-only site, so the credentials ship in the public code and only *hide* the admin panel from casual visitors. Real, shared, server-saved admin would require a backend (see below).
 
 ## Resetting demo data
 
